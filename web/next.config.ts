@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   transpilePackages: ['@librato/shared'],
   experimental: {
     // Required for using server components with the shared package
-    serverComponentsExternalPackages: [],
+    serverExternalPackages: [],
   },
 };
 
