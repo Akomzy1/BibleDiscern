@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "LibratoAi",
+    "slug": "librato-ai",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "librato",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "ai.librato.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Not required.",
+        "NSMicrophoneUsageDescription": "Not required."
+      }
+    },
+    "android": {
+      "package": "ai.librato.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#FDF6EC"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "color": "#C8A45E",
+          "sounds": []
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": []
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "YOUR_EAS_PROJECT_ID"
+      }
+    }
+  }
+}
