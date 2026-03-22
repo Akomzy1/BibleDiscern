@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1284" height="2778" viewBox="0 0 1284 2778">
+  <!-- Cream background -->
+  <rect width="1284" height="2778" fill="#FDF6EC"/>
+
+  <!-- Subtle warm texture overlay rings -->
+  <circle cx="642" cy="1180" r="520" fill="none" stroke="#E8DFD0" stroke-width="1" opacity="0.6"/>
+  <circle cx="642" cy="1180" r="380" fill="none" stroke="#E8DFD0" stroke-width="1" opacity="0.4"/>
+
+  <!-- Navy cross — centered at ~45% height -->
+  <!-- Vertical bar -->
+  <rect x="597" y="900" width="90" height="420" fill="#1B2A4A" rx="10"/>
+  <!-- Horizontal bar -->
+  <rect x="432" y="1020" width="420" height="90" fill="#1B2A4A" rx="10"/>
+
+  <!-- "LibratoAi" text — Playfair Display style -->
+  <!-- Using font-family reference; actual rendering via Expo -->
+  <text
+    x="642"
+    y="1450"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="88"
+    font-weight="700"
+    fill="#1B2A4A"
+    letter-spacing="4"
+  >LibratoAi</text>
+
+  <!-- Tagline — Cormorant Garamond italic gold -->
+  <text
+    x="642"
+    y="1556"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="46"
+    font-style="italic"
+    fill="#C8A45E"
+    letter-spacing="2"
+  >Weigh it with wisdom</text>
+
+  <!-- Subtle gold rule under tagline -->
+  <line x1="482" y1="1590" x2="802" y2="1590" stroke="#C8A45E" stroke-width="1.5" opacity="0.5"/>
+</svg>

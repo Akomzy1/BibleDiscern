@@ -1,0 +1,22 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "TEAMID.com.librato.ai",
+        "paths": [
+          "/discern",
+          "/discern/*",
+          "/journal",
+          "/journal/*",
+          "/upgrade"
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "TEAMID.com.librato.ai"
+    ]
+  }
+}
