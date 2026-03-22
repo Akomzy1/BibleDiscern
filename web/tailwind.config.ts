@@ -25,13 +25,13 @@ const config: Config = {
         error: '#C0392B',
       },
       fontFamily: {
-        display: ['Playfair Display', 'serif'],
-        scripture: ['Cormorant Garamond', 'serif'],
-        sans: ['Source Sans 3', 'sans-serif'],
+        display: ['var(--font-display)', 'Georgia', 'serif'],
+        scripture: ['var(--font-scripture)', 'Georgia', 'serif'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 };
 
 export default config;

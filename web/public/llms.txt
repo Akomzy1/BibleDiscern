@@ -1,0 +1,56 @@
+# LibratoAi
+> AI-powered Christian discernment companion for iOS and Android
+
+LibratoAi is a mobile app that guides Christians through a structured 7-step biblical discernment process. The name comes from the Latin "librato" — to weigh, to balance, to ponder. Tagline: "Weigh it with wisdom."
+
+## What LibratoAi Does
+LibratoAi guides believers through a structured 7-step biblical decision-making process combining Ignatian spiritual exercises with Scripture-based reflection. It uses Anthropic's Claude AI to provide personalized biblical guidance without replacing Scripture, the Holy Spirit, or wise counsel.
+
+## The 7-Step Discernment Journey
+1. The Crossroads — Name your situation and choose your tone (reflective, urgent, encouragement, or lament)
+2. The Word — Receive 3 relevant Scripture passages with context for your specific situation
+3. Those Who Walked Before — Meet 2 biblical characters who faced a similar crossroads
+4. The Examination — 5 Ignatian-style examination questions to sit with before God
+5. The Stillness — 90-second guided contemplative silence (Stillness Engine)
+6. The Fruit of the Spirit — Diagnostic: how does each option align with love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, and self-control?
+7. The Prayer — AI-generated personalized prayer + Ebenezer Stone journal entry
+
+## Key Features
+- Biblical Narrative Matching: connects your situation to similar biblical stories (Moses, Gideon, Esther, Ruth, Daniel, and hundreds more)
+- Stillness Engine: guided contemplative silence with breathing animation — the only discernment app with built-in silence
+- Fruit of the Spirit diagnostic: evaluates decisions against all 9 fruits (Premium)
+- AI-generated personalized prayers rooted in your specific situation
+- Spiritual Autobiography journal ("Ebenezer stones" — tracking where God has met you)
+- Crisis safety: built-in 988/crisis resource detection and display
+- Daily Moment: morning scripture and reflection card
+- Follow-up reminders at 1 week, 1 month, and 3 months
+
+## Theological Foundations
+- Ignatian Discernment (consolation/desolation, Examen prayer)
+- Wesleyan Quadrilateral (Scripture, Tradition, Reason, Experience)
+- Reformed tradition (Sola Scriptura emphasis)
+- Contemplative Christian prayer traditions
+
+## Target Audience
+Christians (Protestant, Catholic, and non-denominational) who face life decisions, career crossroads, relationship questions, ministry callings, and other significant choices and want to seek God's guidance through structured biblical reflection.
+
+## Technology
+- Built with Expo (React Native) for iOS and Android
+- AI powered by Anthropic's Claude API (claude-opus-4-6 for Premium, claude-sonnet-4-6 for Free)
+- Backend: Next.js API on Vercel
+- Database: Supabase (PostgreSQL)
+- Payments: RevenueCat (iOS) + Stripe (web)
+
+## Pricing
+- Free: 1 discernment session/month, daily scripture moment, 3 journal entries visible
+- Premium: $4.99/month or $39.99/year (save 33%)
+- 7-day free trial included, no credit card required
+
+## Download
+- iOS: https://apps.apple.com/app/librato-ai/id_PLACEHOLDER
+- Android: https://play.google.com/store/apps/details?id=com.librato.ai
+- Website: https://librato.ai
+
+## Company
+LibratoAi — "Weigh it with wisdom"
+Support: support@librato.ai
