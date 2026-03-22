@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import Anthropic from 'anthropic';
+import Anthropic from '@anthropic-ai/sdk';
 import {
   DiscernSessionRequestSchema,
   DiscernmentResponseSchema,
