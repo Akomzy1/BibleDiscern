@@ -1,31 +1,25 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Modal,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-} from 'react-native';
+import { View, Text, StyleSheet, Pressable, Modal } from 'react-native';
 import { router } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { TONES, containsCrisisKeywords } from '@librato/shared';
 import type { Session } from '@librato/shared';
 import { useSessionStore } from '@/stores/useSessionStore';
 import { useSubscriptionStore } from '@/stores/useSubscriptionStore';
+import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import { ScreenWrapper } from '@/components/ui/ScreenWrapper';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 import { LoadingOverlay } from '@/components/common/LoadingOverlay';
 import { CrisisScreen } from '@/components/common/CrisisScreen';
+import { OfflineBanner } from '@/components/common/OfflineBanner';
 import { COLORS, FONTS, SPACING, BORDER_RADIUS } from '@/constants/theme';
 
 export default function DiscernScreen() {
   const { createSession, isCreating } = useSessionStore();
-  const { isAtLimit, isTrial } = useSubscriptionStore();
+  const { isAtLimit } = useSubscriptionStore();
+  const { isOffline } = useNetworkStatus();
 
   const [situation, setSituation] = useState('');
   const [tone, setTone] = useState<Session['tone']>('reflective');
@@ -38,6 +32,7 @@ export default function DiscernScreen() {
   const handleBegin = async () => {
     if (!canSubmit) return;
     setError('');
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
     // Check for crisis keywords before calling API
     if (containsCrisisKeywords(situation)) {
@@ -66,6 +61,22 @@ export default function DiscernScreen() {
 
   if (showCrisis) {
     return <CrisisScreen onContinue={() => setShowCrisis(false)} />;
+  }
+
+  if (isOffline) {
+    return (
+      <ScreenWrapper>
+        <OfflineBanner />
+        <View style={styles.offlineState}>
+          <Text style={styles.offlineIcon}>📵</Text>
+          <Text style={styles.offlineTitle}>You're offline</Text>
+          <Text style={styles.offlineBody}>
+            Discernment sessions require an internet connection. You can still review your
+            journal offline.
+          </Text>
+        </View>
+      </ScreenWrapper>
+    );
   }
 
   return (
@@ -246,6 +257,23 @@ const styles = StyleSheet.create({
   toneTextSelected: { fontFamily: FONTS.bodyBold, color: COLORS.navy },
 
   cta: {},
+
+  offlineState: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: SPACING['3xl'],
+    gap: SPACING.xl,
+  },
+  offlineIcon: { fontSize: 48 },
+  offlineTitle: { fontFamily: FONTS.display, fontSize: 24, color: COLORS.navy },
+  offlineBody: {
+    fontFamily: FONTS.body,
+    fontSize: 15,
+    color: COLORS.textMedium,
+    textAlign: 'center',
+    lineHeight: 24,
+  },
 
   modalOverlay: {
     flex: 1,

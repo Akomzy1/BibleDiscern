@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Platform,
   Alert,
   ActivityIndicator,
+  Animated,
 } from 'react-native';
 import { router } from 'expo-router';
 import * as Haptics from 'expo-haptics';
@@ -41,10 +42,24 @@ export default function UpgradeScreen() {
   const [restoring, setRestoring] = useState(false);
   const [loadingOfferings, setLoadingOfferings] = useState(true);
 
+  // "Best value" badge pulse
+  const badgeScale = useRef(new Animated.Value(1)).current;
+
   useEffect(() => {
     getOfferings()
       .then(setOfferings)
       .finally(() => setLoadingOfferings(false));
+  }, []);
+
+  useEffect(() => {
+    const pulse = Animated.loop(
+      Animated.sequence([
+        Animated.timing(badgeScale, { toValue: 1.08, duration: 700, useNativeDriver: true }),
+        Animated.timing(badgeScale, { toValue: 1.0, duration: 700, useNativeDriver: true }),
+      ]),
+    );
+    pulse.start();
+    return () => pulse.stop();
   }, []);
 
   const selectedPackage = offerings?.find(
@@ -144,9 +159,9 @@ export default function UpgradeScreen() {
             accessibilityRole="radio"
             accessibilityState={{ selected: selectedId === PRODUCT_IDS.annual }}
           >
-            <View style={styles.bestValueBadge}>
+            <Animated.View style={[styles.bestValueBadge, { transform: [{ scale: badgeScale }] }]}>
               <Text style={styles.bestValueText}>Best value</Text>
-            </View>
+            </Animated.View>
             <View style={styles.planRadio}>
               <View style={[styles.radioOuter, selectedId === PRODUCT_IDS.annual && styles.radioOuterSelected]}>
                 {selectedId === PRODUCT_IDS.annual && <View style={styles.radioInner} />}

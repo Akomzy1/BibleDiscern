@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { adminClient } from '@/lib/supabase/admin';
+import { sendPushNotification } from '@/lib/push';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -115,11 +116,12 @@ async function sendFollowUpEmail(
 
     const { data: profile } = await adminClient
       .from('profiles')
-      .select('display_name')
+      .select('display_name, expo_push_token')
       .eq('id', session.user_id)
       .single();
 
     const name = profile?.display_name ?? 'Friend';
+    const pushToken = profile?.expo_push_token as string | undefined;
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://librato.ai';
     const deepLink = `${appUrl}/app/journal/${session.id}`;
     const situationPreview = session.situation.slice(0, 100) + (session.situation.length > 100 ? '...' : '');
@@ -152,6 +154,21 @@ async function sendFollowUpEmail(
     if (error) {
       console.error('[follow-up email] Resend error:', error);
       return false;
+    }
+
+    // Also send a push notification if the user has a token
+    if (pushToken) {
+      const pushBodyMap = {
+        '1w': `A week ago you were weighing something. How did God move?`,
+        '1m': `A month has passed. Open your journal to record what God showed you.`,
+        '3m': `Three months later — how has God been faithful?`,
+      };
+      await sendPushNotification(
+        pushToken,
+        'How did it turn out? ✝',
+        pushBodyMap[period],
+        { type: 'follow_up', entryId: session.id },
+      );
     }
 
     return true;

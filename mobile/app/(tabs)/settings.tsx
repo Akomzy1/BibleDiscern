@@ -16,6 +16,11 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import { useSubscriptionStore } from '@/stores/useSubscriptionStore';
 import { apiClient } from '@/lib/api';
 import { resetPurchasesUser } from '@/lib/purchases';
+import {
+  registerForPushNotifications,
+  scheduleDailyMomentNotification,
+  cancelAllScheduledNotifications,
+} from '@/lib/notifications';
 import { ScreenWrapper } from '@/components/ui/ScreenWrapper';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -97,10 +102,14 @@ export default function SettingsScreen() {
   const handleSaveNotifications = async () => {
     setSavingNotif(true);
     try {
-      await apiClient.updateProfile({
-        daily_moment_time: notifTime,
-        // expo_push_token would be set separately via expo-notifications
-      });
+      if (notificationsOn) {
+        // Ensure we have a push token before scheduling
+        await registerForPushNotifications();
+        await scheduleDailyMomentNotification(notifTime);
+      } else {
+        await cancelAllScheduledNotifications();
+      }
+      await apiClient.updateProfile({ daily_moment_time: notifTime });
     } catch (e: any) {
       Alert.alert('Error', e?.message ?? 'Could not save notification settings.');
     } finally {

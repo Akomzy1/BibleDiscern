@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
   Pressable,
   Animated,
 } from 'react-native';
@@ -20,6 +19,8 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { SectionLabel } from '@/components/ui/SectionLabel';
+import { OfflineBanner } from '@/components/common/OfflineBanner';
+import { Disclaimer } from '@/components/common/Disclaimer';
 import { COLORS, FONTS, SPACING, BORDER_RADIUS } from '@/constants/theme';
 
 function getGreeting(): string {
@@ -89,6 +90,8 @@ export default function HomeScreen() {
 
   return (
     <ScreenWrapper onRefresh={handleRefresh} isRefreshing={refreshing}>
+      <OfflineBanner />
+
       {/* Greeting + badge */}
       <View style={styles.greetingRow}>
         <View>
@@ -150,6 +153,8 @@ export default function HomeScreen() {
           </Text>
         </View>
       )}
+
+      <Disclaimer style={styles.disclaimer} />
     </ScreenWrapper>
   );
 }
@@ -251,6 +256,8 @@ const styles = StyleSheet.create({
   pressed: { opacity: 0.75, transform: [{ scale: 0.98 }] },
 
   emptyState: { alignItems: 'center', paddingTop: SPACING['5xl'], gap: SPACING.lg },
+  disclaimer: { marginTop: SPACING['3xl'] },
+
   emptyIcon: { fontSize: 36 },
   emptyText: {
     fontFamily: FONTS.scripture,

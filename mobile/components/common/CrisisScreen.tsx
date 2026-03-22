@@ -16,49 +16,76 @@ interface CrisisScreenProps {
 }
 
 export function CrisisScreen({ onContinue }: CrisisScreenProps) {
+  const call988 = () => Linking.openURL('tel:988');
+
   return (
     <SafeAreaView style={styles.safe}>
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Cross Icon */}
         <Text style={styles.cross}>✝</Text>
 
-        <Text style={styles.heading}>We care about you</Text>
+        <Text style={styles.heading}>You are not alone</Text>
 
         <Text style={styles.body}>
-          It sounds like you may be going through something very serious. Before anything else,
-          please reach out to someone who can help.
+          Whatever you're carrying right now — God sees you, and so do we. Before
+          anything else, please reach out to someone who can sit with you in this moment.
         </Text>
 
         <Text style={styles.body}>
-          God places people in our lives for moments like this. Please don't carry this alone.
+          You don't have to carry this alone. There are people ready to listen, right now.
         </Text>
 
+        {/* Prominent 988 call button */}
+        <Pressable
+          style={({ pressed }) => [styles.callButton, pressed && styles.callButtonPressed]}
+          onPress={call988}
+          accessibilityRole="button"
+          accessibilityLabel="Call or text 988 Suicide and Crisis Lifeline"
+        >
+          <Text style={styles.callButtonIcon}>📞</Text>
+          <View style={styles.callButtonText}>
+            <Text style={styles.callButtonTitle}>Talk to Someone Now</Text>
+            <Text style={styles.callButtonSub}>Call or text 988 — free, 24/7</Text>
+          </View>
+          <Text style={styles.callButtonArrow}>›</Text>
+        </Pressable>
+
+        {/* Other resources */}
         <View style={styles.resources}>
-          {CRISIS_RESOURCES.map((resource) => (
-            <Pressable
-              key={resource.name}
-              style={({ pressed }) => [styles.resourceCard, pressed && styles.pressed]}
-              onPress={() => Linking.openURL(resource.action)}
-              accessibilityRole="button"
-              accessibilityLabel={`Contact ${resource.name}`}
-            >
-              <View style={styles.resourceInner}>
-                <Text style={styles.resourceIcon}>
-                  {resource.type === 'call' ? '📞' : '💬'}
-                </Text>
-                <View style={styles.resourceText}>
-                  <Text style={styles.resourceName}>{resource.name}</Text>
-                  <Text style={styles.resourceAction}>
-                    {resource.type === 'call' ? 'Tap to call' : 'Tap to text'}
+          {CRISIS_RESOURCES.filter((r) => r.name !== '988 Suicide & Crisis Lifeline').map(
+            (resource) => (
+              <Pressable
+                key={resource.name}
+                style={({ pressed }) => [styles.resourceCard, pressed && styles.pressed]}
+                onPress={() => Linking.openURL(resource.action)}
+                accessibilityRole="button"
+                accessibilityLabel={`Contact ${resource.name}`}
+              >
+                <View style={styles.resourceInner}>
+                  <Text style={styles.resourceIcon}>
+                    {resource.type === 'call' ? '📞' : '💬'}
                   </Text>
+                  <View style={styles.resourceText}>
+                    <Text style={styles.resourceName}>{resource.name}</Text>
+                    <Text style={styles.resourceAction}>
+                      {resource.type === 'call' ? 'Tap to call' : 'Tap to text'}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            </Pressable>
-          ))}
+              </Pressable>
+            ),
+          )}
         </View>
 
         <Text style={styles.verse}>
           "Cast all your anxiety on him because he cares for you." — 1 Peter 5:7
+        </Text>
+
+        <Text style={styles.grace}>
+          When you're ready, discernment is still here for you. Take all the time you need.
         </Text>
 
         <Pressable
@@ -82,14 +109,16 @@ const styles = StyleSheet.create({
     padding: SPACING['2xl'],
     paddingTop: SPACING['4xl'],
     alignItems: 'center',
+    gap: SPACING.xl,
+    paddingBottom: SPACING['5xl'],
   },
-  cross: { fontSize: 48, color: COLORS.navy, marginBottom: SPACING['2xl'] },
+
+  cross: { fontSize: 48, color: COLORS.navy },
   heading: {
     fontFamily: FONTS.display,
-    fontSize: 28,
+    fontSize: 30,
     color: COLORS.navy,
     textAlign: 'center',
-    marginBottom: SPACING.xl,
   },
   body: {
     fontFamily: FONTS.body,
@@ -97,9 +126,42 @@ const styles = StyleSheet.create({
     color: COLORS.textDark,
     lineHeight: 26,
     textAlign: 'center',
-    marginBottom: SPACING.lg,
   },
-  resources: { width: '100%', gap: SPACING.md, marginVertical: SPACING['3xl'] },
+
+  // Prominent 988 button
+  callButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: COLORS.navy,
+    borderRadius: BORDER_RADIUS.xl,
+    padding: SPACING.xl,
+    gap: SPACING.md,
+    marginTop: SPACING.sm,
+  },
+  callButtonPressed: { opacity: 0.85 },
+  callButtonIcon: { fontSize: 28 },
+  callButtonText: { flex: 1 },
+  callButtonTitle: {
+    fontFamily: FONTS.display,
+    fontSize: 18,
+    color: COLORS.cream,
+  },
+  callButtonSub: {
+    fontFamily: FONTS.body,
+    fontSize: 13,
+    color: COLORS.gold,
+    marginTop: 2,
+  },
+  callButtonArrow: {
+    fontFamily: FONTS.body,
+    fontSize: 26,
+    color: COLORS.cream,
+    lineHeight: 28,
+    opacity: 0.7,
+  },
+
+  resources: { width: '100%', gap: SPACING.md },
   resourceCard: {
     backgroundColor: COLORS.parchment,
     borderRadius: BORDER_RADIUS.lg,
@@ -110,18 +172,27 @@ const styles = StyleSheet.create({
     padding: SPACING.lg,
   },
   resourceInner: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md },
-  resourceIcon: { fontSize: 24 },
+  resourceIcon: { fontSize: 22 },
   resourceText: { flex: 1 },
   resourceName: { fontFamily: FONTS.bodySemiBold, fontSize: 15, color: COLORS.navy },
-  resourceAction: { fontFamily: FONTS.body, fontSize: 13, color: COLORS.textLight },
+  resourceAction: { fontFamily: FONTS.body, fontSize: 12, color: COLORS.textLight, marginTop: 2 },
   pressed: { opacity: 0.75 },
+
   verse: {
     fontFamily: FONTS.scripture,
-    fontSize: 16,
+    fontSize: 17,
     color: COLORS.textMedium,
     textAlign: 'center',
-    marginBottom: SPACING['4xl'],
-    lineHeight: 26,
+    lineHeight: 28,
+    fontStyle: 'italic',
+  },
+  grace: {
+    fontFamily: FONTS.body,
+    fontSize: 14,
+    color: COLORS.textLight,
+    textAlign: 'center',
+    lineHeight: 22,
+    paddingHorizontal: SPACING.md,
   },
   continueLink: { paddingVertical: SPACING.lg },
   continueLinkText: {

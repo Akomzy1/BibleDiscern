@@ -11,8 +11,8 @@ import { useLocalSearchParams, router } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { useSessionStore } from '@/stores/useSessionStore';
 import { useSubscriptionStore } from '@/stores/useSubscriptionStore';
-import { ScreenWrapper } from '@/components/ui/ScreenWrapper';
 import { Button } from '@/components/ui/Button';
+import { Disclaimer } from '@/components/common/Disclaimer';
 import { StepWord } from '@/components/journey/StepWord';
 import { StepNarratives } from '@/components/journey/StepNarratives';
 import { StepExamination } from '@/components/journey/StepExamination';
@@ -192,7 +192,7 @@ export default function JourneyScreen() {
       </Animated.View>
 
       {/* Navigation footer */}
-      {!isLastStep && (
+      {!isLastStep ? (
         <View style={styles.footer}>
           {isStillnessStep ? (
             <Button
@@ -205,6 +205,8 @@ export default function JourneyScreen() {
             <Button title="Continue" onPress={handleNext} fullWidth />
           )}
         </View>
+      ) : (
+        <Disclaimer style={styles.disclaimerFooter} />
       )}
     </View>
   );
@@ -292,5 +294,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.cream,
     borderTopWidth: 1,
     borderTopColor: COLORS.border,
+  },
+
+  disclaimerFooter: {
+    paddingBottom: Platform.OS === 'ios' ? 34 : SPACING.lg,
   },
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs, Redirect } from 'expo-router';
 import { StyleSheet, Text } from 'react-native';
+import * as Haptics from 'expo-haptics';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { COLORS, FONTS } from '@/constants/theme';
 
@@ -27,6 +28,11 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: COLORS.textLight,
         tabBarLabelStyle: styles.tabLabel,
         tabBarItemStyle: styles.tabItem,
+      }}
+      screenListeners={{
+        tabPress: () => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        },
       }}
     >
       <Tabs.Screen

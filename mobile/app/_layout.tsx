@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { Stack, SplashScreen } from 'expo-router';
+import React, { useEffect, useRef } from 'react';
+import { Stack, SplashScreen, router } from 'expo-router';
+import * as Notifications from 'expo-notifications';
 import { useFonts } from 'expo-font';
 import {
   PlayfairDisplay_400Regular,
@@ -23,8 +24,34 @@ import { initializePurchases, identifyUser } from '@/lib/purchases';
 
 SplashScreen.preventAutoHideAsync();
 
+function useNotificationDeepLink() {
+  const responseListener = useRef<Notifications.EventSubscription | null>(null);
+
+  useEffect(() => {
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        const data = response.notification.request.content.data as Record<string, string>;
+        const type = data?.type;
+
+        if (type === 'daily_moment') {
+          router.push('/(tabs)');
+        } else if (type === 'follow_up' && data?.entryId) {
+          router.push(`/journal/${data.entryId}` as any);
+        } else if (type === 'trial_expiry') {
+          router.push('/upgrade');
+        }
+      },
+    );
+
+    return () => {
+      responseListener.current?.remove();
+    };
+  }, []);
+}
+
 export default function RootLayout() {
   const { initialize, isLoading, user } = useAuthStore();
+  useNotificationDeepLink();
 
   const [fontsLoaded, fontError] = useFonts({
     PlayfairDisplay_400Regular,

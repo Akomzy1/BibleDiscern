@@ -12,6 +12,7 @@ import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { apiClient } from '@/lib/api';
+import { registerForPushNotifications, scheduleDailyMomentNotification } from '@/lib/notifications';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { COLORS, FONTS, SPACING } from '@/constants/theme';
@@ -52,12 +53,14 @@ export default function OnboardingScreen() {
         display_name: displayName.trim() || undefined,
         onboarding_completed: true,
       });
-      router.replace('/(tabs)');
+      // Request push permission and schedule default daily moment (8 AM)
+      await registerForPushNotifications();
+      await scheduleDailyMomentNotification('08:00').catch(() => {});
     } catch {
       // Non-fatal — still navigate even if profile update fails
-      router.replace('/(tabs)');
     } finally {
       setLoading(false);
+      router.replace('/(tabs)');
     }
   };
 

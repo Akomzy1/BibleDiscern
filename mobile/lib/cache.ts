@@ -32,3 +32,28 @@ export async function setCached<T>(key: string, data: T, ttlMs: number): Promise
 export async function clearCached(key: string): Promise<void> {
   await AsyncStorage.removeItem(`cache:${key}`);
 }
+
+// ─── ttlMinutes-based aliases (used in Stage 5 spec) ─────────────────────────
+
+/** Store data with a TTL in minutes. */
+export async function cacheData<T>(key: string, data: T, ttlMinutes: number): Promise<void> {
+  return setCached(key, data, ttlMinutes * 60 * 1000);
+}
+
+/** Retrieve cached data if not expired. */
+export async function getCachedData<T>(key: string): Promise<T | null> {
+  return getCached<T>(key);
+}
+
+/** Clear all librato cache entries from AsyncStorage. */
+export async function clearCache(): Promise<void> {
+  try {
+    const keys = await AsyncStorage.getAllKeys();
+    const cacheKeys = keys.filter((k) => k.startsWith('cache:'));
+    if (cacheKeys.length > 0) {
+      await AsyncStorage.multiRemove(cacheKeys);
+    }
+  } catch {
+    // Non-fatal
+  }
+}
