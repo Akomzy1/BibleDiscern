@@ -299,7 +299,7 @@ export default function SettingsScreen() {
       {/* ── Links ────────────────────────────── */}
       <SectionHeader label="About" />
       <Card style={[styles.card, styles.linksCard]}>
-        <LinkRow label="About LibratoAi" onPress={() => openUrl('https://librato.ai/about')} />
+        <LinkRow label="About BibleDiscern" onPress={() => openUrl('https://librato.ai/about')} />
         <View style={styles.separator} />
         <LinkRow label="Privacy Policy" onPress={() => openUrl('https://librato.ai/privacy')} />
         <View style={styles.separator} />
@@ -318,7 +318,7 @@ export default function SettingsScreen() {
         <Text style={styles.signOutText}>Sign Out</Text>
       </Pressable>
 
-      <Text style={styles.version}>LibratoAi v1.0.0 — Weigh it with wisdom</Text>
+      <Text style={styles.version}>BibleDiscern v1.0.0 — Weigh it with wisdom</Text>
     </ScreenWrapper>
   );
 }

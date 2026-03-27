@@ -14,7 +14,7 @@ const PARCHMENT = '#f3ece0';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const title   = searchParams.get('title') ?? 'LibratoAi';
+  const title   = searchParams.get('title') ?? 'BibleDiscern';
   const type    = searchParams.get('type') ?? 'default'; // 'blog' | 'default'
   const tagline = searchParams.get('tagline') ?? 'Weigh it with wisdom';
 
@@ -94,7 +94,7 @@ export async function GET(req: NextRequest) {
                 letterSpacing: 1,
               }}
             >
-              LibratoAi
+              BibleDiscern
             </span>
           </div>
 
@@ -111,7 +111,7 @@ export async function GET(req: NextRequest) {
                   letterSpacing: 3,
                 }}
               >
-                LibratoAi Blog
+                BibleDiscern Blog
               </span>
             )}
 

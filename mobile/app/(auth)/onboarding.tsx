@@ -82,7 +82,7 @@ export default function OnboardingScreen() {
 
           {/* Heading */}
           <Animated.Text style={[styles.heading, { opacity: headingOpacity }]}>
-            Welcome to LibratoAi
+            Welcome to BibleDiscern
           </Animated.Text>
 
           {/* Covenant text 1 */}
@@ -109,7 +109,7 @@ export default function OnboardingScreen() {
               onChangeText={setDisplayName}
               autoCapitalize="words"
               placeholder="Your name"
-              accessibilityHint="Enter the name you'd like LibratoAi to use"
+              accessibilityHint="Enter the name you'd like BibleDiscern to use"
             />
           </Animated.View>
 

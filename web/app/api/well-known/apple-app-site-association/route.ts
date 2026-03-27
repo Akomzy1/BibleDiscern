@@ -12,13 +12,13 @@ const AASA = {
     apps: [],
     details: [
       {
-        appID: 'TEAMID.com.librato.ai',
+        appID: 'TEAMID.com.biblediscern',
         paths: ['/discern', '/discern/*', '/journal', '/journal/*', '/upgrade'],
       },
     ],
   },
   webcredentials: {
-    apps: ['TEAMID.com.librato.ai'],
+    apps: ['TEAMID.com.biblediscern'],
   },
 };
 

@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-// Core domain types for LibratoAi
+// Core domain types for BibleDiscern
 // ─────────────────────────────────────────────
 
 export interface Profile {

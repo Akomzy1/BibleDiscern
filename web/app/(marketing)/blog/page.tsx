@@ -4,12 +4,12 @@ import { BLOG_POSTS } from '@/lib/blog';
 import { BASE_URL, breadcrumbSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Blog — LibratoAi',
+  title: 'Blog — BibleDiscern',
   description:
-    'Biblical discernment guides, Scripture-based decision-making resources, and reflections on Christian spiritual formation from the LibratoAi team.',
+    'Biblical discernment guides, Scripture-based decision-making resources, and reflections on Christian spiritual formation from the BibleDiscern team.',
   alternates: { canonical: `${BASE_URL}/blog` },
   openGraph: {
-    title: 'LibratoAi Blog — Biblical Discernment Resources',
+    title: 'BibleDiscern Blog — Biblical Discernment Resources',
     url: `${BASE_URL}/blog`,
   },
 };

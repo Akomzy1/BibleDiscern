@@ -93,7 +93,7 @@ export default function BlogPostPage({ params }: Props) {
           <h1 className="font-display text-3xl sm:text-4xl text-cream leading-snug">
             {post.title}
           </h1>
-          <p className="text-cream/50 text-sm">{formatDate(post.date)} · LibratoAi</p>
+          <p className="text-cream/50 text-sm">{formatDate(post.date)} · BibleDiscern</p>
         </div>
       </div>
 
@@ -129,7 +129,7 @@ export default function BlogPostPage({ params }: Props) {
           </p>
           <Link href="/pricing"
             className="inline-block px-6 py-3 rounded-full bg-gold text-navy font-bold text-sm hover:bg-gold-muted transition-colors">
-            Download LibratoAi Free
+            Download BibleDiscern Free
           </Link>
         </div>
       </div>
@@ -138,7 +138,7 @@ export default function BlogPostPage({ params }: Props) {
       {relatedPosts.length > 0 && (
         <section className="py-14 bg-parchment">
           <div className="mx-auto max-w-5xl px-4 sm:px-6">
-            <h2 className="font-display text-xl text-navy mb-6">More from LibratoAi</h2>
+            <h2 className="font-display text-xl text-navy mb-6">More from BibleDiscern</h2>
             <div className="grid sm:grid-cols-3 gap-5">
               {relatedPosts.map((rp) => (
                 <Link key={rp.slug} href={`/blog/${rp.slug}`} className="group block">

@@ -3,12 +3,12 @@ import Link from 'next/link';
 import { APP_STORE_URL, BASE_URL, PLAY_STORE_URL, appSchema, faqSchema, orgSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'LibratoAi — Weigh Your Decisions with Biblical Wisdom',
+  title: 'BibleDiscern — Weigh Your Decisions with Biblical Wisdom',
   description:
-    'LibratoAi is an AI-powered Christian discernment app that guides you through a structured 7-step biblical journey to weigh your decisions with Scripture, silence, and wisdom. Free on iOS & Android.',
+    'BibleDiscern is an AI-powered Christian discernment app that guides you through a structured 7-step biblical journey to weigh your decisions with Scripture, silence, and wisdom. Free on iOS & Android.',
   alternates: { canonical: BASE_URL },
   openGraph: {
-    title: 'LibratoAi — Weigh it with wisdom',
+    title: 'BibleDiscern — Weigh it with wisdom',
     description:
       'A 7-step biblical discernment journey powered by AI. Free on iOS and Android.',
     url: BASE_URL,
@@ -63,16 +63,16 @@ const FEATURES_PREMIUM = [
 
 const FAQS = [
   {
-    question: 'What is LibratoAi?',
-    answer: 'LibratoAi is an AI-powered Christian discernment companion that guides you through a structured 7-step biblical decision-making process. It combines Ignatian spiritual exercises with Scripture-based reflection, powered by Anthropic\'s Claude AI.',
+    question: 'What is BibleDiscern?',
+    answer: 'BibleDiscern is an AI-powered Christian discernment companion that guides you through a structured 7-step biblical decision-making process. It combines Ignatian spiritual exercises with Scripture-based reflection, powered by Anthropic\'s Claude AI.',
   },
   {
-    question: 'Is LibratoAi free?',
-    answer: 'Yes — LibratoAi has a free plan that includes 1 full discernment session per month. Premium is $4.99/month or $39.99/year with a 7-day free trial.',
+    question: 'Is BibleDiscern free?',
+    answer: 'Yes — BibleDiscern has a free plan that includes 1 full discernment session per month. Premium is $7.99/month or $49.99/year with a 7-day free trial.',
   },
   {
     question: 'Does it replace my pastor or spiritual director?',
-    answer: 'No. LibratoAi is a companion for discernment — it supports reflection but does not replace God, Scripture, the Holy Spirit, or wise human counsel. We strongly encourage sharing your journey with a trusted pastor or mentor.',
+    answer: 'No. BibleDiscern is a companion for discernment — it supports reflection but does not replace God, Scripture, the Holy Spirit, or wise human counsel. We strongly encourage sharing your journey with a trusted pastor or mentor.',
   },
   {
     question: 'What is the Stillness Engine?',
@@ -116,7 +116,7 @@ export default function LandingPage() {
 
           {/* Sub */}
           <p className="text-lg sm:text-xl text-cream/70 leading-relaxed max-w-2xl mx-auto mb-10">
-            LibratoAi guides you through a structured 7-step discernment journey rooted in
+            BibleDiscern guides you through a structured 7-step discernment journey rooted in
             Scripture, powered by AI, and grounded in centuries of Christian tradition.
           </p>
 
@@ -169,7 +169,7 @@ export default function LandingPage() {
               Every other app gives you a verse.
             </h2>
             <p className="text-xl font-scripture italic text-gold">
-              LibratoAi gives you a journey.
+              BibleDiscern gives you a journey.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -244,7 +244,7 @@ export default function LandingPage() {
               You&apos;re not the first to face this.
             </h2>
             <p className="text-text-medium max-w-xl mx-auto">
-              LibratoAi connects your situation to biblical figures who faced the same crossroads.
+              BibleDiscern connects your situation to biblical figures who faced the same crossroads.
               Their stories become a mirror for yours.
             </p>
           </div>
@@ -355,8 +355,8 @@ export default function LandingPage() {
               </div>
               <div>
                 <p className="font-display text-2xl text-cream">Premium</p>
-                <p className="text-3xl font-bold text-cream mt-1">$3.33<span className="text-lg font-normal text-cream/60">/mo</span></p>
-                <p className="text-sm text-gold">$39.99/year · save 33%</p>
+                <p className="text-3xl font-bold text-cream mt-1">$4.17<span className="text-lg font-normal text-cream/60">/mo</span></p>
+                <p className="text-sm text-gold">$49.99/year · save 48%</p>
               </div>
               <ul className="space-y-2.5">
                 {FEATURES_PREMIUM.map((f) => (
@@ -393,7 +393,7 @@ export default function LandingPage() {
             </p>
             <p>
               Built on Anthropic&apos;s Claude AI — designed with Constitutional AI principles for
-              safety and honesty. LibratoAi adds an additional layer of biblical theological
+              safety and honesty. BibleDiscern adds an additional layer of biblical theological
               review to every response.
             </p>
           </div>

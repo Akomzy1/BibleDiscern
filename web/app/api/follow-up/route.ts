@@ -133,13 +133,13 @@ async function sendFollowUpEmail(
     };
 
     const introMap = {
-      '1w': `A week ago, you brought something to God through LibratoAi. We wanted to gently check in.`,
-      '1m': `A month has passed since you sought wisdom through LibratoAi. How has God moved?`,
+      '1w': `A week ago, you brought something to God through BibleDiscern. We wanted to gently check in.`,
+      '1m': `A month has passed since you sought wisdom through BibleDiscern. How has God moved?`,
       '3m': `Three months ago, you were weighing something important. Looking back, what do you see now?`,
     };
 
     const { error } = await resend.emails.send({
-      from: 'LibratoAi <noreply@librato.ai>',
+      from: 'BibleDiscern <noreply@librato.ai>',
       to: userData.user.email,
       subject: subjectMap[period],
       html: buildEmailHtml({
@@ -203,7 +203,7 @@ function buildEmailHtml({
 
     <!-- Header -->
     <div style="background:#1B2A4A;padding:32px;text-align:center;">
-      <div style="color:#C8A45E;font-size:13px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">LibratoAi</div>
+      <div style="color:#C8A45E;font-size:13px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">BibleDiscern</div>
       <div style="color:#E8D5A3;font-size:22px;font-style:italic;">${periodLabel}</div>
     </div>
 
@@ -238,7 +238,7 @@ function buildEmailHtml({
     <!-- Footer -->
     <div style="border-top:1px solid #E8DFD0;padding:20px 32px;text-align:center;">
       <p style="color:#8A7F72;font-size:11px;margin:0;">
-        LibratoAi — Weigh it with wisdom<br>
+        BibleDiscern — Weigh it with wisdom<br>
         <a href="${process.env.NEXT_PUBLIC_APP_URL}/unsubscribe" style="color:#8A7F72;">Unsubscribe from follow-up emails</a>
       </p>
     </div>

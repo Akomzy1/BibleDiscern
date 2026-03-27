@@ -1,13 +1,13 @@
-# Google Play Store Metadata — LibratoAi
+# Google Play Store Metadata — BibleDiscern
 
 ## App Title (50 chars max)
-LibratoAi - AI Christian Discernment
+BibleDiscern - AI Christian Discernment
 
 ## Short Description (80 chars max)
 Weigh decisions with biblical wisdom. AI-guided prayer & discernment journey.
 
 ## Package Name
-com.librato.ai
+com.biblediscern
 
 ## Category
 Books & Reference
@@ -22,7 +22,7 @@ Everyone
 No
 
 ## In-App Purchases
-Yes — Premium subscription ($4.99/month or $39.99/year)
+Yes — Premium subscription ($7.99/month or $49.99/year)
 
 ---
 
@@ -30,11 +30,11 @@ Yes — Premium subscription ($4.99/month or $39.99/year)
 
 When you face a crossroads — a career change, a relationship decision, a call to something new — where do you turn?
 
-LibratoAi is an AI-powered Christian Discernment Companion that walks you through a structured, Scripture-rooted journey to seek God's wisdom on life's hardest decisions. From the Latin librato — to weigh, to balance, to ponder.
+BibleDiscern is an AI-powered Christian Discernment Companion that walks you through a structured, Scripture-rooted journey to seek God's wisdom on life's hardest decisions. From the Latin librato — to weigh, to balance, to ponder.
 
 **THE 7-STEP DISCERNMENT JOURNEY**
 
-LibratoAi walks alongside you through a complete, theologically grounded process:
+BibleDiscern walks alongside you through a complete, theologically grounded process:
 
 ★ THE CROSSROADS — Name and frame your decision clearly
 
@@ -52,7 +52,7 @@ LibratoAi walks alongside you through a complete, theologically grounded process
 
 **BIBLICAL NARRATIVE MATCHING**
 
-When you bring your situation to LibratoAi, the AI identifies which biblical figure walked a similar path — Moses, Gideon, Esther, Ruth, Daniel. You're invited into that story, not just handed advice.
+When you bring your situation to BibleDiscern, the AI identifies which biblical figure walked a similar path — Moses, Gideon, Esther, Ruth, Daniel. You're invited into that story, not just handed advice.
 
 **FRUIT OF THE SPIRIT DIAGNOSTIC**
 
@@ -70,14 +70,14 @@ Each morning, a brief Scripture reflection delivered as a notification — a qui
 
 Your prayers, decisions, and journal entries are yours alone. We will never sell your spiritual data or use your discernment sessions to train AI models. Everything is encrypted in transit and at rest.
 
-**WHAT LIBRATO AI IS NOT**
+**WHAT BIBLEDISCERN IS NOT**
 
-LibratoAi is a spiritual reflection tool, not pastoral counseling or professional advice. It does not replace your pastor, spiritual director, or community. For crisis situations, the app provides immediate access to crisis resources including the 988 Suicide and Crisis Lifeline.
+BibleDiscern is a spiritual reflection tool, not pastoral counseling or professional advice. It does not replace your pastor, spiritual director, or community. For crisis situations, the app provides immediate access to crisis resources including the 988 Suicide and Crisis Lifeline.
 
 **PRICING**
 
 • Free: 1 discernment session/month, complete 7-step journey, Daily Moment, basic journal
-• Premium: $4.99/month or $39.99/year — unlimited sessions, full journal, Fruit of Spirit diagnostic, follow-up reminders
+• Premium: $7.99/month or $49.99/year — unlimited sessions, full journal, Fruit of Spirit diagnostic, follow-up reminders
 • 7-day free Premium trial for all new users
 
 "Trust in the Lord with all your heart and lean not on your own understanding." — Proverbs 3:5
@@ -105,7 +105,7 @@ support@librato.ai
 
 ## Developer Notes for Review
 
-LibratoAi is a Christian spiritual reflection and discernment app. The AI component (Anthropic Claude) provides Scripture references, biblical narrative connections, and personalized prayers for decision-making.
+BibleDiscern is a Christian spiritual reflection and discernment app. The AI component (Anthropic Claude) provides Scripture references, biblical narrative connections, and personalized prayers for decision-making.
 
 All AI-generated content is clearly labeled as a reflection tool and does not constitute counseling or professional advice. A disclaimer is displayed in the app and on every AI-generated response.
 

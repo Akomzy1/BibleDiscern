@@ -1,4 +1,4 @@
-# Google Play Data Safety Section — LibratoAi
+# Google Play Data Safety Section — BibleDiscern
 
 Complete this in Google Play Console → App Content → Data Safety.
 
@@ -39,7 +39,7 @@ Complete this in Google Play Console → App Content → Data Safety.
 
 ## Data NOT Collected
 
-LibratoAi does **not** collect:
+BibleDiscern does **not** collect:
 
 - ❌ Location (precise or approximate)
 - ❌ Contacts
@@ -77,7 +77,7 @@ Users write personal situations and decisions into the app. This content:
 
 ## Data Sharing
 
-**LibratoAi does not sell user data.**
+**BibleDiscern does not sell user data.**
 
 Data is shared with the following third-party services **only for the purpose of providing the service**:
 

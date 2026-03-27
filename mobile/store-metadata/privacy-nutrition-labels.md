@@ -1,4 +1,4 @@
-# Apple Privacy Nutrition Labels — LibratoAi
+# Apple Privacy Nutrition Labels — BibleDiscern
 
 Complete this in App Store Connect under App Privacy → Data Types.
 
@@ -6,7 +6,7 @@ Complete this in App Store Connect under App Privacy → Data Types.
 
 ## Data Used to Track You
 **None.**
-LibratoAi does not track users across apps or websites owned by other companies for advertising or marketing purposes. No ATT prompt is shown.
+BibleDiscern does not track users across apps or websites owned by other companies for advertising or marketing purposes. No ATT prompt is shown.
 
 ---
 
@@ -43,7 +43,7 @@ These data types are collected and linked to your account:
 
 ## Data NOT Collected (important for reviewer confidence)
 
-LibratoAi explicitly does **not** collect:
+BibleDiscern explicitly does **not** collect:
 
 - ❌ **Location** — not requested, not used
 - ❌ **Browsing History** — not collected

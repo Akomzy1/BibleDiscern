@@ -1,10 +1,10 @@
-# LibratoAi
+# BibleDiscern
 > AI-powered Christian discernment companion for iOS and Android
 
-LibratoAi is a mobile app that guides Christians through a structured 7-step biblical discernment process. The name comes from the Latin "librato" — to weigh, to balance, to ponder. Tagline: "Weigh it with wisdom."
+BibleDiscern is a mobile app that guides Christians through a structured 7-step biblical discernment process. The name comes from the Latin "librato" — to weigh, to balance, to ponder. Tagline: "Weigh it with wisdom."
 
-## What LibratoAi Does
-LibratoAi guides believers through a structured 7-step biblical decision-making process combining Ignatian spiritual exercises with Scripture-based reflection. It uses Anthropic's Claude AI to provide personalized biblical guidance without replacing Scripture, the Holy Spirit, or wise counsel.
+## What BibleDiscern Does
+BibleDiscern guides believers through a structured 7-step biblical decision-making process combining Ignatian spiritual exercises with Scripture-based reflection. It uses Anthropic's Claude AI to provide personalized biblical guidance without replacing Scripture, the Holy Spirit, or wise counsel.
 
 ## The 7-Step Discernment Journey
 1. The Crossroads — Name your situation and choose your tone (reflective, urgent, encouragement, or lament)
@@ -47,10 +47,10 @@ Christians (Protestant, Catholic, and non-denominational) who face life decision
 - 7-day free trial included, no credit card required
 
 ## Download
-- iOS: https://apps.apple.com/app/librato-ai/id_PLACEHOLDER
-- Android: https://play.google.com/store/apps/details?id=com.librato.ai
+- iOS: https://apps.apple.com/app/bible-discern/id_PLACEHOLDER
+- Android: https://play.google.com/store/apps/details?id=com.biblediscern
 - Website: https://librato.ai
 
 ## Company
-LibratoAi — "Weigh it with wisdom"
+BibleDiscern — "Weigh it with wisdom"
 Support: support@librato.ai

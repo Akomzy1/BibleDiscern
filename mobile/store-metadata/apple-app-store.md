@@ -1,13 +1,13 @@
-# Apple App Store Metadata — LibratoAi
+# Apple App Store Metadata — BibleDiscern
 
 ## App Name
-LibratoAi: Christian Discernment
+BibleDiscern: Christian Discernment
 
 ## Subtitle (30 chars max)
 AI-Powered Biblical Guidance
 
 ## Bundle ID
-com.librato.ai
+com.biblediscern
 
 ## SKU
 LIBRATO-AI-001
@@ -37,11 +37,11 @@ Weigh your biggest decisions with biblical wisdom. A structured 7-step discernme
 
 When you face a crossroads — a career change, a relationship decision, a call to something new — where do you turn?
 
-LibratoAi is an AI-powered Christian Discernment Companion that walks you through a structured, Scripture-rooted journey to seek God's wisdom on life's hardest decisions. From the Latin *librato* — to weigh, to balance, to ponder. Weigh it with wisdom.
+BibleDiscern is an AI-powered Christian Discernment Companion that walks you through a structured, Scripture-rooted journey to seek God's wisdom on life's hardest decisions. From the Latin *librato* — to weigh, to balance, to ponder. Weigh it with wisdom.
 
 **THE 7-STEP DISCERNMENT JOURNEY**
 
-LibratoAi doesn't just surface Bible verses — it walks alongside you through a complete, theologically grounded process:
+BibleDiscern doesn't just surface Bible verses — it walks alongside you through a complete, theologically grounded process:
 
 1. **The Crossroads** — Name and frame your decision clearly
 2. **The Word** — Receive curated Scripture and a Biblical Narrative Match (which figure in Scripture faced something similar to your situation?)
@@ -53,7 +53,7 @@ LibratoAi doesn't just surface Bible verses — it walks alongside you through a
 
 **BIBLICAL NARRATIVE MATCHING**
 
-When you bring your situation to LibratoAi, the AI identifies which biblical figure walked a similar path — Moses choosing to leave the palace, Gideon being called despite his fear, Esther standing at her own crossroads. You're invited into that story, not just handed advice.
+When you bring your situation to BibleDiscern, the AI identifies which biblical figure walked a similar path — Moses choosing to leave the palace, Gideon being called despite his fear, Esther standing at her own crossroads. You're invited into that story, not just handed advice.
 
 **THE FRUIT OF THE SPIRIT DIAGNOSTIC**
 
@@ -65,20 +65,20 @@ Every discernment session is saved as an Ebenezer stone — "Thus far the Lord h
 
 **THE DAILY MOMENT**
 
-Each morning, LibratoAi sends a brief Scripture reflection — a quiet anchor to start the day in the Word before the day's demands begin.
+Each morning, BibleDiscern sends a brief Scripture reflection — a quiet anchor to start the day in the Word before the day's demands begin.
 
 **PRIVACY FIRST**
 
 Your prayers, decisions, and journal entries are yours alone. We will never sell your spiritual data. We will never use your discernment sessions to train AI models. Everything is encrypted in transit and at rest, accessible only to you.
 
-**WHAT LIBRATO AI IS NOT**
+**WHAT BIBLEDISCERN IS NOT**
 
-LibratoAi is a spiritual reflection tool. It does not provide pastoral counseling, psychological advice, medical guidance, or financial planning. It does not replace the voice of your pastor, spiritual director, or community. For crisis situations, the app provides immediate access to the 988 Suicide and Crisis Lifeline and other resources.
+BibleDiscern is a spiritual reflection tool. It does not provide pastoral counseling, psychological advice, medical guidance, or financial planning. It does not replace the voice of your pastor, spiritual director, or community. For crisis situations, the app provides immediate access to the 988 Suicide and Crisis Lifeline and other resources.
 
 **PRICING**
 
 - Free: 1 full discernment session per month, complete 7-step journey, Daily Moment, basic journal
-- Premium: $4.99/month or $39.99/year (save 33%) — unlimited sessions, full journal history, Fruit of the Spirit diagnostic, follow-up reminders, scripture card sharing
+- Premium: $7.99/month or $49.99/year (save 48%) — unlimited sessions, full journal history, Fruit of the Spirit diagnostic, follow-up reminders, scripture card sharing
 - 7-day free Premium trial included for all new users — no credit card required
 
 *"Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight." — Proverbs 3:5-6*
@@ -86,7 +86,7 @@ LibratoAi is a spiritual reflection tool. It does not provide pastoral counselin
 ---
 
 ## What's New (v1.0.0)
-Welcome to LibratoAi — your AI-powered Christian Discernment Companion. This is the first release. We're grateful you're here. May it serve you well at every crossroads.
+Welcome to BibleDiscern — your AI-powered Christian Discernment Companion. This is the first release. We're grateful you're here. May it serve you well at every crossroads.
 
 ---
 
@@ -106,15 +106,15 @@ https://librato.ai
 
 ## App Review Notes
 
-LibratoAi is a Christian spiritual reflection tool that guides users through a structured, Scripture-based discernment process for personal decision-making.
+BibleDiscern is a Christian spiritual reflection tool that guides users through a structured, Scripture-based discernment process for personal decision-making.
 
 **AI Content:** The AI component (Anthropic Claude API) provides contextual Bible verses, biblical narrative connections, theological tradition references, and personalized prayers. All AI-generated content includes a disclaimer: "This is a spiritual reflection tool. It does not constitute pastoral counseling or professional advice of any kind. Always weigh AI guidance against Scripture, your own conscience, and the counsel of trusted human advisors."
 
-**No False Claims:** LibratoAi does not claim to speak for God, deliver prophecy, or guarantee outcomes. The app explicitly positions itself as a *reflection* tool, not a divine oracle.
+**No False Claims:** BibleDiscern does not claim to speak for God, deliver prophecy, or guarantee outcomes. The app explicitly positions itself as a *reflection* tool, not a divine oracle.
 
 **Crisis Safety:** The app includes crisis detection and a dedicated CrisisScreen that prominently displays the 988 Suicide and Crisis Lifeline (call or text, free, 24/7), Crisis Text Line, and other resources before any app content is shown.
 
-**In-App Purchases:** Monthly ($4.99) and annual ($39.99) Premium subscriptions via StoreKit. A 7-day free trial is included. All purchases are processed through Apple's standard IAP mechanism via RevenueCat.
+**In-App Purchases:** Monthly ($7.99) and annual ($49.99) Premium subscriptions via StoreKit. A 7-day free trial is included. All purchases are processed through Apple's standard IAP mechanism via RevenueCat.
 
 **Sign In with Apple:** Implemented using expo-apple-authentication. Required for apps offering third-party social login.
 

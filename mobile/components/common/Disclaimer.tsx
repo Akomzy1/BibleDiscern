@@ -10,7 +10,7 @@ export function Disclaimer({ style }: DisclaimerProps) {
   return (
     <View style={[styles.container, style]}>
       <Text style={styles.text}>
-        Consider sharing this journey with a trusted mentor or pastor. LibratoAi supports
+        Consider sharing this journey with a trusted mentor or pastor. BibleDiscern supports
         reflection — it does not replace God, Scripture, the Holy Spirit, or wise counsel.
       </Text>
     </View>

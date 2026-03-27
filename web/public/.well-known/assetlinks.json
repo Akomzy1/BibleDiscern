@@ -3,7 +3,7 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.librato.ai",
+      "package_name": "com.biblediscern",
       "sha256_cert_fingerprints": [
         "PLACEHOLDER:REPLACE:WITH:ACTUAL:SHA256:FINGERPRINT:FROM:GOOGLE:PLAY:CONSOLE"
       ]

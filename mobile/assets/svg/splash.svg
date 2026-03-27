@@ -12,7 +12,7 @@
   <!-- Horizontal bar -->
   <rect x="432" y="1020" width="420" height="90" fill="#1B2A4A" rx="10"/>
 
-  <!-- "LibratoAi" text — Playfair Display style -->
+  <!-- "BibleDiscern" text — Playfair Display style -->
   <!-- Using font-family reference; actual rendering via Expo -->
   <text
     x="642"
@@ -23,7 +23,7 @@
     font-weight="700"
     fill="#1B2A4A"
     letter-spacing="4"
-  >LibratoAi</text>
+  >BibleDiscern</text>
 
   <!-- Tagline — Cormorant Garamond italic gold -->
   <text

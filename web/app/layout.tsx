@@ -31,16 +31,16 @@ const sourceSans = Source_Sans_3({
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'LibratoAi — Weigh it with wisdom',
-    template: '%s — LibratoAi',
+    default: 'BibleDiscern — Weigh it with wisdom',
+    template: '%s — BibleDiscern',
   },
   description:
     'An AI-powered Christian Discernment Companion. From the Latin librato — to weigh, to balance, to ponder. Navigate life\'s hardest decisions with biblical wisdom.',
   alternates: { canonical: BASE_URL },
   openGraph: {
     type: 'website',
-    siteName: 'LibratoAi',
-    title: 'LibratoAi — Weigh it with wisdom',
+    siteName: 'BibleDiscern',
+    title: 'BibleDiscern — Weigh it with wisdom',
     description:
       'An AI-powered Christian Discernment Companion. Navigate life\'s hardest decisions with biblical wisdom.',
     url: BASE_URL,
@@ -49,13 +49,13 @@ export const metadata: Metadata = {
         url: `${BASE_URL}/api/og`,
         width: 1200,
         height: 630,
-        alt: 'LibratoAi — Weigh it with wisdom',
+        alt: 'BibleDiscern — Weigh it with wisdom',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'LibratoAi — Weigh it with wisdom',
+    title: 'BibleDiscern — Weigh it with wisdom',
     description:
       'An AI-powered Christian Discernment Companion. Navigate life\'s hardest decisions with biblical wisdom.',
     images: [`${BASE_URL}/api/og`],

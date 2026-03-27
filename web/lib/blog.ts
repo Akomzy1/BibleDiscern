@@ -209,13 +209,13 @@ export const BLOG_POSTS: BlogPost[] = [
 <h3>What is the difference between discernment and just praying about a decision?</h3>
 <p>Discernment is a structured, multi-dimensional engagement with a decision — it includes Scripture, tradition, reason, experience, and attentiveness to interior movements. Simply praying about a decision is necessary but not sufficient. Discernment takes prayer seriously enough to give it a framework.</p>
 
-<h2>Practicing Discernment with LibratoAi</h2>
+<h2>Practicing Discernment with BibleDiscern</h2>
 
-<p>LibratoAi was built specifically to walk you through each of these seven steps with personalized biblical guidance. When you bring your situation to the app, it searches Scripture for relevant passages, connects your situation to biblical narratives, guides you through an Ignatian-style examination, leads you through a 90-second silence, runs a Fruit of the Spirit diagnostic, and generates a personalized prayer — then saves your Ebenezer stone so you can return to it later.</p>
+<p>BibleDiscern was built specifically to walk you through each of these seven steps with personalized biblical guidance. When you bring your situation to the app, it searches Scripture for relevant passages, connects your situation to biblical narratives, guides you through an Ignatian-style examination, leads you through a 90-second silence, runs a Fruit of the Spirit diagnostic, and generates a personalized prayer — then saves your Ebenezer stone so you can return to it later.</p>
 
 <p>It doesn't replace God, Scripture, your pastor, or your community. But it gives you a structured, thoughtful companion for the moments when you need to weigh something important before God.</p>
 
-<p><a href="/pricing">Download LibratoAi free</a> — and bring your next crossroads to God with the wisdom of Scripture at your side.</p>
+<p><a href="/pricing">Download BibleDiscern free</a> — and bring your next crossroads to God with the wisdom of Scripture at your side.</p>
     `,
   },
 
@@ -544,7 +544,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
 <p>At its best, it is a way of asking: not just "What should I do?" but "What kind of person am I becoming through this choice?"</p>
 
-<p>LibratoAi's Fruit of the Spirit diagnostic (available to Premium subscribers) walks you through each of the nine fruits in the context of your specific situation, generating a visual diagnostic of how each option aligns with the Spirit's work.</p>
+<p>BibleDiscern's Fruit of the Spirit diagnostic (available to Premium subscribers) walks you through each of the nine fruits in the context of your specific situation, generating a visual diagnostic of how each option aligns with the Spirit's work.</p>
 
 <p><a href="/blog/7-steps-biblical-discernment-complete-guide">Learn more about the 7 steps of biblical discernment →</a></p>
     `,
@@ -578,7 +578,7 @@ export const BLOG_POSTS: BlogPost[] = [
   <li><strong>Devotional apps</strong> that generate personalized daily readings based on a user's spiritual season or topics of interest</li>
   <li><strong>Prayer apps</strong> that use AI to help users articulate their prayers and journal their spiritual experiences</li>
   <li><strong>Sermon preparation tools</strong> for pastors and teachers</li>
-  <li><strong>Discernment companions</strong> like LibratoAi, which guide believers through structured decision-making processes rooted in biblical tradition</li>
+  <li><strong>Discernment companions</strong> like BibleDiscern, which guide believers through structured decision-making processes rooted in biblical tradition</li>
 </ul>
 
 <p>The common thread across these applications is that AI is being used as an aid to human engagement with Scripture and prayer — not as a replacement for it.</p>
@@ -617,13 +617,13 @@ export const BLOG_POSTS: BlogPost[] = [
 
 <p>AI models are very good at generating text that sounds confident and well-reasoned. They can produce spiritual-sounding content that is theologically shallow, contextually inappropriate, or subtly distorted. Any AI spiritual formation tool needs robust theological grounding, careful design, and appropriate humility built into its responses.</p>
 
-<p>This is why LibratoAi, for example, is built to surface what Scripture says and the patterns of biblical narrative — and explicitly declines to claim the authority of a spiritual director, pastor, or direct revelation from God. The tool is a companion for discernment, not an oracle.</p>
+<p>This is why BibleDiscern, for example, is built to surface what Scripture says and the patterns of biblical narrative — and explicitly declines to claim the authority of a spiritual director, pastor, or direct revelation from God. The tool is a companion for discernment, not an oracle.</p>
 
-<h2>LibratoAi's Approach: AI as Structured Companion</h2>
+<h2>BibleDiscern's Approach: AI as Structured Companion</h2>
 
-<p>LibratoAi was built on a specific theological conviction: that the great majority of Christians do not have access to the kind of structured, biblically-grounded, personalized discernment guidance that the tradition has always recognized as valuable — and that AI can make that kind of guidance available at scale, within appropriate boundaries.</p>
+<p>BibleDiscern was built on a specific theological conviction: that the great majority of Christians do not have access to the kind of structured, biblically-grounded, personalized discernment guidance that the tradition has always recognized as valuable — and that AI can make that kind of guidance available at scale, within appropriate boundaries.</p>
 
-<p>The 7-step discernment journey that LibratoAi guides users through is not invented by AI — it draws on Ignatian spirituality, Reformed theological ethics, biblical narrative patterns, and the contemplative tradition. The AI's role is to apply this framework to a user's specific situation: identifying relevant Scripture, matching the situation to biblical narratives, generating examination questions, producing a personalized prayer.</p>
+<p>The 7-step discernment journey that BibleDiscern guides users through is not invented by AI — it draws on Ignatian spirituality, Reformed theological ethics, biblical narrative patterns, and the contemplative tradition. The AI's role is to apply this framework to a user's specific situation: identifying relevant Scripture, matching the situation to biblical narratives, generating examination questions, producing a personalized prayer.</p>
 
 <p>At every step, the app is explicit that it supports reflection — it does not replace God, Scripture, the Holy Spirit, or wise human counsel.</p>
 
@@ -637,7 +637,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
 <p>The printing press could produce both the Geneva Bible and indulgence documents. The same technology can serve faithfulness or undermine it. The question is always who uses it, and how.</p>
 
-<p><a href="/">Download LibratoAi and begin your first discernment journey →</a></p>
+<p><a href="/">Download BibleDiscern and begin your first discernment journey →</a></p>
     `,
   },
 
@@ -694,7 +694,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
 <h2>The Stillness Engine: Silence Built Into Discernment</h2>
 
-<p>LibratoAi's Stillness Engine was designed with this theology and this neuroscience in mind. At the fifth step of every discernment journey — after Scripture, biblical narrative, and examination questions have done their work — the app guides the user through 90 seconds of structured contemplative silence.</p>
+<p>BibleDiscern's Stillness Engine was designed with this theology and this neuroscience in mind. At the fifth step of every discernment journey — after Scripture, biblical narrative, and examination questions have done their work — the app guides the user through 90 seconds of structured contemplative silence.</p>
 
 <p>This is not a token pause. It is a deliberate embodiment of the principle that hearing requires silence. The Stillness Engine uses a breathing animation — inhale, hold, exhale — to help users settle their nervous systems and release the urgency of the decision before they move to the final steps.</p>
 

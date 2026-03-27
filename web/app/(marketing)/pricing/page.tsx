@@ -2,28 +2,28 @@ import type { Metadata } from 'next';
 import { APP_STORE_URL, BASE_URL, PLAY_STORE_URL, breadcrumbSchema, faqSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Pricing — LibratoAi',
+  title: 'Pricing — BibleDiscern',
   description:
-    'LibratoAi is free to download with 1 session/month. Premium is $4.99/month or $39.99/year. 7-day free trial, no credit card required.',
+    'BibleDiscern is free to download with 1 session/month. Premium is $7.99/month or $49.99/year. 7-day free trial, no credit card required.',
   alternates: { canonical: `${BASE_URL}/pricing` },
 };
 
 const FAQS = [
   {
-    question: 'How much does LibratoAi cost?',
-    answer: 'LibratoAi has a free plan available at no cost. Premium is $4.99/month or $39.99/year (save 33%). A 7-day free Premium trial is included — no credit card required.',
+    question: 'How much does BibleDiscern cost?',
+    answer: 'BibleDiscern has a free plan available at no cost. Premium is $7.99/month or $49.99/year (save 48%). A 7-day free Premium trial is included — no credit card required.',
   },
   {
     question: "What's included in the free plan?",
     answer: '1 full discernment session per month, the complete 7-step journey, Biblical Narrative Matching, daily scripture moment (The Daily Moment), and access to your 3 most recent journal entries.',
   },
   {
-    question: 'Does LibratoAi offer a free trial?',
+    question: 'Does BibleDiscern offer a free trial?',
     answer: 'Yes — all new users receive a 7-day free trial of Premium. No credit card is required to start. The trial begins when you create your account.',
   },
   {
     question: "What's the difference between monthly and annual?",
-    answer: 'Annual saves 33% — $3.33/month compared to $4.99/month on the monthly plan. Both plans include exactly the same Premium features. The annual plan is billed once per year at $39.99.',
+    answer: 'Annual saves 48% — $4.17/month compared to $7.99/month on the monthly plan. Both plans include exactly the same Premium features. The annual plan is billed once per year at $49.99.',
   },
   {
     question: 'Can I cancel anytime?',
@@ -34,8 +34,8 @@ const FAQS = [
     answer: 'Yes. We never sell your prayer data, decisions, or journal entries. Your data is encrypted in transit and at rest, accessible only to you. We will never use your discernment sessions to train AI models.',
   },
   {
-    question: 'What AI model powers LibratoAi?',
-    answer: "LibratoAi is powered by Anthropic's Claude AI. Premium users receive responses from Claude Opus (the most capable model). Free users receive responses from Claude Sonnet.",
+    question: 'What AI model powers BibleDiscern?',
+    answer: "BibleDiscern is powered by Anthropic's Claude AI. Premium users receive responses from Claude Opus (the most capable model). Free users receive responses from Claude Sonnet.",
   },
 ];
 
@@ -129,9 +129,9 @@ export default function PricingPage() {
               <div>
                 <p className="font-display text-2xl text-cream">Premium</p>
                 <div className="mt-2 space-y-1">
-                  <p className="text-4xl font-bold text-cream">$3.33<span className="text-xl font-normal text-cream/60">/mo</span></p>
-                  <p className="text-sm text-gold">Billed annually at $39.99 · Save 33%</p>
-                  <p className="text-xs text-cream/40">or $4.99/month billed monthly</p>
+                  <p className="text-4xl font-bold text-cream">$4.17<span className="text-xl font-normal text-cream/60">/mo</span></p>
+                  <p className="text-sm text-gold">Billed annually at $49.99 · Save 48%</p>
+                  <p className="text-xs text-cream/40">or $7.99/month billed monthly</p>
                 </div>
               </div>
               <ul className="space-y-3">

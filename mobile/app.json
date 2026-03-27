@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "LibratoAi",
-    "slug": "librato-ai",
+    "name": "BibleDiscern",
+    "slug": "bible-discern",
     "version": "1.0.0",
     "runtimeVersion": {
       "policy": "appVersion"
@@ -21,16 +21,16 @@
 
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.librato.ai",
+      "bundleIdentifier": "com.biblediscern",
       "buildNumber": "1",
       "icon": "./assets/icon.png",
       "requireFullScreen": false,
       "infoPlist": {
-        "NSCameraUsageDescription": "LibratoAi does not use the camera. This key is included for future features.",
-        "NSMicrophoneUsageDescription": "LibratoAi does not use the microphone. This key is included for future features.",
-        "NSPhotoLibraryUsageDescription": "LibratoAi does not access your photo library.",
-        "NSLocationWhenInUseUsageDescription": "LibratoAi does not use your location.",
-        "NSUserTrackingUsageDescription": "LibratoAi does not track you across other apps or websites.",
+        "NSCameraUsageDescription": "BibleDiscern does not use the camera. This key is included for future features.",
+        "NSMicrophoneUsageDescription": "BibleDiscern does not use the microphone. This key is included for future features.",
+        "NSPhotoLibraryUsageDescription": "BibleDiscern does not access your photo library.",
+        "NSLocationWhenInUseUsageDescription": "BibleDiscern does not use your location.",
+        "NSUserTrackingUsageDescription": "BibleDiscern does not track you across other apps or websites.",
         "ITSAppUsesNonExemptEncryption": false
       },
       "associatedDomains": [
@@ -43,7 +43,7 @@
     },
 
     "android": {
-      "package": "com.librato.ai",
+      "package": "com.biblediscern",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon-android.png",
@@ -91,7 +91,7 @@
           "color": "#C8A45E",
           "sounds": [],
           "androidMode": "default",
-          "androidCollapsedTitle": "LibratoAi"
+          "androidCollapsedTitle": "BibleDiscern"
         }
       ],
       [

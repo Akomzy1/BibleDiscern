@@ -5,8 +5,8 @@
  * Requires native rebuild after install.
  *
  * RevenueCat product IDs:
- *   librato_premium_monthly   — $4.99/month
- *   librato_premium_annual    — $39.99/year
+ *   biblediscern_premium_monthly   — $7.99/month
+ *   biblediscern_premium_annual    — $49.99/year
  *
  * RevenueCat entitlement ID: "premium"
  */

@@ -5,7 +5,7 @@ import type { TierConfig } from './types';
 // ─────────────────────────────────────────────
 
 export const BRAND = {
-  name: 'LibratoAi',
+  name: 'BibleDiscern',
   tagline: 'Weigh it with wisdom',
   latinMeaning: 'From the Latin "librato" — to weigh, to balance, to ponder',
 } as const;
@@ -59,8 +59,8 @@ export const TIER_CONFIG: Record<string, TierConfig> = {
 // ─────────────────────────────────────────────
 
 export const PRICING = {
-  monthly: { price: 4.99, label: '$4.99/month' },
-  annual: { price: 39.99, label: '$39.99/year', perMonth: '$3.33/month', savings: '33%' },
+  monthly: { price: 7.99, label: '$7.99/month' },
+  annual: { price: 49.99, label: '$49.99/year', perMonth: '$4.17/month', savings: '48%' },
 } as const;
 
 export const IAP_PRODUCTS = {

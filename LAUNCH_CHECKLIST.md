@@ -1,4 +1,4 @@
-# LibratoAi Launch Checklist
+# BibleDiscern Launch Checklist
 
 Pre-submission checklist for App Store and Google Play.
 Complete every item before submitting to app review.
@@ -70,8 +70,8 @@ Complete every item before submitting to app review.
 - [ ] iOS app configured with Apple App Store credentials
 - [ ] Android app configured with Google Play credentials
 - [ ] Products created in RevenueCat:
-  - [ ] `premium_monthly` — $4.99/month
-  - [ ] `premium_annual` — $39.99/year
+  - [ ] `premium_monthly` — $7.99/month
+  - [ ] `premium_annual` — $49.99/year
 - [ ] Entitlement `premium` created and linked to both products
 - [ ] 7-day free trial configured on both products
 - [ ] RevenueCat sandbox tested end-to-end (purchase → webhook → subscription status update)
@@ -80,18 +80,18 @@ Complete every item before submitting to app review.
 - [ ] `EXPO_PUBLIC_REVENUECAT_GOOGLE_API_KEY` set in app build
 
 ### App Store Connect — In-App Purchases
-- [ ] Monthly subscription product created (`com.librato.ai.premium.monthly`)
-- [ ] Annual subscription product created (`com.librato.ai.premium.annual`)
-- [ ] Subscription group created: "LibratoAi Premium"
+- [ ] Monthly subscription product created (`com.biblediscern.premium.monthly`)
+- [ ] Annual subscription product created (`com.biblediscern.premium.annual`)
+- [ ] Subscription group created: "BibleDiscern Premium"
 - [ ] 7-day introductory offer configured on both products
-- [ ] Pricing set: $4.99 / $39.99 (Tier 5 / Tier 40)
+- [ ] Pricing set: $7.99 / $49.99 (Tier 8 / Tier 50)
 - [ ] Products submitted for review (IAPs reviewed separately)
 
 ### Google Play Console — Subscriptions
 - [ ] Monthly subscription created (`premium_monthly`)
 - [ ] Annual subscription created (`premium_annual`)
 - [ ] 7-day free trial configured
-- [ ] Pricing set: $4.99 / $39.99
+- [ ] Pricing set: $7.99 / $49.99
 - [ ] Grace period configured: 7 days
 
 ### Stripe (Web)
@@ -121,8 +121,8 @@ Complete every item before submitting to app review.
 - [ ] Icons look correct at small sizes (test at 60×60 on a dark background)
 
 ### app.json Final Check
-- [ ] `bundleIdentifier`: `com.librato.ai`
-- [ ] `package`: `com.librato.ai`
+- [ ] `bundleIdentifier`: `com.biblediscern`
+- [ ] `package`: `com.biblediscern`
 - [ ] `version`: `1.0.0`
 - [ ] `buildNumber`: `1`
 - [ ] `versionCode`: `1`
@@ -147,8 +147,8 @@ Complete every item before submitting to app review.
 ## 5. App Store Connect Submission
 
 - [ ] App Store Connect account: developer.apple.com/account
-- [ ] App created in App Store Connect (`com.librato.ai`)
-- [ ] App name: "LibratoAi: Christian Discernment"
+- [ ] App created in App Store Connect (`com.biblediscern`)
+- [ ] App name: "BibleDiscern: Christian Discernment"
 - [ ] Primary category: Reference
 - [ ] Secondary category: Lifestyle
 - [ ] Subtitle filled in
@@ -174,8 +174,8 @@ Complete every item before submitting to app review.
 ## 6. Google Play Console Submission
 
 - [ ] Google Play Console account: play.google.com/console
-- [ ] App created (`com.librato.ai`)
-- [ ] App name: "LibratoAi - AI Christian Discernment"
+- [ ] App created (`com.biblediscern`)
+- [ ] App name: "BibleDiscern - AI Christian Discernment"
 - [ ] Short description filled in
 - [ ] Full description filled in (see `store-metadata/google-play-store.md`)
 - [ ] Category: Books & Reference

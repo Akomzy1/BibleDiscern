@@ -116,15 +116,15 @@ export default function UpgradeScreen() {
 
   const annualMonthlyEquiv = annualPackage
     ? `${(annualPackage.product.price / 12).toFixed(2)} ${annualPackage.product.currencyCode}/month`
-    : '$3.33/month';
+    : '$4.17/month';
 
   const annualPrice = annualPackage
     ? `${annualPackage.product.priceString}/year`
-    : '$39.99/year';
+    : '$49.99/year';
 
   const monthlyPrice = monthlyPackage
     ? monthlyPackage.product.priceString + '/month'
-    : '$4.99/month';
+    : '$7.99/month';
 
   return (
     <View style={styles.root}>
@@ -145,7 +145,7 @@ export default function UpgradeScreen() {
       >
         {/* Hero */}
         <Text style={styles.heroIcon}>⚖️</Text>
-        <Text style={styles.heroTitle}>Go deeper with LibratoAi Premium</Text>
+        <Text style={styles.heroTitle}>Go deeper with BibleDiscern Premium</Text>
         <Text style={styles.heroSub}>
           Unlimited wisdom. Every crossroads. Every season.
         </Text>

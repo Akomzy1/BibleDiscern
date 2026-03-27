@@ -4,11 +4,11 @@ import { APP_STORE_URL, BASE_URL, PLAY_STORE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
-  title: { default: 'LibratoAi — Weigh it with wisdom', template: '%s | LibratoAi' },
+  title: { default: 'BibleDiscern — Weigh it with wisdom', template: '%s | BibleDiscern' },
   description:
-    'LibratoAi guides Christians through a structured 7-step biblical discernment journey. Powered by AI. Rooted in Scripture.',
+    'BibleDiscern guides Christians through a structured 7-step biblical discernment journey. Powered by AI. Rooted in Scripture.',
   openGraph: {
-    siteName: 'LibratoAi',
+    siteName: 'BibleDiscern',
     type: 'website',
     locale: 'en_US',
   },
@@ -30,7 +30,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
           <Link href="/" className="flex items-center gap-2 group">
             <span className="text-2xl">✝</span>
             <span className="font-display text-xl text-navy font-bold tracking-wide">
-              LibratoAi
+              BibleDiscern
             </span>
           </Link>
 
@@ -67,7 +67,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <span className="text-gold text-xl">✝</span>
-              <span className="font-display text-lg text-cream">LibratoAi</span>
+              <span className="font-display text-lg text-cream">BibleDiscern</span>
             </div>
             <p className="text-sm leading-relaxed text-cream/60 italic font-scripture">
               "Weigh it with wisdom."
@@ -130,7 +130,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
 
         <div className="border-t border-cream/10">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-cream/30">
-            <span>© 2026 LibratoAi — Made with reverence.</span>
+            <span>© 2026 BibleDiscern — Made with reverence.</span>
             <span className="italic font-scripture">
               "If any of you lacks wisdom, let him ask God." — James 1:5
             </span>

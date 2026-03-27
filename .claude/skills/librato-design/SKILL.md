@@ -1,9 +1,9 @@
 ---
 name: librato-design
-description: LibratoAi Design & Development Playbook. Use this when building any component, screen, or animation for LibratoAi — covers the full design system (colors, typography, spacing, shadows), component architecture, animation specs, screen-by-screen UX, performance standards, accessibility, error handling, and common mistakes to avoid.
+description: BibleDiscern Design & Development Playbook. Use this when building any component, screen, or animation for BibleDiscern — covers the full design system (colors, typography, spacing, shadows), component architecture, animation specs, screen-by-screen UX, performance standards, accessibility, error handling, and common mistakes to avoid.
 ---
 
-# SKILL.md — LibratoAi Design & Development Playbook
+# SKILL.md — BibleDiscern Design & Development Playbook
 
 > This is the craftsmanship guide. CLAUDE.md tells you WHAT to build. This file tells you HOW to build it beautifully. Read this before writing any component, screen, or animation. Every decision in here was made deliberately.
 
@@ -11,7 +11,7 @@ description: LibratoAi Design & Development Playbook. Use this when building any
 
 ## Design Philosophy
 
-LibratoAi is a sacred space, not a SaaS product. Every pixel, every transition, every micro-interaction must serve the contemplative experience. The user is bringing their deepest uncertainties to this app. Respect that.
+BibleDiscern is a sacred space, not a SaaS product. Every pixel, every transition, every micro-interaction must serve the contemplative experience. The user is bringing their deepest uncertainties to this app. Respect that.
 
 **Three principles that override everything else:**
 
@@ -19,7 +19,7 @@ LibratoAi is a sacred space, not a SaaS product. Every pixel, every transition, 
 
 2. **Weight over flash.** This app deals in serious spiritual matters. No bouncy animations, no confetti, no gamification. Animations should feel like gravity — smooth, inevitable, grounded. Think of how a heavy wooden door swings open: deliberate, substantial, quiet.
 
-3. **Warmth over polish.** A perfectly polished glass surface is cold. A well-worn leather Bible is warm. LibratoAi should feel like the latter — textured, human, alive. Cream backgrounds over pure white. Serif fonts over geometric sans. Gold accents that feel like candlelight, not chrome.
+3. **Warmth over polish.** A perfectly polished glass surface is cold. A well-worn leather Bible is warm. BibleDiscern should feel like the latter — textured, human, alive. Cream backgrounds over pure white. Serif fonts over geometric sans. Gold accents that feel like candlelight, not chrome.
 
 ---
 
@@ -332,7 +332,7 @@ Pull-to-refresh:      impactAsync(ImpactFeedbackStyle.Light) on release
 ### Login / Signup
 
 **Layout:**
-- Top 30%: LibratoAi cross icon (48px, navy) + "LibratoAi" (Playfair 28px) + tagline (Cormorant 14px italic, gold)
+- Top 30%: BibleDiscern cross icon (48px, navy) + "BibleDiscern" (Playfair 28px) + tagline (Cormorant 14px italic, gold)
 - Middle: email input + password input + primary CTA
 - Bottom: alternative auth (Apple Sign In, Google Sign In) + switch link ("Already have an account?" / "Create one")
 
@@ -350,7 +350,7 @@ This is NOT a feature tour. It is a spiritual threshold.
 
 **Single screen, scrollable:**
 - Cross icon at top, large (64px), centered, fade in 1000ms
-- "Welcome to LibratoAi" — Playfair 28px, fade in at 400ms delay
+- "Welcome to BibleDiscern" — Playfair 28px, fade in at 400ms delay
 - Covenant text — Cormorant Garamond 18px italic, Navy, fade in at 800ms delay:
   *"This is not a place for quick answers. It's a space where you bring your real questions before God, guided by His Word and the wisdom of His people across centuries."*
 - Second paragraph — Source Sans 15px, TextMedium, fade in at 1200ms delay:

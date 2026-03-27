@@ -1,17 +1,17 @@
-# LibratoAi
+# BibleDiscern
 
 > **Weigh it with wisdom.**
 >
 > From the Latin *librato* — to weigh, to balance, to ponder.
 
-LibratoAi is an AI-powered Christian Discernment Companion that guides users through a structured 7-step biblical discernment journey.
+BibleDiscern is an AI-powered Christian Discernment Companion that guides users through a structured 7-step biblical discernment journey.
 
 ---
 
 ## Architecture
 
 ```
-librato-ai/
+bible-discern/
 ├── mobile/          # Expo React Native app (iOS + Android)
 ├── web/             # Next.js 14 (marketing site + API backend)
 └── packages/

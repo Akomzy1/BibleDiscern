@@ -1,19 +1,19 @@
 /** Shared SEO utilities — JSON-LD schemas, metadata helpers */
 
 export const BASE_URL = 'https://librato.ai';
-export const APP_STORE_URL = 'https://apps.apple.com/app/librato-ai/id_PLACEHOLDER';
-export const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.librato.ai';
+export const APP_STORE_URL = 'https://apps.apple.com/app/bible-discern/id_PLACEHOLDER';
+export const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.biblediscern';
 
-export const SITE_NAME = 'LibratoAi';
+export const SITE_NAME = 'BibleDiscern';
 export const DEFAULT_DESCRIPTION =
-  'LibratoAi is an AI-powered Christian discernment companion that guides you through a structured 7-step biblical decision-making journey. Available on iOS and Android.';
+  'BibleDiscern is an AI-powered Christian discernment companion that guides you through a structured 7-step biblical decision-making journey. Available on iOS and Android.';
 
 /** Organization schema */
 export function orgSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'LibratoAi',
+    name: 'BibleDiscern',
     url: BASE_URL,
     logo: `${BASE_URL}/og-image.png`,
     sameAs: [],
@@ -26,7 +26,7 @@ export function appSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'MobileApplication',
-    name: 'LibratoAi',
+    name: 'BibleDiscern',
     operatingSystem: 'iOS, Android',
     applicationCategory: 'LifestyleApplication',
     offers: [

@@ -25,7 +25,7 @@ export function UpgradeGate({
           {feature}.
         </Text>
         <Button
-          title="Unlock Premium — $3.33/month"
+          title="Unlock Premium — $7.99/month"
           onPress={() => router.push('/upgrade')}
           variant="primary"
           fullWidth

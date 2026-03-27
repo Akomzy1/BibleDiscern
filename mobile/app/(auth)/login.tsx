@@ -52,7 +52,7 @@ export default function LoginScreen() {
           {/* Brand header */}
           <View style={styles.header}>
             <Text style={styles.cross}>✝</Text>
-            <Text style={styles.brand}>LibratoAi</Text>
+            <Text style={styles.brand}>BibleDiscern</Text>
             <Text style={styles.tagline}>Weigh it with wisdom</Text>
           </View>
 

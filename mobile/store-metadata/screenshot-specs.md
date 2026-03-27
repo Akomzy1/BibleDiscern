@@ -1,4 +1,4 @@
-# Screenshot Specifications — LibratoAi
+# Screenshot Specifications — BibleDiscern
 
 Screenshots are taken manually from the running app. This document lists the 6 required screens, exact sizes, and capture notes for each platform.
 
@@ -8,8 +8,8 @@ Screenshots are taken manually from the running app. This document lists the 6 r
 
 ### Screenshot 1 — Welcome / Onboarding
 **Screen:** `mobile/app/(auth)/onboarding.tsx`
-**Capture state:** Onboarding step 1 — "Welcome to LibratoAi" with tagline and brand mark visible
-**Key elements:** Navy background, gold cross, "LibratoAi" heading, tagline "Weigh it with wisdom", Begin button in gold
+**Capture state:** Onboarding step 1 — "Welcome to BibleDiscern" with tagline and brand mark visible
+**Key elements:** Navy background, gold cross, "BibleDiscern" heading, tagline "Weigh it with wisdom", Begin button in gold
 **Note:** This is the emotional first impression. Make sure the cross is centered and the gold is vivid.
 
 ### Screenshot 2 — The Crossroads (Input)
