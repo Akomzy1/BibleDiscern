@@ -116,7 +116,7 @@ export default function UpgradeScreen() {
 
   const annualMonthlyEquiv = annualPackage
     ? `${(annualPackage.product.price / 12).toFixed(2)} ${annualPackage.product.currencyCode}/month`
-    : '$4.17/month';
+    : '$4.99/month';
 
   const annualPrice = annualPackage
     ? `${annualPackage.product.priceString}/year`

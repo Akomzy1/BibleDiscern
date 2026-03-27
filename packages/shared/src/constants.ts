@@ -60,7 +60,7 @@ export const TIER_CONFIG: Record<string, TierConfig> = {
 
 export const PRICING = {
   monthly: { price: 7.99, label: '$7.99/month' },
-  annual: { price: 49.99, label: '$49.99/year', perMonth: '$4.17/month', savings: '48%' },
+  annual: { price: 49.99, label: '$49.99/year', perMonth: '$4.99/month', savings: '48%' },
 } as const;
 
 export const IAP_PRODUCTS = {
