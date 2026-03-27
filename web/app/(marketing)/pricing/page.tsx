@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { APP_STORE_URL, BASE_URL, PLAY_STORE_URL, breadcrumbSchema, faqSchema } from '@/lib/seo';
+import { APP_STORE_URL, BASE_URL, breadcrumbSchema, faqSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Pricing — BibleDiscern',
@@ -105,7 +105,7 @@ export default function PricingPage() {
               </div>
               <ul className="space-y-3">
                 {FREE_FEATURES.map((f) => (
-                  <li key={f.label} className="flex items-start gap-2 text-sm">
+                  <li key={f.label} className="flex items-start gap-2 text-base">
                     <span className={f.included ? 'text-sage' : 'text-border'}>
                       {f.included ? '✓' : '✕'}
                     </span>
@@ -136,7 +136,7 @@ export default function PricingPage() {
               </div>
               <ul className="space-y-3">
                 {PREMIUM_FEATURES.map((f) => (
-                  <li key={f.label} className="flex items-start gap-2 text-sm">
+                  <li key={f.label} className="flex items-start gap-2 text-base">
                     <span className="text-gold">✓</span>
                     <span className="text-cream/80">{f.label}</span>
                   </li>
@@ -164,7 +164,7 @@ export default function PricingPage() {
             {FAQS.map((faq) => (
               <div key={faq.question} className="bg-cream rounded-xl border border-border p-6">
                 <h3 className="font-semibold text-navy mb-2">{faq.question}</h3>
-                <p className="text-sm text-text-medium leading-relaxed">{faq.answer}</p>
+                <p className="text-base text-text-medium leading-relaxed">{faq.answer}</p>
               </div>
             ))}
           </div>

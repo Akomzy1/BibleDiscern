@@ -72,7 +72,7 @@ export default function BlogIndexPage() {
                   <h2 className="font-display text-2xl sm:text-3xl text-navy group-hover:text-gold transition-colors leading-snug">
                     {featured.title}
                   </h2>
-                  <p className="text-text-medium leading-relaxed max-w-2xl">
+                  <p className="text-base text-text-medium leading-relaxed max-w-2xl">
                     {featured.excerpt}
                   </p>
                   <div className="flex items-center gap-2 text-sm text-gold font-semibold">
@@ -97,7 +97,7 @@ export default function BlogIndexPage() {
                   <h2 className="font-display text-lg text-navy group-hover:text-gold transition-colors leading-snug">
                     {post.title}
                   </h2>
-                  <p className="text-sm text-text-medium leading-relaxed line-clamp-3">
+                  <p className="text-base text-text-medium leading-relaxed line-clamp-3">
                     {post.excerpt}
                   </p>
                   <p className="text-xs text-text-light">{formatDate(post.date)}</p>

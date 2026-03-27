@@ -180,7 +180,7 @@ export default function LandingPage() {
               >
                 <div className="text-3xl">{p.icon}</div>
                 <h3 className="font-display text-lg text-navy">{p.title}</h3>
-                <p className="text-sm text-text-medium leading-relaxed">{p.desc}</p>
+                <p className="text-base text-text-medium leading-relaxed">{p.desc}</p>
               </div>
             ))}
           </div>
@@ -197,7 +197,7 @@ export default function LandingPage() {
             <h2 className="font-display text-3xl sm:text-4xl text-cream mb-4">
               7 steps to weigh what matters
             </h2>
-            <p className="text-cream/60 max-w-xl mx-auto">
+            <p className="text-base text-cream/60 max-w-xl mx-auto">
               Each step draws on a different dimension of the Christian discernment tradition.
               Together they form a complete process for hearing God&apos;s voice in your specific situation.
             </p>
@@ -214,7 +214,7 @@ export default function LandingPage() {
                   <span className="text-2xl">{step.icon}</span>
                 </div>
                 <h3 className="font-display text-cream text-base">{step.name}</h3>
-                <p className="text-sm text-cream/50 leading-relaxed">{step.desc}</p>
+                <p className="text-base text-cream/50 leading-relaxed">{step.desc}</p>
               </div>
             ))}
             {/* CTA card */}
@@ -243,7 +243,7 @@ export default function LandingPage() {
             <h2 className="font-display text-3xl sm:text-4xl text-navy mb-4">
               You&apos;re not the first to face this.
             </h2>
-            <p className="text-text-medium max-w-xl mx-auto">
+            <p className="text-base text-text-medium max-w-xl mx-auto">
               BibleDiscern connects your situation to biblical figures who faced the same crossroads.
               Their stories become a mirror for yours.
             </p>
@@ -266,7 +266,7 @@ export default function LandingPage() {
               <div className="flex-1">
                 <p className="font-display text-navy text-base">Moses</p>
                 <p className="text-xs text-gold uppercase tracking-widest mb-2">Exodus 3–4</p>
-                <p className="text-sm text-text-medium leading-relaxed">
+                <p className="text-base text-text-medium leading-relaxed">
                   Moses felt unqualified for his calling and offered five objections. God
                   answered each one — not by removing the difficulty, but by promising his presence.
                 </p>
@@ -320,7 +320,7 @@ export default function LandingPage() {
             <h2 className="font-display text-3xl sm:text-4xl text-navy mb-3">
               Begin free. Go deeper with Premium.
             </h2>
-            <p className="text-text-medium">
+            <p className="text-base text-text-medium">
               Start your first discernment journey today — no credit card required.
             </p>
           </div>
@@ -335,7 +335,7 @@ export default function LandingPage() {
               </div>
               <ul className="space-y-2.5">
                 {FEATURES_FREE.map((f) => (
-                  <li key={f} className="flex items-start gap-2 text-sm text-text-medium">
+                  <li key={f} className="flex items-start gap-2 text-base text-text-medium">
                     <span className="text-sage mt-0.5">✓</span> {f}
                   </li>
                 ))}
@@ -360,7 +360,7 @@ export default function LandingPage() {
               </div>
               <ul className="space-y-2.5">
                 {FEATURES_PREMIUM.map((f) => (
-                  <li key={f} className="flex items-start gap-2 text-sm text-cream/80">
+                  <li key={f} className="flex items-start gap-2 text-base text-cream/80">
                     <span className="text-gold mt-0.5">✓</span> {f}
                   </li>
                 ))}
@@ -382,7 +382,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center space-y-6">
           <p className="text-3xl text-navy">🛡️</p>
           <h2 className="font-display text-2xl text-navy">Trust &amp; Safety</h2>
-          <div className="space-y-4 text-sm text-text-medium leading-relaxed">
+          <div className="space-y-4 text-base text-text-medium leading-relaxed">
             <p className="font-scripture italic text-base text-navy">
               "This tool supports reflection — it does not replace God, Scripture, or wise counsel."
             </p>
@@ -410,7 +410,7 @@ export default function LandingPage() {
             {FAQS.map((faq) => (
               <div key={faq.question} className="border-b border-border pb-6">
                 <h3 className="font-semibold text-navy mb-2">{faq.question}</h3>
-                <p className="text-sm text-text-medium leading-relaxed">{faq.answer}</p>
+                <p className="text-base text-text-medium leading-relaxed">{faq.answer}</p>
               </div>
             ))}
           </div>

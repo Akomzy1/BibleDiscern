@@ -49,9 +49,10 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
           <div className="flex items-center gap-3">
             <a
               href={APP_STORE_URL}
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-navy text-cream text-sm font-semibold hover:bg-navy-light transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-navy text-cream text-sm font-semibold hover:bg-navy-light transition-colors"
             >
-              Download Free
+              <span className="hidden sm:inline">Download Free</span>
+              <span className="sm:hidden">Get App</span>
             </a>
           </div>
         </div>

@@ -93,7 +93,7 @@ export default function BlogPostPage({ params }: Props) {
           <h1 className="font-display text-3xl sm:text-4xl text-cream leading-snug">
             {post.title}
           </h1>
-          <p className="text-cream/50 text-sm">{formatDate(post.date)} · BibleDiscern</p>
+          <p className="text-cream/50 text-base">{formatDate(post.date)} · BibleDiscern</p>
         </div>
       </div>
 
