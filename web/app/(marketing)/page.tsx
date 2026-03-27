@@ -355,8 +355,8 @@ export default function LandingPage() {
               </div>
               <div>
                 <p className="font-display text-2xl text-cream">Premium</p>
-                <p className="text-3xl font-bold text-cream mt-1">$4.99<span className="text-lg font-normal text-cream/60">/mo</span></p>
-                <p className="text-sm text-gold">$49.99/year · save 48%</p>
+                <p className="text-3xl font-bold text-cream mt-1">$7.99<span className="text-lg font-normal text-cream/60">/mo</span></p>
+                <p className="text-sm text-gold">or $49.99/year · save 48%</p>
               </div>
               <ul className="space-y-2.5">
                 {FEATURES_PREMIUM.map((f) => (

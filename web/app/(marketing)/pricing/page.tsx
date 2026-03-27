@@ -23,7 +23,7 @@ const FAQS = [
   },
   {
     question: "What's the difference between monthly and annual?",
-    answer: 'Annual saves 48% — $4.99/month compared to $7.99/month on the monthly plan. Both plans include exactly the same Premium features. The annual plan is billed once per year at $49.99.',
+    answer: 'Annual saves 48% — $49.99/year compared to $95.88/year on the monthly plan ($7.99 × 12). Both plans include exactly the same Premium features.',
   },
   {
     question: 'Can I cancel anytime?',
@@ -129,9 +129,9 @@ export default function PricingPage() {
               <div>
                 <p className="font-display text-2xl text-cream">Premium</p>
                 <div className="mt-2 space-y-1">
-                  <p className="text-4xl font-bold text-cream">$4.99<span className="text-xl font-normal text-cream/60">/mo</span></p>
-                  <p className="text-sm text-gold">Billed annually at $49.99 · Save 48%</p>
-                  <p className="text-xs text-cream/40">or $7.99/month billed monthly</p>
+                  <p className="text-4xl font-bold text-cream">$7.99<span className="text-xl font-normal text-cream/60">/mo</span></p>
+                  <p className="text-sm text-gold">or $49.99/year · Save 48%</p>
+                  <p className="text-xs text-cream/40">Billed monthly · cancel anytime</p>
                 </div>
               </div>
               <ul className="space-y-3">
