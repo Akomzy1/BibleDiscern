@@ -321,7 +321,7 @@ export default function LandingPage() {
               Begin free. Go deeper with Premium.
             </h2>
             <p className="text-base text-text-medium">
-              Start your first discernment journey today — no credit card required.
+              Download the world's 1st Christian discernment app today — no credit card required.
             </p>
           </div>
 
