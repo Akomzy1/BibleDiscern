@@ -20,10 +20,10 @@ const STEPS = [
   { n: 1, icon: '⚖️', name: 'The Crossroads', desc: 'Name your situation and bring it honestly before God.' },
   { n: 2, icon: '📖', name: 'The Word', desc: 'Receive three Scripture passages that speak directly to your situation.' },
   { n: 3, icon: '👣', name: 'Those Who Walked Before', desc: 'Meet biblical figures who faced your same crossroads.' },
-  { n: 4, icon: '🪞', name: 'The Examination', desc: 'Answer five Ignatian-style questions about your interior movements.' },
+  { n: 4, icon: '🔍', name: 'The Examination', desc: 'Answer five Ignatian-style questions about your interior movements.' },
   { n: 5, icon: '🕊️', name: 'The Stillness', desc: 'Enter 90 seconds of guided contemplative silence.' },
   { n: 6, icon: '🍇', name: 'The Fruit', desc: 'Diagnose your decision against all nine Fruits of the Spirit.' },
-  { n: 7, icon: '🪨', name: 'The Prayer', desc: 'Receive a personalized prayer and set your Ebenezer stone.' },
+  { n: 7, icon: '🙏', name: 'The Prayer', desc: 'Receive a personalized prayer and set your Ebenezer stone.' },
 ];
 
 const PAIN_POINTS = [

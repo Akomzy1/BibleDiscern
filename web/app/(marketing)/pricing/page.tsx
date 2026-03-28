@@ -87,7 +87,7 @@ export default function PricingPage() {
             Begin free. Go deeper with Premium.
           </h1>
           <p className="text-cream/60">
-            Start your first discernment journey today. No credit card required.
+            Download world's 1st Christian discernment app today. No credit card required.
           </p>
         </div>
       </section>
