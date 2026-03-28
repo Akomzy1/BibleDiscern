@@ -8,6 +8,8 @@
 
 It guides Christians through a structured 7-step discernment journey rooted in Scripture, powered by the Anthropic Claude API, and grounded in Ignatian spiritual exercises and Wesleyan quadrilateral methodology. It is NOT a chatbot — it is a guided spiritual process.
 
+BibleDiscern also includes **The Daily Scale** — a daily engagement feature where users weigh a spiritual tension (a question with two biblical perspectives), vote, see community results, and receive a Scripture Lens teaching. This trains the discernment muscle daily.
+
 **Current phase:** MVP (Phase 1) — lean launch with 2 subscription tiers only.
 
 ## Architecture
@@ -26,10 +28,11 @@ librato-ai/
 │   ├── components/
 │   │   ├── ui/                # Reusable: Button, Card, Badge, Input, etc.
 │   │   ├── journey/           # Step1Word, Step2Narratives, Step3Examination, Step4Stillness, Step5Fruit, Step6Prayer
+│   │   ├── scale/             # DailyScale (3-phase: WEIGH → SEE → LEARN)
 │   │   ├── journal/           # JournalCard, JournalTimeline
 │   │   └── common/            # Header, TabBar, LoadingScreen, UpgradeGate, OfflineBanner, CrisisScreen
 │   ├── hooks/                 # useAuth, useSession, useSubscription, useDaily, useFeatureGate, useNetworkStatus
-│   ├── stores/                # Zustand: useAuthStore, useSubscriptionStore, useSessionStore
+│   ├── stores/                # Zustand: useAuthStore, useSubscriptionStore, useSessionStore, useScaleStore, useOnboardingStore
 │   ├── lib/                   # api client, cache, notifications, purchases
 │   ├── constants/             # theme (colors, fonts, spacing)
 │   └── assets/                # App icon, splash, font files
@@ -156,6 +159,18 @@ This is the core product. Each session flows through these steps:
 6. **The Fruit** — Fruit of the Spirit diagnostic (Galatians 5:22-23) with radial chart (PREMIUM ONLY)
 7. **The Prayer** — AI-generated personalized prayer + "Set My Ebenezer Stone" save to journal
 
+## Onboarding Flow
+
+5-screen high-converting onboarding: **emotional hook → season selection → micro-discernment exercise → notification opt-in (disguised as time picker) → first Daily Scale**
+
+1. **Screen 1 — The Hook:** Full-bleed headline copy with BalanceScaleIcon. Establishes product value. Single "Begin" CTA.
+2. **Screen 2 — Season Selection:** User picks their current life season (e.g., "A major decision", "A season of waiting"). Saved to `profiles.onboarding_season`.
+3. **Screen 3 — Micro-discernment:** 5-second countdown ring, user answers a single reflection prompt. Demonstrates the product in 30 seconds.
+4. **Screen 4 — Notification opt-in:** Time picker framed as "When should your Daily Scale arrive?" Saves HH:MM to `profiles.daily_scale_time`. Requests push permission.
+5. **Screen 5 — First Daily Scale:** Calls `fetchTodayScale()`, renders the live `<DailyScale />` component. User gets to WEIGH their first spiritual tension before entering the app.
+
+State machine: no back navigation, no swipe-back gesture, Reanimated crossfade transitions (400ms). State managed by `useOnboardingStore`.
+
 ## Claude API System Prompt
 
 Use this exact system prompt for POST /api/discern:
@@ -210,15 +225,17 @@ Provide exactly 2 biblical narratives, exactly 3 scriptures, and exactly 5 exami
 
 ## Database Tables
 
-5 tables in Supabase, ALL with Row Level Security:
+7 tables in Supabase, ALL with Row Level Security:
 
-1. **profiles** — extends auth.users. Stores name, timezone, tier, push token, trial status.
+1. **profiles** — extends auth.users. Stores name, timezone, tier, push token, trial status, `onboarding_season` (TEXT), `daily_scale_time` (TEXT, default `'08:00'`).
 2. **sessions** — discernment sessions. Stores situation, tone, ai_response (JSONB), stillness_note, follow-up states.
 3. **journal_entries** — Ebenezer stones. Linked to sessions. Types: discernment, reflection, answered_prayer, god_showed_up.
 4. **subscriptions** — tracks tier, billing interval, source (stripe/apple/google), sessions used this month.
 5. **daily_moments** — pre-seeded daily scripture + reflection + prayer.
+6. **daily_scales** — pre-seeded daily questions with both sides (label + argument), scripture reference/text/lens, prayer, and vote counts (votes_a, votes_b). One row per date, UNIQUE constraint on `date`.
+7. **daily_scale_votes** — tracks individual user votes. Columns: user_id, scale_id, vote ('a'|'b'), created_at. UNIQUE constraint on `(user_id, scale_id)` prevents double-voting.
 
-**RLS rules:** Users can only read/write their own data. daily_moments readable by all authenticated users. Subscriptions are read-only for users (server writes via service role).
+**RLS rules:** Users can only read/write their own data. daily_moments and daily_scales are readable by all authenticated users. daily_scale_votes: users can read/insert their own rows only. Subscriptions are read-only for users (server writes via service role).
 
 ## API Routes (Next.js /web/app/api/)
 
@@ -233,6 +250,9 @@ Provide exactly 2 biblical narratives, exactly 3 scriptures, and exactly 5 exami
 | /api/subscription | GET | Current subscription status | Yes |
 | /api/subscription/validate | POST | Validate Apple/Google receipt | Yes |
 | /api/daily-moment | GET | Today's daily moment | Yes |
+| /api/daily-scale | GET | Today's scale (hides scripture/results until voted) | Yes |
+| /api/daily-scale/vote | POST | Cast vote for side a or b (atomic increment) | Yes |
+| /api/daily-scale/history | GET | Past 7 scales with user votes (Premium only) | Yes |
 | /api/follow-up | GET (cron) | Check & send follow-up emails | Server |
 | /api/webhooks/stripe | POST | Stripe subscription events | Webhook |
 | /api/webhooks/revenuecat | POST | RevenueCat subscription events | Webhook |
@@ -370,6 +390,9 @@ These features are deliberately excluded until post-launch user testing:
 - Web-based app experience (web is marketing site only)
 - Voice prayer audio (TTS)
 - Annual pricing testing / A-B pricing (ship with both monthly + annual, optimize later)
+- **Home screen widgets (iOS WidgetKit / Android Glance) — Phase 2**
+  - Widget will display the Daily Scale question on the user's home screen
+  - Interactive widget allowing voting without opening the app
 
 ## Quick Reference Commands
 
@@ -400,6 +423,9 @@ cd web && vercel --prod
 
 # Seed daily moments
 cd web && npx tsx scripts/seed-daily-moments.ts
+
+# Seed daily scales (30 days of content)
+cd web && npm run seed:scale
 ```
 
 ## Key URLs

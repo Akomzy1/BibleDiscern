@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "seed": "tsx scripts/seed-daily-moments.ts"
+    "seed": "tsx scripts/seed-daily-moments.ts",
+    "seed:scale": "tsx scripts/seed-daily-scales.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
@@ -23,13 +24,13 @@
     "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.13",
     "@types/node": "^20.12.7",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.6.1",
     "postcss": "^8.4.38",
-    "@tailwindcss/typography": "^0.5.13",
     "tailwindcss": "^3.4.3",
     "tsx": "^4.9.3",
     "typescript": "^5.4.5"

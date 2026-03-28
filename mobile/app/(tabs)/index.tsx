@@ -1,21 +1,18 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   Pressable,
-  Animated,
 } from 'react-native';
 import { router } from 'expo-router';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useSessionStore } from '@/stores/useSessionStore';
 import { useSubscriptionStore } from '@/stores/useSubscriptionStore';
-import { apiClient } from '@/lib/api';
-import { getCached, setCached } from '@/lib/cache';
-import { CACHE_TTL } from '@librato/shared';
-import type { DailyMoment, Session } from '@librato/shared';
+import { useScaleStore } from '@/stores/useScaleStore';
+import { DailyScale } from '@/components/scale/DailyScale';
+import type { Session } from '@librato/shared';
 import { ScreenWrapper } from '@/components/ui/ScreenWrapper';
-import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { SectionLabel } from '@/components/ui/SectionLabel';
@@ -39,50 +36,24 @@ export default function HomeScreen() {
   const { sessions, fetchSessions } = useSessionStore();
   const { fetchSubscription, sessionsUsed, sessionsLimit, isAtLimit, isTrial, isPremium } =
     useSubscriptionStore();
+  const { fetchTodayScale } = useScaleStore();
 
-  const [dailyMoment, setDailyMoment] = useState<DailyMoment | null>(null);
   const [refreshing, setRefreshing] = useState(false);
-  const cardOpacity = useState(new Animated.Value(0))[0];
 
   const displayName =
     user?.user_metadata?.display_name ??
     user?.user_metadata?.full_name?.split(' ')[0] ??
     'Friend';
 
-  const loadDailyMoment = useCallback(async () => {
-    const cached = await getCached<DailyMoment>('daily-moment');
-    if (cached) {
-      setDailyMoment(cached);
-      fadein();
-      return;
-    }
-    try {
-      const moment = await apiClient.getDailyMoment();
-      setDailyMoment(moment);
-      await setCached('daily-moment', moment, CACHE_TTL.dailyMoment);
-      fadein();
-    } catch {
-      // Fallback handled by API
-    }
-  }, []);
-
-  const fadein = () => {
-    Animated.timing(cardOpacity, {
-      toValue: 1,
-      duration: 600,
-      useNativeDriver: true,
-    }).start();
-  };
-
   useEffect(() => {
-    loadDailyMoment();
+    fetchTodayScale();
     fetchSessions();
     fetchSubscription();
   }, []);
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await Promise.all([loadDailyMoment(), fetchSessions(), fetchSubscription()]);
+    await Promise.all([fetchTodayScale(), fetchSessions(), fetchSubscription()]);
     setRefreshing(false);
   };
 
@@ -107,19 +78,10 @@ export default function HomeScreen() {
         {isTrial && <Badge label="Free trial" variant="gold" />}
       </View>
 
-      {/* Daily Moment card */}
-      {dailyMoment && (
-        <Animated.View style={{ opacity: cardOpacity }}>
-          <Card style={styles.momentCard}>
-            <Text style={styles.momentRef}>{dailyMoment.scripture_reference}</Text>
-            <View style={styles.momentDivider} />
-            <Text style={styles.momentVerse}>{dailyMoment.scripture_text}</Text>
-            <View style={styles.momentDivider} />
-            <Text style={styles.momentPrompt}>{dailyMoment.reflection_prompt}</Text>
-            <Text style={styles.momentPrayer}>{dailyMoment.prayer}</Text>
-          </Card>
-        </Animated.View>
-      )}
+      {/* Daily Scale — always inline, phases handled internally */}
+      <View style={styles.scaleSection}>
+        <DailyScale />
+      </View>
 
       {/* Primary CTA */}
       <Button
@@ -134,7 +96,6 @@ export default function HomeScreen() {
       {recentSessions.length > 0 && (
         <View style={styles.section}>
           <SectionLabel label="Recent journeys" icon="🪶" />
-
           {recentSessions.map((session) => (
             <SessionPreviewCard
               key={session.id}
@@ -195,42 +156,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: SPACING['3xl'],
+    marginBottom: SPACING['2xl'],
     paddingTop: SPACING.xl,
   },
   greeting: { fontFamily: FONTS.body, fontSize: 15, color: COLORS.textMedium },
   name: { fontFamily: FONTS.display, fontSize: 28, color: COLORS.navy },
 
-  momentCard: { marginBottom: SPACING.xl, gap: SPACING.lg },
-  momentRef: {
-    fontFamily: FONTS.bodyBold,
-    fontSize: 12,
-    color: COLORS.gold,
-    letterSpacing: 2,
-    textTransform: 'uppercase',
-  },
-  momentDivider: { height: 1, width: 40, backgroundColor: COLORS.gold, alignSelf: 'center' },
-  momentVerse: {
-    fontFamily: FONTS.scripture,
-    fontSize: 20,
-    color: COLORS.navy,
-    lineHeight: 32,
-    textAlign: 'center',
-    fontStyle: 'italic',
-  },
-  momentPrompt: {
-    fontFamily: FONTS.body,
-    fontSize: 15,
-    color: COLORS.textDark,
-    lineHeight: 24,
-  },
-  momentPrayer: {
-    fontFamily: FONTS.scripture,
-    fontSize: 15,
-    color: COLORS.textMedium,
-    lineHeight: 24,
-    fontStyle: 'italic',
-  },
+  scaleSection: { marginBottom: SPACING['2xl'] },
 
   cta: { marginBottom: SPACING['3xl'] },
 

@@ -85,8 +85,8 @@ export async function scheduleDailyMomentNotification(time24: string): Promise<v
 
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: '✝ Your Daily Moment',
-      body: 'A scripture and reflection are waiting for you this morning.',
+      title: '⚖️ Your Daily Scale is ready',
+      body: 'A new spiritual tension awaits your discernment today.',
       data: { type: 'daily_moment', screen: '/(tabs)' },
     },
     trigger: {

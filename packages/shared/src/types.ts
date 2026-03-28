@@ -105,6 +105,51 @@ export interface DailyMoment {
   prayer: string;
 }
 
+// ─────────────────────────────────────────────
+// Daily Scale
+// ─────────────────────────────────────────────
+
+export interface DailyScale {
+  id: string;
+  date: string;
+  question: string;
+  side_a_label: string;
+  side_a_argument: string;
+  side_b_label: string;
+  side_b_argument: string;
+  // Scripture fields — only present after user has voted
+  scripture_reference?: string;
+  scripture_text?: string;
+  scripture_lens?: string;
+  prayer?: string;
+  votes_a: number;
+  votes_b: number;
+}
+
+export interface DailyScaleResults {
+  votes_a: number;
+  votes_b: number;
+  percent_a: number;
+  percent_b: number;
+  total: number;
+}
+
+export interface DailyScaleResponse {
+  scale: DailyScale;
+  hasVoted: boolean;
+  userVote?: 'a' | 'b';
+  results?: DailyScaleResults;
+}
+
+export interface DailyScaleHistoryEntry {
+  scale: DailyScale;
+  hasVoted: boolean;
+  userVote?: 'a' | 'b';
+  results: DailyScaleResults;
+}
+
+export type DailyScalePhase = 'weigh' | 'see' | 'learn';
+
 export type TierConfig = {
   sessions_limit: number;
   has_fruit_diagnostic: boolean;
@@ -161,8 +206,10 @@ export interface UpdateProfileRequest {
   display_name?: string;
   timezone?: string;
   onboarding_completed?: boolean;
+  onboarding_season?: string;
   expo_push_token?: string;
   daily_moment_time?: string;
+  daily_scale_time?: string;
 }
 
 export interface ValidateReceiptRequest {

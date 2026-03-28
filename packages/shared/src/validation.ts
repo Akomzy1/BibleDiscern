@@ -91,8 +91,13 @@ export const UpdateProfileRequestSchema = z.object({
   display_name: z.string().min(1).max(50).optional(),
   timezone: z.string().min(1).max(50).optional(),
   onboarding_completed: z.boolean().optional(),
+  onboarding_season: z.string().min(1).max(100).optional(),
   expo_push_token: z.string().max(500).optional(),
   daily_moment_time: z
+    .string()
+    .regex(/^\d{2}:\d{2}$/, 'Time must be in HH:MM format')
+    .optional(),
+  daily_scale_time: z
     .string()
     .regex(/^\d{2}:\d{2}$/, 'Time must be in HH:MM format')
     .optional(),

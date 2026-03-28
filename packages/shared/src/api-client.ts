@@ -5,6 +5,8 @@ import type {
   JournalEntry,
   Subscription,
   DailyMoment,
+  DailyScaleResponse,
+  DailyScaleHistoryEntry,
   DiscernmentResponse,
   DiscernSessionRequest,
   UpdateSessionRequest,
@@ -220,6 +222,23 @@ export class LibratoApiClient {
 
   async getDailyMoment(): Promise<DailyMoment> {
     return this.request<DailyMoment>('/api/daily-moment');
+  }
+
+  // ─── Daily Scale ─────────────────────────────
+
+  async getDailyScale(): Promise<DailyScaleResponse> {
+    return this.request<DailyScaleResponse>('/api/daily-scale');
+  }
+
+  async castScaleVote(scaleId: string, vote: 'a' | 'b'): Promise<DailyScaleResponse> {
+    return this.request<DailyScaleResponse>('/api/daily-scale/vote', {
+      method: 'POST',
+      body: { scale_id: scaleId, vote },
+    });
+  }
+
+  async getScaleHistory(): Promise<DailyScaleHistoryEntry[]> {
+    return this.request<DailyScaleHistoryEntry[]>('/api/daily-scale/history');
   }
 }
 
