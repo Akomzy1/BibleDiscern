@@ -73,9 +73,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
             <p className="text-sm leading-relaxed text-cream/60 italic font-scripture">
               "Weigh it with wisdom."
             </p>
-            <p className="text-xs text-cream/40">
-              From the Latin <em>librato</em> — to weigh, to balance, to ponder.
-            </p>
+
           </div>
 
           {/* Links */}
