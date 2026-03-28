@@ -129,11 +129,12 @@ Only 2 tiers in MVP. No Covenant, Shepherd, or church tiers.
 
 | | Free | Premium |
 |---|---|---|
-| Price | $0 | $4.99/month or $39.99/year |
+| Price | $0 | $7.99/month or $49.99/year |
 | Sessions | 1/month | Unlimited |
 | 7-step journey | Full | Full |
 | Stillness Engine | Yes | Yes |
-| Daily Moment | Yes | Yes |
+| The Daily Scale (vote + results) | Yes | Yes |
+| Daily Scale history (7 days) | No | Yes |
 | Journal | Last 3 entries | Unlimited |
 | Fruit diagnostic | Locked | Yes |
 | Follow-ups | No | Yes |
@@ -142,8 +143,8 @@ Only 2 tiers in MVP. No Covenant, Shepherd, or church tiers.
 **Sacred Seven Trial:** 7 days of Premium for all new users. No credit card. Configured at App Store / Play Store level via RevenueCat.
 
 **IAP Product IDs:**
-- `librato_premium_monthly` — $4.99/month auto-renewable
-- `librato_premium_annual` — $39.99/year auto-renewable
+- `librato_premium_monthly` — $7.99/month auto-renewable
+- `librato_premium_annual` — $49.99/year auto-renewable
 
 **CRITICAL:** Mobile subscriptions MUST go through App Store / Play Store IAP (via RevenueCat). Using Stripe inside the mobile app violates store policies. Stripe is only for web-based signups.
 

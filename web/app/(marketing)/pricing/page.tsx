@@ -15,7 +15,7 @@ const FAQS = [
   },
   {
     question: "What's included in the free plan?",
-    answer: '1 full discernment session per month, the complete 7-step journey, Biblical Narrative Matching, daily scripture moment (The Daily Moment), and access to your 3 most recent journal entries.',
+    answer: '1 full discernment session per month, the complete 7-step journey, Biblical Narrative Matching, The Daily Scale (daily vote + community results), and access to your 3 most recent journal entries.',
   },
   {
     question: 'Does BibleDiscern offer a free trial?',
@@ -43,10 +43,11 @@ const FREE_FEATURES = [
   { label: '1 discernment session per month', included: true },
   { label: 'Complete 7-step journey', included: true },
   { label: 'Biblical Narrative Matching', included: true },
-  { label: 'Daily scripture moment', included: true },
+  { label: 'The Daily Scale (vote + community results)', included: true },
   { label: 'Basic journal (last 3 entries)', included: true },
   { label: 'Fruit of the Spirit diagnostic', included: false },
   { label: 'Full journal history', included: false },
+  { label: 'Daily Scale history (last 7 days)', included: false },
   { label: 'Decision follow-up reminders', included: false },
   { label: 'Scripture card sharing', included: false },
 ];
@@ -55,8 +56,9 @@ const PREMIUM_FEATURES = [
   { label: 'Unlimited discernment sessions', included: true },
   { label: 'Complete 7-step journey', included: true },
   { label: 'Biblical Narrative Matching', included: true },
-  { label: 'Daily scripture moment', included: true },
+  { label: 'The Daily Scale (vote + community results)', included: true },
   { label: 'Full spiritual journal history', included: true },
+  { label: 'Daily Scale history (last 7 days)', included: true },
   { label: 'Fruit of the Spirit diagnostic', included: true },
   { label: 'Decision follow-up reminders (1wk, 1mo, 3mo)', included: true },
   { label: 'Scripture card sharing', included: true },
