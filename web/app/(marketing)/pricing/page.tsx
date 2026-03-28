@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { APP_STORE_URL, BASE_URL, breadcrumbSchema, faqSchema } from '@/lib/seo';
+import { BillingToggle } from '../components/BillingToggle';
 
 export const metadata: Metadata = {
   title: 'Pricing — BibleDiscern',
@@ -128,15 +129,9 @@ export default function PricingPage() {
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gold text-navy text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full">
                 Most popular
               </div>
-              <div>
-                <p className="font-display text-2xl text-cream">Premium</p>
-                <div className="mt-2 space-y-1">
-                  <p className="text-4xl font-bold text-cream">$7.99<span className="text-xl font-normal text-cream/60">/mo</span></p>
-                  <p className="text-sm text-gold">or $49.99/year · Save 48%</p>
-                  <p className="text-xs text-cream/40">Billed monthly · cancel anytime</p>
-                </div>
-              </div>
-              <ul className="space-y-3">
+              <p className="font-display text-2xl text-cream mb-4">Premium</p>
+              <BillingToggle />
+              <ul className="space-y-3 mt-4">
                 {PREMIUM_FEATURES.map((f) => (
                   <li key={f.label} className="flex items-start gap-2 text-base">
                     <span className="text-gold">✓</span>
@@ -144,13 +139,6 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <div className="space-y-3">
-                <a href={APP_STORE_URL}
-                  className="block text-center py-3 rounded-full bg-gold text-navy font-bold text-sm hover:bg-gold-muted transition-colors">
-                  Start 7-Day Free Trial
-                </a>
-                <p className="text-center text-xs text-cream/30">No credit card required · Cancel anytime</p>
-              </div>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { APP_STORE_URL, BASE_URL, PLAY_STORE_URL, appSchema, faqSchema, orgSchema } from '@/lib/seo';
+import { BillingToggle } from './components/BillingToggle';
 
 export const metadata: Metadata = {
   title: 'BibleDiscern — Weigh Your Decisions with Biblical Wisdom',
@@ -351,15 +352,9 @@ export default function LandingPage() {
             </div>
 
             {/* Premium */}
-            <div className="bg-navy border-2 border-gold rounded-2xl p-7 space-y-5 relative overflow-hidden">
-              <div className="absolute top-4 right-4 bg-gold text-navy text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
-                Best value
-              </div>
-              <div>
-                <p className="font-display text-2xl text-cream">Premium</p>
-                <p className="text-3xl font-bold text-cream mt-1">$7.99<span className="text-lg font-normal text-cream/60">/mo</span></p>
-                <p className="text-sm text-gold">or $49.99/year · save 48%</p>
-              </div>
+            <div className="bg-navy border-2 border-gold rounded-2xl p-7 space-y-5">
+              <p className="font-display text-2xl text-cream">Premium</p>
+              <BillingToggle />
               <ul className="space-y-2.5">
                 {FEATURES_PREMIUM.map((f) => (
                   <li key={f} className="flex items-start gap-2 text-base text-cream/80">
@@ -367,13 +362,6 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <a
-                href={APP_STORE_URL}
-                className="block text-center py-3 rounded-full bg-gold text-navy text-sm font-bold hover:bg-gold-muted transition-colors"
-              >
-                Start 7-Day Free Trial
-              </a>
-              <p className="text-center text-xs text-cream/30">Cancel anytime</p>
             </div>
           </div>
         </div>
