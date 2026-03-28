@@ -48,12 +48,14 @@ const FEATURES_FREE = [
   '1 full discernment session per month',
   '7-step biblical journey',
   'Biblical Narrative Matching',
-  'Daily scripture moment',
+  'The Daily Scale (vote + community results)',
   '3 journal entries',
 ];
 
 const FEATURES_PREMIUM = [
   'Unlimited discernment sessions',
+  'The Daily Scale (vote + community results)',
+  'Daily Scale history (last 7 days)',
   'Fruit of the Spirit diagnostic',
   'Full spiritual journal history',
   'Decision follow-up reminders (1wk, 1mo, 3mo)',
