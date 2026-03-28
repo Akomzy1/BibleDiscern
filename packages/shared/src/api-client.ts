@@ -121,7 +121,7 @@ export class LibratoApiClient {
       return undefined as unknown as T;
     }
 
-    const json = await response.json().catch(() => ({
+    const json: any = await response.json().catch(() => ({
       error: 'parse_error',
       message: 'Failed to parse server response.',
     }));
