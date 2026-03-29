@@ -143,8 +143,8 @@ Only 2 tiers in MVP. No Covenant, Shepherd, or church tiers.
 **Sacred Seven Trial:** 7 days of Premium for all new users. No credit card. Configured at App Store / Play Store level via RevenueCat.
 
 **IAP Product IDs:**
-- `librato_premium_monthly` — $7.99/month auto-renewable
-- `librato_premium_annual` — $49.99/year auto-renewable
+- `biblediscern_premium_monthly` — $7.99/month auto-renewable
+- `biblediscern_premium_annual` — $49.99/year auto-renewable
 
 **CRITICAL:** Mobile subscriptions MUST go through App Store / Play Store IAP (via RevenueCat). Using Stripe inside the mobile app violates store policies. Stripe is only for web-based signups.
 
@@ -162,15 +162,28 @@ This is the core product. Each session flows through these steps:
 
 ## Onboarding Flow
 
-5-screen high-converting onboarding: **emotional hook → season selection → micro-discernment exercise → notification opt-in (disguised as time picker) → first Daily Scale**
+6-screen high-converting onboarding: **emotional hook → season selection → micro-discernment exercise → notification opt-in → first Daily Scale → soft paywall**
 
 1. **Screen 1 — The Hook:** Full-bleed headline copy with BalanceScaleIcon. Establishes product value. Single "Begin" CTA.
 2. **Screen 2 — Season Selection:** User picks their current life season (e.g., "A major decision", "A season of waiting"). Saved to `profiles.onboarding_season`.
 3. **Screen 3 — Micro-discernment:** 5-second countdown ring, user answers a single reflection prompt. Demonstrates the product in 30 seconds.
 4. **Screen 4 — Notification opt-in:** Time picker framed as "When should your Daily Scale arrive?" Saves HH:MM to `profiles.daily_scale_time`. Requests push permission.
 5. **Screen 5 — First Daily Scale:** Calls `fetchTodayScale()`, renders the live `<DailyScale />` component. User gets to WEIGH their first spiritual tension before entering the app.
+6. **Screen 6 — Soft Paywall (The Offer):** Full-screen offer with Monthly/Annual plan selector. Annual pre-selected with SAVE 48% badge. "Start my 7-day free trial" CTA triggers RevenueCat purchase flow. "Continue with free plan" skip link MUST always be visible (Apple/Google requirement). On success: navigate to home + toast "Welcome to Premium." On skip: navigate to home silently. `onboarding_completed = true` set in BOTH cases.
 
 State machine: no back navigation, no swipe-back gesture, Reanimated crossfade transitions (400ms). State managed by `useOnboardingStore`.
+
+**RevenueCat IAP Product IDs:**
+- `biblediscern_premium_monthly` — $7.99/month auto-renewable
+- `biblediscern_premium_annual` — $49.99/year auto-renewable (default selected on paywall)
+
+**Paywall interaction rules:**
+- Annual card selected by default (gold 2px border). Tapping monthly switches selection. `selectionAsync()` haptic on switch.
+- CTA text is always "Start my 7-day free trial" regardless of plan (trial length is the same; plan determines post-trial charge).
+- On RevenueCat success: call `POST /api/subscription/validate` to sync backend, then navigate home.
+- On RevenueCat cancel: stay on paywall — no error shown.
+- On RevenueCat error or SDK not initialized: toast "Something went wrong. Try again or continue with the free plan."
+- Skip link is never hidden, never delayed beyond 2000ms, never guilt-tripped.
 
 ## Claude API System Prompt
 

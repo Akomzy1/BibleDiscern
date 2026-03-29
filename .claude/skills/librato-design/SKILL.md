@@ -361,6 +361,79 @@ This is NOT a feature tour. It is a spiritual threshold.
 
 **There is no skip button.** Every user reads this. It sets the tone for everything.
 
+### Onboarding Screen 6 — Soft Paywall (The Offer)
+
+This screen appears after Screen 5 (First Daily Scale) and before the home screen. It is the monetization moment — handle it with the same reverence as the rest of onboarding.
+
+**Full-screen, cream (#FDF6EC) background. No tab bar. No back button.**
+
+**Layout (top to bottom):**
+```
+32px cross icon (gold, centered)                     — fade in, 0ms
+"You just experienced discernment."                  — Playfair 24px navy, fade in + translateY(16→0), 300ms delay
+"Imagine going deeper — every single day."           — Cormorant 16px gold italic, fade in, 600ms delay
+
+Value props (staggered):                             — 800ms / 900ms / 1000ms delay
+  ✓ Unlimited discernment journeys...               — Source Sans 14px, text-dark
+  ✓ Fruit of the Spirit diagnostic...
+  ✓ Your full spiritual history...
+
+Annual plan card (gold 2px border, cream bg):        — fade in + scale(0.95→1.0), 1200ms delay
+  "BEST VALUE" badge (top-right, gold pill, 10px)
+  "$49.99/year" — Playfair 28px navy
+  "$4.17/month" — Source Sans 15px text-medium, strikethrough "$7.99" in text-light
+  "Save 48%" — Source Sans 13px sage bold
+
+Monthly plan card (1px border, no highlight):        — fade in, 1400ms delay
+  "$7.99/month" — Playfair 20px navy
+  "Cancel anytime" — Source Sans 12px text-light
+
+"Start my 7-day free trial" CTA (gold, 48px):        — fade in, 1600ms delay
+"Continue with free plan" skip link:                 — fade in, 2000ms delay (underlined, text-light 14px)
+"No charge for 7 days. Cancel anytime..."            — Source Sans 11px text-light italic
+```
+
+**Plan selection:**
+- Annual is selected by default (gold 2px border). Monthly has 1px border.
+- Tapping monthly: annual loses gold border → monthly gains it. `selectionAsync()` haptic.
+- Tapping annual: reverse. Only one selected at a time.
+- CTA text is always "Start my 7-day free trial" (trial length = same; plan = post-trial billing).
+
+**Animation spec:**
+```javascript
+// All use withTiming + opacity from 0→1
+// translateY animations: 16→0
+// Scale animation (annual card): 0.95→1.0
+
+delays = {
+  cross: 0,
+  headline: 300,
+  subheadline: 600,
+  valueProp1: 800,
+  valueProp2: 900,
+  valueProp3: 1000,
+  annualCard: 1200,
+  monthlyCard: 1400,
+  cta: 1600,
+  skipLink: 2000,    // Delayed so user sees the offer — but NEVER hidden
+}
+```
+
+**Apple/Google compliance rules (MUST follow):**
+- Skip link MUST always be visible. Never hidden behind a gesture, never opacity 0 even briefly.
+- Skip link text must be neutral: "Continue with free plan" — no guilt copy like "No thanks, I'll miss out."
+- The 2000ms delay on skip is the maximum acceptable. Do not delay longer.
+
+**Post-paywall navigation:**
+- Trial started → home screen + toast: "Welcome to Premium. Your 7-day trial has started."
+- Skipped → home screen, no toast, no message.
+- `onboarding_completed = true` set via `PATCH /api/profile` in BOTH cases before navigating.
+
+**RevenueCat error handling:**
+- SDK not initialized / dev build: toast "Subscriptions not configured yet" — skip link remains functional.
+- Purchase error: toast "Something went wrong. Try again or continue with the free plan."
+- Purchase cancel (user closes native sheet): stay on paywall, no message.
+
 ### Home Screen
 
 **Above the fold (no scroll needed for primary action):**
