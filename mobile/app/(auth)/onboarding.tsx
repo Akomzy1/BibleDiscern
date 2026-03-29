@@ -6,6 +6,7 @@ import {
   Pressable,
   ScrollView,
   Animated,
+  Alert,
 } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -22,6 +23,7 @@ import { useOnboardingStore } from '@/stores/useOnboardingStore';
 import { useScaleStore } from '@/stores/useScaleStore';
 import { apiClient } from '@/lib/api';
 import { registerForPushNotifications, scheduleDailyMomentNotification } from '@/lib/notifications';
+import { getOfferings, purchasePackage, PRODUCT_IDS } from '@/lib/purchases';
 import { Button } from '@/components/ui/Button';
 import { DailyScale } from '@/components/scale/DailyScale';
 import { COLORS, FONTS, SPACING, BORDER_RADIUS, SHADOWS } from '@/constants/theme';
@@ -385,13 +387,11 @@ function Screen4({ onNext }: { onNext: () => void }) {
 // Screen 5 — First Daily Scale
 // ─────────────────────────────────────────────
 
-function Screen5() {
-  const { selectedSeason, selectedNotificationTime } = useOnboardingStore();
+function Screen5({ onNext }: { onNext: () => void }) {
   const { user } = useAuthStore();
   const { fetchTodayScale, phase } = useScaleStore();
 
   const firstName = user?.user_metadata?.full_name?.split(' ')[0] ?? 'Friend';
-  const [finishing, setFinishing] = useState(false);
 
   const headOpacity = useRef(new Animated.Value(0)).current;
   const scaleOpacity = useRef(new Animated.Value(0)).current;
@@ -403,22 +403,6 @@ function Screen5() {
       Animated.timing(scaleOpacity, { toValue: 1, duration: 600, useNativeDriver: true }),
     ]).start();
   }, []);
-
-  const handleFinish = async () => {
-    if (finishing) return;
-    setFinishing(true);
-    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    try {
-      await apiClient.updateProfile({
-        onboarding_completed: true,
-        onboarding_season: selectedSeason ?? undefined,
-        daily_scale_time: selectedNotificationTime,
-      });
-    } catch {
-      // Non-fatal
-    }
-    router.replace('/(tabs)');
-  };
 
   return (
     <ScrollView
@@ -439,18 +423,223 @@ function Screen5() {
         <DailyScale />
       </Animated.View>
 
-      {/* Always-visible escape hatch — fades in after scale loads */}
+      {/* Always-visible escape hatch */}
       <Animated.View style={[styles.btnWrap, { opacity: scaleOpacity }]}>
         <Pressable
-          onPress={handleFinish}
+          onPress={onNext}
           style={styles.skipRow}
           accessibilityRole="button"
         >
           <Text style={styles.skipText}>
-            {phase === 'learn' ? 'Enter BibleDiscern →' : 'Skip for now'}
+            {phase === 'learn' ? 'Continue →' : 'Skip for now'}
           </Text>
         </Pressable>
       </Animated.View>
+    </ScrollView>
+  );
+}
+
+// ─────────────────────────────────────────────
+// Screen 6 — Soft Paywall (The Offer)
+// ─────────────────────────────────────────────
+
+const VALUE_PROPS = [
+  'Unlimited discernment journeys — bring every decision to God',
+  'Fruit of the Spirit diagnostic — see where your heart aligns',
+  'Your full spiritual history — watch how God has moved over time',
+];
+
+const VP_DELAYS = [800, 900, 1000];
+
+function Screen6() {
+  const { selectedSeason, selectedNotificationTime } = useOnboardingStore();
+  const [selectedPlan, setSelectedPlan] = useState<'annual' | 'monthly'>('annual');
+  const [purchasing, setPurchasing] = useState(false);
+
+  // Animation values
+  const crossOpacity = useRef(new Animated.Value(0)).current;
+  const headOpacity = useRef(new Animated.Value(0)).current;
+  const headY = useRef(new Animated.Value(16)).current;
+  const subOpacity = useRef(new Animated.Value(0)).current;
+  const vp0Opacity = useRef(new Animated.Value(0)).current;
+  const vp1Opacity = useRef(new Animated.Value(0)).current;
+  const vp2Opacity = useRef(new Animated.Value(0)).current;
+  const annualOpacity = useRef(new Animated.Value(0)).current;
+  const annualScale = useRef(new Animated.Value(0.95)).current;
+  const monthlyOpacity = useRef(new Animated.Value(0)).current;
+  const ctaOpacity = useRef(new Animated.Value(0)).current;
+  const skipOpacity = useRef(new Animated.Value(0)).current;
+
+  const vpOpacities = [vp0Opacity, vp1Opacity, vp2Opacity];
+
+  useEffect(() => {
+    const make = (v: Animated.Value, delay: number, toValue = 1) =>
+      Animated.timing(v, { toValue, duration: 500, delay, useNativeDriver: true });
+
+    Animated.parallel([
+      make(crossOpacity, 0),
+      make(headOpacity, 300),
+      make(headY, 300, 0),
+      make(subOpacity, 600),
+      make(vp0Opacity, 800),
+      make(vp1Opacity, 900),
+      make(vp2Opacity, 1000),
+      make(annualOpacity, 1200),
+      make(annualScale, 1200, 1.0),
+      make(monthlyOpacity, 1400),
+      make(ctaOpacity, 1600),
+      make(skipOpacity, 2000),
+    ]).start();
+  }, []);
+
+  const saveAndNavigate = useCallback(async () => {
+    try {
+      await apiClient.updateProfile({
+        onboarding_completed: true,
+        onboarding_season: selectedSeason ?? undefined,
+        daily_scale_time: selectedNotificationTime,
+      });
+    } catch {
+      // Non-fatal — don't block navigation
+    }
+    router.replace('/(tabs)');
+  }, [selectedSeason, selectedNotificationTime]);
+
+  const handleStartTrial = useCallback(async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    setPurchasing(true);
+
+    try {
+      const packages = await getOfferings();
+
+      if (!packages || packages.length === 0) {
+        Alert.alert('Not available', 'Subscriptions not configured yet. You can upgrade anytime from Settings.');
+        setPurchasing(false);
+        return;
+      }
+
+      const targetId = selectedPlan === 'annual' ? PRODUCT_IDS.annual : PRODUCT_IDS.monthly;
+      const pkg = packages.find((p) => p.product.identifier === targetId) ?? packages[0];
+
+      await purchasePackage(pkg);
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      await saveAndNavigate();
+    } catch (e: any) {
+      if (e?.userCancelled) {
+        setPurchasing(false);
+        return;
+      }
+      Alert.alert('Purchase failed', 'Something went wrong. Try again or continue with the free plan.');
+      setPurchasing(false);
+    }
+  }, [selectedPlan, saveAndNavigate]);
+
+  const handleSkip = useCallback(async () => {
+    await saveAndNavigate();
+  }, [saveAndNavigate]);
+
+  const handleSelectPlan = useCallback(async (plan: 'annual' | 'monthly') => {
+    if (plan === selectedPlan) return;
+    await Haptics.selectionAsync();
+    setSelectedPlan(plan);
+  }, [selectedPlan]);
+
+  return (
+    <ScrollView
+      contentContainerStyle={styles.paywallContent}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* Cross */}
+      <Animated.Text style={[styles.crossIcon, { opacity: crossOpacity }]}>✝</Animated.Text>
+
+      {/* Headline */}
+      <Animated.Text
+        style={[styles.paywallHeading, { opacity: headOpacity, transform: [{ translateY: headY }] }]}
+      >
+        You just experienced discernment.
+      </Animated.Text>
+
+      {/* Subheadline */}
+      <Animated.Text style={[styles.paywallSub, { opacity: subOpacity }]}>
+        Imagine going deeper — every single day.
+      </Animated.Text>
+
+      {/* Value props */}
+      <View style={styles.valueProps}>
+        {VALUE_PROPS.map((text, i) => (
+          <Animated.View
+            key={i}
+            style={[styles.valuePropRow, { opacity: vpOpacities[i] }]}
+          >
+            <Text style={styles.valuePropCheck}>✓</Text>
+            <Text style={styles.valuePropText}>{text}</Text>
+          </Animated.View>
+        ))}
+      </View>
+
+      {/* Annual plan card */}
+      <Animated.View style={{ opacity: annualOpacity, transform: [{ scale: annualScale }], width: '100%' }}>
+        <Pressable
+          onPress={() => handleSelectPlan('annual')}
+          style={[styles.planCard, selectedPlan === 'annual' && styles.planCardSelected]}
+          accessibilityRole="radio"
+          accessibilityState={{ selected: selectedPlan === 'annual' }}
+        >
+          <View style={styles.bestValueBadge}>
+            <Text style={styles.bestValueText}>BEST VALUE</Text>
+          </View>
+          <Text style={styles.annualPrice}>
+            $49.99<Text style={styles.planPricePer}>/year</Text>
+          </Text>
+          <View style={styles.annualSubRow}>
+            <Text style={styles.annualMonthly}>$4.17/month</Text>
+            <Text style={styles.annualStrike}> · was $7.99</Text>
+          </View>
+          <Text style={styles.annualSave}>Save 48%</Text>
+        </Pressable>
+      </Animated.View>
+
+      {/* Monthly plan card */}
+      <Animated.View style={{ opacity: monthlyOpacity, width: '100%' }}>
+        <Pressable
+          onPress={() => handleSelectPlan('monthly')}
+          style={[styles.planCard, selectedPlan === 'monthly' && styles.planCardSelected]}
+          accessibilityRole="radio"
+          accessibilityState={{ selected: selectedPlan === 'monthly' }}
+        >
+          <Text style={styles.monthlyPrice}>
+            $7.99<Text style={styles.planPricePer}>/month</Text>
+          </Text>
+          <Text style={styles.monthlySub}>Cancel anytime</Text>
+        </Pressable>
+      </Animated.View>
+
+      {/* CTA */}
+      <Animated.View style={[styles.btnWrap, { opacity: ctaOpacity }]}>
+        <Button
+          title={purchasing ? 'Opening…' : 'Start my 7-day free trial'}
+          onPress={handleStartTrial}
+          disabled={purchasing}
+          fullWidth
+        />
+      </Animated.View>
+
+      {/* Skip — always visible, never guilt-tripped */}
+      <Animated.View style={{ opacity: skipOpacity }}>
+        <Pressable
+          onPress={handleSkip}
+          style={styles.skipRow}
+          accessibilityRole="button"
+          accessibilityLabel="Continue with free plan"
+        >
+          <Text style={styles.skipText}>Continue with free plan</Text>
+        </Pressable>
+      </Animated.View>
+
+      {/* Reassurance */}
+      <Text style={styles.paywallReassurance}>
+        No charge for 7 days. Cancel anytime in App Store or Google Play settings.
+      </Text>
     </ScrollView>
   );
 }
@@ -482,22 +671,25 @@ export default function OnboardingScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      {/* Progress dots */}
-      <View style={styles.progressRow}>
-        {[1, 2, 3, 4, 5].map((i) => (
-          <View
-            key={i}
-            style={[styles.dot, i === step && styles.dotActive, i < step && styles.dotDone]}
-          />
-        ))}
-      </View>
+      {/* Progress dots — hidden on paywall (step 6) */}
+      {step < 6 && (
+        <View style={styles.progressRow}>
+          {[1, 2, 3, 4, 5].map((i) => (
+            <View
+              key={i}
+              style={[styles.dot, i === step && styles.dotActive, i < step && styles.dotDone]}
+            />
+          ))}
+        </View>
+      )}
 
       <Reanimated.View style={[styles.flex, animStyle]}>
         {step === 1 && <Screen1 onNext={next} />}
         {step === 2 && <Screen2 onNext={next} />}
         {step === 3 && <Screen3 onNext={next} />}
         {step === 4 && <Screen4 onNext={next} />}
-        {step === 5 && <Screen5 />}
+        {step === 5 && <Screen5 onNext={next} />}
+        {step === 6 && <Screen6 />}
       </Reanimated.View>
     </SafeAreaView>
   );
@@ -763,9 +955,135 @@ const styles = StyleSheet.create({
   skipRow: { paddingVertical: SPACING.sm },
   skipText: {
     fontFamily: FONTS.body,
-    fontSize: 13,
+    fontSize: 14,
     color: COLORS.textLight,
     textDecorationLine: 'underline',
+    textAlign: 'center',
+  },
+
+  // ── Screen 6 — Paywall
+  paywallContent: {
+    paddingHorizontal: SPACING['2xl'],
+    paddingTop: SPACING['3xl'],
+    paddingBottom: SPACING['5xl'],
+    alignItems: 'center',
+    gap: SPACING.xl,
+  },
+  paywallHeading: {
+    fontFamily: FONTS.display,
+    fontSize: 24,
+    color: COLORS.navy,
+    textAlign: 'center',
+    lineHeight: 34,
+  },
+  paywallSub: {
+    fontFamily: FONTS.scripture,
+    fontSize: 16,
+    color: COLORS.gold,
+    textAlign: 'center',
+    fontStyle: 'italic',
+    lineHeight: 26,
+  },
+  valueProps: { width: '100%', gap: SPACING.md },
+  valuePropRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: SPACING.md,
+  },
+  valuePropCheck: {
+    fontFamily: FONTS.bodyBold,
+    fontSize: 14,
+    color: COLORS.gold,
+    lineHeight: 22,
+  },
+  valuePropText: {
+    fontFamily: FONTS.body,
+    fontSize: 14,
+    color: COLORS.textDark,
+    lineHeight: 22,
+    flex: 1,
+  },
+  planCard: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    borderRadius: BORDER_RADIUS.xl,
+    padding: SPACING.xl,
+    backgroundColor: COLORS.warmWhite,
+    gap: SPACING.xs,
+  },
+  planCardSelected: {
+    borderWidth: 2,
+    borderColor: COLORS.gold,
+    backgroundColor: `${COLORS.gold}0D`,
+    ...SHADOWS.card,
+  },
+  bestValueBadge: {
+    position: 'absolute',
+    top: -12,
+    right: SPACING.lg,
+    backgroundColor: COLORS.gold,
+    borderRadius: BORDER_RADIUS.full,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: 4,
+  },
+  bestValueText: {
+    fontFamily: FONTS.bodyBold,
+    fontSize: 10,
+    color: COLORS.navy,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+  },
+  annualPrice: {
+    fontFamily: FONTS.display,
+    fontSize: 28,
+    color: COLORS.navy,
+    lineHeight: 36,
+  },
+  planPricePer: {
+    fontFamily: FONTS.body,
+    fontSize: 16,
+    color: COLORS.textMedium,
+  },
+  annualSubRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  annualMonthly: {
+    fontFamily: FONTS.body,
+    fontSize: 15,
+    color: COLORS.textMedium,
+  },
+  annualStrike: {
+    fontFamily: FONTS.body,
+    fontSize: 13,
+    color: COLORS.textLight,
+    textDecorationLine: 'line-through',
+  },
+  annualSave: {
+    fontFamily: FONTS.bodyBold,
+    fontSize: 13,
+    color: COLORS.sage,
+  },
+  monthlyPrice: {
+    fontFamily: FONTS.display,
+    fontSize: 20,
+    color: COLORS.navy,
+    lineHeight: 28,
+  },
+  monthlySub: {
+    fontFamily: FONTS.body,
+    fontSize: 12,
+    color: COLORS.textLight,
+  },
+  paywallReassurance: {
+    fontFamily: FONTS.scripture,
+    fontSize: 11,
+    color: COLORS.textLight,
+    textAlign: 'center',
+    fontStyle: 'italic',
+    lineHeight: 18,
+    paddingHorizontal: SPACING.lg,
   },
 
 });
