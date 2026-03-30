@@ -352,7 +352,10 @@ export default function LandingPage() {
             </div>
 
             {/* Premium */}
-            <div className="bg-navy border-2 border-gold rounded-2xl p-7 space-y-5">
+            <div className="bg-navy border-2 border-gold rounded-2xl p-7 space-y-5 relative overflow-hidden">
+              <div className="absolute top-4 right-4 bg-gold text-navy text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg">
+                SAVE 48%
+              </div>
               <p className="font-display text-2xl text-cream">Premium</p>
               <BillingToggle />
               <ul className="space-y-2.5">

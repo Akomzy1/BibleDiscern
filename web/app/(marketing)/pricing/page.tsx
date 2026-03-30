@@ -125,9 +125,10 @@ export default function PricingPage() {
             </div>
 
             {/* Premium */}
-            <div className="bg-navy border-2 border-gold rounded-2xl p-8 space-y-6 relative">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gold text-navy text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full">
-                Most popular
+            <div className="bg-navy border-2 border-gold rounded-2xl p-8 space-y-6 relative overflow-hidden">
+              {/* SAVE 48% ribbon — top-right corner */}
+              <div className="absolute top-4 right-4 bg-gold text-navy text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg">
+                SAVE 48%
               </div>
               <p className="font-display text-2xl text-cream mb-4">Premium</p>
               <BillingToggle />
