@@ -273,7 +273,7 @@ def render_fruit_ui(draw, sx0, sy0, sx1, sy1):
     sw = sx1 - sx0
     pad = 20
     cx = (sx0 + sx1) // 2
-    cy_chart = sy0 + 200
+    cy_chart = sy0 + 250
 
     draw_rounded_rect(draw, [sx0, sy0, sx1, sy0 + 70], radius=0, fill=NAVY)
     draw_text_in_screen(draw, "Fruit Diagnostic", sx0, sx1, sy0 + 18, F_UI_HDR, GOLD)
