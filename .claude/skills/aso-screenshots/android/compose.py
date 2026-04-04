@@ -55,6 +55,13 @@ def draw_text_centered(draw, text, y, font, color, canvas_w=W, shadow=False):
         draw.text((x+3, y+3), text, font=font, fill=(0, 0, 0, 80))
     draw.text((x, y), text, font=font, fill=color)
 
+def draw_text_in_screen(draw, text, x0, x1, y, font, color):
+    """Center text horizontally within the screen region [x0, x1]."""
+    bbox = draw.textbbox((0, 0), text, font=font)
+    tw = bbox[2] - bbox[0]
+    x = x0 + (x1 - x0 - tw) // 2
+    draw.text((x, y), text, font=font, fill=color)
+
 def wrap_text(draw, text, font, max_w, padding=80):
     """Word-wrap text to fit within max_w. Returns list of lines."""
     words = text.split()
@@ -143,7 +150,7 @@ def render_discern_ui(draw, sx0, sy0, sx1, sy1):
 
     # Header bar
     draw_rounded_rect(draw, [sx0, sy0, sx1, sy0 + 70], radius=0, fill=NAVY)
-    draw_text_centered(draw, "The Crossroads", sy0 + 18, F_UI_HDR, GOLD, sw)
+    draw_text_in_screen(draw, "The Crossroads", sx0, sx1, sy0 + 22, F_UI_HDR, GOLD)
 
     # Situation card
     cy = sy0 + 90
@@ -173,7 +180,7 @@ def render_discern_ui(draw, sx0, sy0, sx1, sy1):
     # CTA button
     btn_y = sy1 - 74
     draw_rounded_rect(draw, [sx0 + pad, btn_y, sx1 - pad, btn_y + 50], radius=25, fill=GOLD)
-    draw_text_centered(draw, "Continue Journey", btn_y + 12, F_UI_HDR, NAVY, sw)
+    draw_text_in_screen(draw, "Continue Journey", sx0, sx1, btn_y + 14, F_UI_HDR, NAVY)
 
 
 def render_scale_ui(draw, sx0, sy0, sx1, sy1):
@@ -183,7 +190,7 @@ def render_scale_ui(draw, sx0, sy0, sx1, sy1):
 
     # Header
     draw_rounded_rect(draw, [sx0, sy0, sx1, sy0 + 70], radius=0, fill=NAVY)
-    draw_text_centered(draw, "⚖  The Daily Scale", sy0 + 18, F_UI_HDR, GOLD, sw)
+    draw_text_in_screen(draw, "The Daily Scale", sx0, sx1, sy0 + 22, F_UI_HDR, GOLD)
 
     # Question
     q_y = sy0 + 84
@@ -220,7 +227,7 @@ def render_scale_ui(draw, sx0, sy0, sx1, sy1):
     # CTA
     btn_y = sy1 - 74
     draw_rounded_rect(draw, [sx0 + pad, btn_y, sx1 - pad, btn_y + 50], radius=25, fill=GOLD)
-    draw_text_centered(draw, "Cast My Vote", btn_y + 12, F_UI_HDR, NAVY, sw)
+    draw_text_in_screen(draw, "Cast My Vote", sx0, sx1, btn_y + 14, F_UI_HDR, NAVY)
 
 
 def render_stillness_ui(draw, sx0, sy0, sx1, sy1):
@@ -233,8 +240,8 @@ def render_stillness_ui(draw, sx0, sy0, sx1, sy1):
     draw_rounded_rect(draw, [sx0, sy0, sx1, sy1], radius=40, fill=NAVY)
 
     # Title
-    draw_text_centered(draw, "The Stillness", sy0 + 20, F_UI_HDR, GOLD, sw)
-    draw_text_centered(draw, '"Be still, and know..."', sy0 + 52, F_UI_SM, CREAM, sw)
+    draw_text_in_screen(draw, "The Stillness", sx0, sx1, sy0 + 20, F_UI_HDR, GOLD)
+    draw_text_in_screen(draw, '"Be still, and know..."', sx0, sx1, sy0 + 54, F_UI_SM, CREAM)
 
     # Breathing rings (concentric)
     for r, alpha in [(130, 30), (100, 50), (70, 90)]:
@@ -248,7 +255,7 @@ def render_stillness_ui(draw, sx0, sy0, sx1, sy1):
     draw_cross(draw, cx, cy_screen, 48, GOLD_LT, thickness=5)
 
     # Timer
-    draw_text_centered(draw, "1:24", cy_screen + 148, F_UI_HDR, CREAM, sw)
+    draw_text_in_screen(draw, "1:24", sx0, sx1, cy_screen + 148, F_UI_HDR, CREAM)
 
     # Progress bar
     bar_y = cy_screen + 190
@@ -258,7 +265,7 @@ def render_stillness_ui(draw, sx0, sy0, sx1, sy1):
     draw_rounded_rect(draw, [bar_x, bar_y, bar_x + int(bar_w * 0.65), bar_y + 8], radius=4, fill=GOLD)
 
     # Phase label
-    draw_text_centered(draw, "Inhale slowly...", bar_y + 28, F_UI_SM, CREAM, sw)
+    draw_text_in_screen(draw, "Inhale slowly...", sx0, sx1, bar_y + 28, F_UI_SM, CREAM)
 
 
 def render_fruit_ui(draw, sx0, sy0, sx1, sy1):
@@ -269,7 +276,7 @@ def render_fruit_ui(draw, sx0, sy0, sx1, sy1):
     cy_chart = sy0 + 200
 
     draw_rounded_rect(draw, [sx0, sy0, sx1, sy0 + 70], radius=0, fill=NAVY)
-    draw_text_centered(draw, "Fruit Diagnostic", sy0 + 18, F_UI_HDR, GOLD, sw)
+    draw_text_in_screen(draw, "Fruit Diagnostic", sx0, sx1, sy0 + 18, F_UI_HDR, GOLD)
 
     # Radar/spider chart (simplified polygon)
     fruits = ["Love", "Joy", "Peace", "Patience", "Kindness", "Goodness", "Faithfulness", "Gentleness"]
@@ -330,7 +337,7 @@ def render_journal_ui(draw, sx0, sy0, sx1, sy1):
     pad = 20
 
     draw_rounded_rect(draw, [sx0, sy0, sx1, sy0 + 70], radius=0, fill=NAVY)
-    draw_text_centered(draw, "Your Journey", sy0 + 18, F_UI_HDR, GOLD, sw)
+    draw_text_in_screen(draw, "Your Journey", sx0, sx1, sy0 + 18, F_UI_HDR, GOLD)
 
     entries = [
         ("Mar 28", "Career crossroads", "Proverbs 16:9",
@@ -438,7 +445,7 @@ def build_screenshot(cfg):
 
     # ── Hero line (word-wrapped)
     verb_bbox = draw.textbbox((0, 0), cfg["verb"], font=F_VERB)
-    hero_y = verb_y + (verb_bbox[3] - verb_bbox[1]) + 14
+    hero_y = verb_y + (verb_bbox[3] - verb_bbox[1]) + 40
     sub_y = draw_text_wrapped_centered(draw, cfg["hero"], hero_y, F_HERO, cfg["hero_col"], line_gap=6)
 
     # ── Sub copy (word-wrapped)
