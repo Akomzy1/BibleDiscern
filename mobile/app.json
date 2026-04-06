@@ -9,16 +9,15 @@
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "scheme": "librato",
-    "assetBundlePatterns": ["**/*"],
-
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "icon": "./assets/icon.png",
-
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#FDF6EC"
     },
-
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.biblediscern",
@@ -41,7 +40,6 @@
         "usesNonExemptEncryption": false
       }
     },
-
     "android": {
       "package": "com.biblediscern",
       "versionCode": 1,
@@ -70,7 +68,10 @@
               "pathPrefix": "/upgrade"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ],
       "permissions": [
@@ -79,11 +80,9 @@
         "android.permission.SCHEDULE_EXACT_ALARM"
       ]
     },
-
     "plugins": [
       "expo-router",
       "expo-secure-store",
-   
       [
         "expo-notifications",
         {
@@ -101,15 +100,17 @@
         }
       ]
     ],
-
     "experiments": {
       "typedRoutes": true
     },
-
     "extra": {
       "eas": {
-        "projectId": "YOUR_EAS_PROJECT_ID"
+        "projectId": "da18b8a1-17e6-466a-b283-f8c0702bf599"
+      },
+      "router": {
+        "origin": false
       }
-    }
+    },
+    "owner": "akomzyai"
   }
 }
