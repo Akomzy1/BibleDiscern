@@ -30,20 +30,24 @@ export const ENTITLEMENT_ID = 'premium';
 
 /** Call once in the root layout after auth is initialized. */
 export async function initializePurchases(userId?: string): Promise<void> {
-  const apiKey = Platform.OS === 'ios' ? RC_API_KEY_IOS : RC_API_KEY_ANDROID;
-  if (!apiKey) {
-    if (__DEV__) console.warn('[Purchases] No RevenueCat API key configured.');
-    return;
-  }
+  try {
+    const apiKey = Platform.OS === 'ios' ? RC_API_KEY_IOS : RC_API_KEY_ANDROID;
+    if (!apiKey) {
+      console.warn('[Purchases] No RevenueCat API key configured — IAP disabled.');
+      return;
+    }
 
-  if (__DEV__) {
-    Purchases.setLogLevel(LOG_LEVEL.DEBUG);
-  }
+    if (__DEV__) {
+      Purchases.setLogLevel(LOG_LEVEL.DEBUG);
+    }
 
-  Purchases.configure({ apiKey });
+    Purchases.configure({ apiKey });
 
-  if (userId) {
-    await Purchases.logIn(userId);
+    if (userId) {
+      await Purchases.logIn(userId);
+    }
+  } catch (e) {
+    console.error('[Purchases] initializePurchases failed — IAP disabled.', e);
   }
 }
 
