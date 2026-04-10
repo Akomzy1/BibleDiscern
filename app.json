@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "da18b8a1-17e6-466a-b283-f8c0702bf599"
+      }
+    },
+    "android": {
+      "package": "com.biblediscern"
+    }
+  }
+}
