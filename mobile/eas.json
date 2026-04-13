@@ -36,7 +36,7 @@
       "env": {
         "EXPO_PUBLIC_SUPABASE_URL": "https://omfmlrsyvkkwwouwhgcu.supabase.co",
         "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9tZm1scnN5dmtrd3dvdXdoZ2N1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDM1NjIsImV4cCI6MjA4OTYxOTU2Mn0.pi7VOpL8q2MSoEsuk1ooH-_71eMAcahzlbegIHif6ys",
-        "EXPO_PUBLIC_API_URL": "https://librato.ai",
+        "EXPO_PUBLIC_API_URL": "https://librato-ai-web.vercel.app",
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_ZbDvSKMuENgOlJbUjgTRyLplmDg"
       }
     },
