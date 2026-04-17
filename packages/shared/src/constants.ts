@@ -153,7 +153,7 @@ export const CACHE_TTL = {
 // ─────────────────────────────────────────────
 
 export const API_TIMEOUT = {
-  discern: 30_000,   // 30s — Claude AI processing
+  discern: 60_000,   // 60s — Claude AI processing (matches Vercel maxDuration)
   default: 10_000,   // 10s — all other requests
 } as const;
 

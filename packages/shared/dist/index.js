@@ -153,8 +153,8 @@ var CACHE_TTL = {
   // 30 minutes
 };
 var API_TIMEOUT = {
-  discern: 3e4,
-  // 30s — Claude AI processing
+  discern: 6e4,
+  // 60s — Claude AI processing (matches Vercel maxDuration)
   default: 1e4
   // 10s — all other requests
 };

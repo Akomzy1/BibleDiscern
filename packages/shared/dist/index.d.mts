@@ -297,7 +297,7 @@ declare const CACHE_TTL: {
     readonly profile: number;
 };
 declare const API_TIMEOUT: {
-    readonly discern: 30000;
+    readonly discern: 60000;
     readonly default: 10000;
 };
 declare const STILLNESS: {
