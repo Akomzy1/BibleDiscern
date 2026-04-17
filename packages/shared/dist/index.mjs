@@ -298,54 +298,73 @@ var LibratoApiClient = class {
   }
   // ─── Sessions ───────────────────────────────
   async getSessions() {
-    return this.request("/api/sessions");
+    const res = await this.request("/api/sessions");
+    return res.sessions ?? [];
   }
   async getSession(id) {
-    return this.request(`/api/sessions/${id}`);
+    const res = await this.request(`/api/sessions/${id}`);
+    return res.session;
   }
   async updateSession(id, data) {
-    return this.request(`/api/sessions/${id}`, {
+    const res = await this.request(`/api/sessions/${id}`, {
       method: "PATCH",
       body: data
     });
+    return res.session;
   }
   // ─── Journal ────────────────────────────────
   async getJournal() {
-    return this.request("/api/journal");
+    const res = await this.request("/api/journal");
+    return res.entries ?? [];
   }
   async getJournalEntry(id) {
-    return this.request(`/api/journal/${id}`);
+    const res = await this.request(`/api/journal/${id}`);
+    return res.entry;
   }
   async createJournalEntry(data) {
-    return this.request("/api/journal", {
+    const res = await this.request("/api/journal", {
       method: "POST",
       body: data
     });
+    return res.entry;
   }
   // ─── Profile ────────────────────────────────
   async getProfile() {
-    return this.request("/api/profile");
+    const res = await this.request("/api/profile");
+    return res.profile;
   }
   async updateProfile(data) {
-    return this.request("/api/profile", {
+    const res = await this.request("/api/profile", {
       method: "PATCH",
       body: data
     });
+    return res.profile;
   }
   // ─── Subscription ───────────────────────────
   async getSubscription() {
-    return this.request("/api/subscription");
+    try {
+      const res = await this.request("/api/subscription");
+      return res.subscription ?? null;
+    } catch (e) {
+      if (e instanceof LibratoApiError && e.status === 404) return null;
+      throw e;
+    }
   }
   /** Validate an Apple or Google receipt and upgrade the subscription if valid */
   async validateReceipt(receipt, platform, product_id) {
-    return this.request("/api/subscription/validate-receipt", {
-      method: "POST",
-      body: { receipt, platform, product_id }
-    });
+    const res = await this.request(
+      "/api/subscription/validate-receipt",
+      {
+        method: "POST",
+        body: { receipt, platform, product_id }
+      }
+    );
+    return res.subscription;
   }
   // ─── Daily Moment ───────────────────────────
   async getDailyMoment() {
-    return this.request("/api/daily-moment");
+    const res = await this.request("/api/daily-moment");
+    return res.moment;
   }
   // ─── Daily Scale ─────────────────────────────
   async getDailyScale() {
@@ -358,7 +377,10 @@ var LibratoApiClient = class {
     });
   }
   async getScaleHistory() {
-    return this.request("/api/daily-scale/history");
+    const res = await this.request(
+      "/api/daily-scale/history"
+    );
+    return res.history ?? [];
   }
 };
 function createApiClient(baseUrl, authToken) {

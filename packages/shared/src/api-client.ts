@@ -7,7 +7,6 @@ import type {
   DailyMoment,
   DailyScaleResponse,
   DailyScaleHistoryEntry,
-  DiscernmentResponse,
   DiscernSessionRequest,
   UpdateSessionRequest,
   CreateJournalEntryRequest,
@@ -145,7 +144,7 @@ export class LibratoApiClient {
   async discern(
     situation: string,
     tone: DiscernSessionRequest['tone'],
-  ): Promise<{ sessionId: string; response: DiscernmentResponse }> {
+  ): Promise<{ sessionId: string; session: Session }> {
     return this.request('/api/discern', {
       method: 'POST',
       body: { situation, tone } satisfies DiscernSessionRequest,
@@ -156,54 +155,68 @@ export class LibratoApiClient {
   // ─── Sessions ───────────────────────────────
 
   async getSessions(): Promise<Session[]> {
-    return this.request<Session[]>('/api/sessions');
+    const res = await this.request<{ sessions: Session[] }>('/api/sessions');
+    return res.sessions ?? [];
   }
 
   async getSession(id: string): Promise<Session> {
-    return this.request<Session>(`/api/sessions/${id}`);
+    const res = await this.request<{ session: Session }>(`/api/sessions/${id}`);
+    return res.session;
   }
 
   async updateSession(id: string, data: UpdateSessionRequest): Promise<Session> {
-    return this.request<Session>(`/api/sessions/${id}`, {
+    const res = await this.request<{ session: Session }>(`/api/sessions/${id}`, {
       method: 'PATCH',
       body: data,
     });
+    return res.session;
   }
 
   // ─── Journal ────────────────────────────────
 
   async getJournal(): Promise<JournalEntry[]> {
-    return this.request<JournalEntry[]>('/api/journal');
+    const res = await this.request<{ entries: JournalEntry[] }>('/api/journal');
+    return res.entries ?? [];
   }
 
   async getJournalEntry(id: string): Promise<JournalEntry> {
-    return this.request<JournalEntry>(`/api/journal/${id}`);
+    const res = await this.request<{ entry: JournalEntry }>(`/api/journal/${id}`);
+    return res.entry;
   }
 
   async createJournalEntry(data: CreateJournalEntryRequest): Promise<JournalEntry> {
-    return this.request<JournalEntry>('/api/journal', {
+    const res = await this.request<{ entry: JournalEntry }>('/api/journal', {
       method: 'POST',
       body: data,
     });
+    return res.entry;
   }
 
   // ─── Profile ────────────────────────────────
 
   async getProfile(): Promise<Profile> {
-    return this.request<Profile>('/api/profile');
+    const res = await this.request<{ profile: Profile }>('/api/profile');
+    return res.profile;
   }
 
   async updateProfile(data: UpdateProfileRequest): Promise<Profile> {
-    return this.request<Profile>('/api/profile', {
+    const res = await this.request<{ profile: Profile }>('/api/profile', {
       method: 'PATCH',
       body: data,
     });
+    return res.profile;
   }
 
   // ─── Subscription ───────────────────────────
 
-  async getSubscription(): Promise<Subscription> {
-    return this.request<Subscription>('/api/subscription');
+  async getSubscription(): Promise<Subscription | null> {
+    try {
+      const res = await this.request<{ subscription: Subscription }>('/api/subscription');
+      return res.subscription ?? null;
+    } catch (e) {
+      if (e instanceof LibratoApiError && e.status === 404) return null;
+      throw e;
+    }
   }
 
   /** Validate an Apple or Google receipt and upgrade the subscription if valid */
@@ -212,16 +225,21 @@ export class LibratoApiClient {
     platform: ValidateReceiptRequest['platform'],
     product_id: string,
   ): Promise<Subscription> {
-    return this.request<Subscription>('/api/subscription/validate-receipt', {
-      method: 'POST',
-      body: { receipt, platform, product_id } satisfies ValidateReceiptRequest,
-    });
+    const res = await this.request<{ subscription: Subscription }>(
+      '/api/subscription/validate-receipt',
+      {
+        method: 'POST',
+        body: { receipt, platform, product_id } satisfies ValidateReceiptRequest,
+      },
+    );
+    return res.subscription;
   }
 
   // ─── Daily Moment ───────────────────────────
 
   async getDailyMoment(): Promise<DailyMoment> {
-    return this.request<DailyMoment>('/api/daily-moment');
+    const res = await this.request<{ moment: DailyMoment }>('/api/daily-moment');
+    return res.moment;
   }
 
   // ─── Daily Scale ─────────────────────────────
@@ -238,7 +256,10 @@ export class LibratoApiClient {
   }
 
   async getScaleHistory(): Promise<DailyScaleHistoryEntry[]> {
-    return this.request<DailyScaleHistoryEntry[]>('/api/daily-scale/history');
+    const res = await this.request<{ history: DailyScaleHistoryEntry[] }>(
+      '/api/daily-scale/history',
+    );
+    return res.history ?? [];
   }
 }
 

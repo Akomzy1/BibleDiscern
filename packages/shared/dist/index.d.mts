@@ -795,7 +795,7 @@ declare class LibratoApiClient {
     /** Submit a new discernment session. Uses extended 30s timeout for Claude. */
     discern(situation: string, tone: DiscernSessionRequest['tone']): Promise<{
         sessionId: string;
-        response: DiscernmentResponse;
+        session: Session;
     }>;
     getSessions(): Promise<Session[]>;
     getSession(id: string): Promise<Session>;
@@ -805,7 +805,7 @@ declare class LibratoApiClient {
     createJournalEntry(data: CreateJournalEntryRequest): Promise<JournalEntry>;
     getProfile(): Promise<Profile>;
     updateProfile(data: UpdateProfileRequest): Promise<Profile>;
-    getSubscription(): Promise<Subscription>;
+    getSubscription(): Promise<Subscription | null>;
     /** Validate an Apple or Google receipt and upgrade the subscription if valid */
     validateReceipt(receipt: string, platform: ValidateReceiptRequest['platform'], product_id: string): Promise<Subscription>;
     getDailyMoment(): Promise<DailyMoment>;

@@ -40,9 +40,7 @@ export const useSessionStore = create<SessionState>()((set, get) => ({
   createSession: async (situation, tone) => {
     set({ isCreating: true });
     try {
-      const result = await apiClient.discern(situation, tone);
-      // The discern endpoint returns { sessionId, session }
-      const session = (result as any).session as Session;
+      const { session } = await apiClient.discern(situation, tone);
       set((state) => ({
         currentSession: session,
         sessions: [session, ...state.sessions],
