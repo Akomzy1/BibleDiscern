@@ -60,8 +60,8 @@ export default function SettingsScreen() {
   const [editingName, setEditingName] = useState(false);
   const [savingName, setSavingName] = useState(false);
 
-  // Notifications
-  const [notificationsOn, setNotificationsOn] = useState(false);
+  // Notifications — default ON so the Daily Moment is enabled out of the box
+  const [notificationsOn, setNotificationsOn] = useState(true);
   const [notifTime, setNotifTime] = useState('08:00');
   const [savingNotif, setSavingNotif] = useState(false);
 
@@ -76,7 +76,10 @@ export default function SettingsScreen() {
       const p = await apiClient.getProfile();
       setProfile(p);
       setDisplayName(p.display_name ?? p.full_name ?? '');
-      setNotificationsOn(!!p.expo_push_token);
+      // Keep the Daily Moment toggle ON by default. Only reflect the profile
+      // when a push token already exists — absence of a token means the
+      // user hasn't registered yet, not that they explicitly opted out.
+      if (p.expo_push_token) setNotificationsOn(true);
       setNotifTime(p.daily_moment_time ?? '08:00');
     } catch {
       // non-fatal

@@ -10,9 +10,11 @@ import {
   Alert,
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
+import { router } from 'expo-router';
 import type { DiscernmentResponse } from '@librato/shared';
 import { apiClient } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { COLORS, FONTS, SPACING, BORDER_RADIUS } from '@/constants/theme';
 
 interface StepPrayerProps {
@@ -128,6 +130,18 @@ export function StepPrayer({ response, sessionId, stillnessNote }: StepPrayerPro
               )}
             </Animated.View>
           </Pressable>
+
+          {saved && (
+            <Button
+              title="Return Home"
+              onPress={async () => {
+                await Haptics.selectionAsync();
+                router.replace('/(tabs)');
+              }}
+              fullWidth
+              variant="secondary"
+            />
+          )}
         </View>
       </Animated.View>
     </ScrollView>
