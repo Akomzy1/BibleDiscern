@@ -21,6 +21,7 @@ import {
 } from '@expo-google-fonts/source-sans-3';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { initializePurchases, identifyUser } from '@/lib/purchases';
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -91,21 +92,23 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(auth)" />
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen
-        name="discern/[sessionId]"
-        options={{ headerShown: false, animation: 'slide_from_right' }}
-      />
-      <Stack.Screen
-        name="journal/[entryId]"
-        options={{ headerShown: false, animation: 'slide_from_right' }}
-      />
-      <Stack.Screen
-        name="upgrade"
-        options={{ presentation: 'modal', headerShown: false }}
-      />
-    </Stack>
+    <ErrorBoundary>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen
+          name="discern/[sessionId]"
+          options={{ headerShown: false, animation: 'slide_from_right' }}
+        />
+        <Stack.Screen
+          name="journal/[entryId]"
+          options={{ headerShown: false, animation: 'slide_from_right' }}
+        />
+        <Stack.Screen
+          name="upgrade"
+          options={{ presentation: 'modal', headerShown: false }}
+        />
+      </Stack>
+    </ErrorBoundary>
   );
 }
