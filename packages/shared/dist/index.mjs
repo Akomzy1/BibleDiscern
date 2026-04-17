@@ -146,16 +146,23 @@ var ScriptureSchema = z.object({
   text: z.string().min(1),
   context: z.string().min(1)
 });
+var FruitValueSchema = z.union([
+  z.string().min(1),
+  z.object({
+    score: z.number().min(0).max(10),
+    note: z.string().min(1)
+  })
+]);
 var FruitDiagnosticSchema = z.object({
-  love: z.string().min(1),
-  joy: z.string().min(1),
-  peace: z.string().min(1),
-  patience: z.string().min(1),
-  kindness: z.string().min(1),
-  goodness: z.string().min(1),
-  faithfulness: z.string().min(1),
-  gentleness: z.string().min(1),
-  selfControl: z.string().min(1)
+  love: FruitValueSchema,
+  joy: FruitValueSchema,
+  peace: FruitValueSchema,
+  patience: FruitValueSchema,
+  kindness: FruitValueSchema,
+  goodness: FruitValueSchema,
+  faithfulness: FruitValueSchema,
+  gentleness: FruitValueSchema,
+  selfControl: FruitValueSchema
 });
 var DiscernmentResponseSchema = z.object({
   summary: z.string().min(1),

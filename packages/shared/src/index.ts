@@ -3,6 +3,7 @@ export type {
   Profile,
   Session,
   DiscernmentResponse,
+  FruitValue,
   JournalEntry,
   Subscription,
   DailyMoment,

@@ -39,6 +39,10 @@ export interface Session {
   completed_at: string | null;
 }
 
+// Fruit diagnostic value: either a legacy observation string or a structured
+// {score, note}. Front-end coerces both into a numeric score for charting.
+export type FruitValue = string | { score: number; note: string };
+
 export interface DiscernmentResponse {
   summary: string;
   biblicalNarratives: {
@@ -54,15 +58,15 @@ export interface DiscernmentResponse {
   }[];
   examination: string[];
   fruitDiagnostic: {
-    love: string;
-    joy: string;
-    peace: string;
-    patience: string;
-    kindness: string;
-    goodness: string;
-    faithfulness: string;
-    gentleness: string;
-    selfControl: string;
+    love: FruitValue;
+    joy: FruitValue;
+    peace: FruitValue;
+    patience: FruitValue;
+    kindness: FruitValue;
+    goodness: FruitValue;
+    faithfulness: FruitValue;
+    gentleness: FruitValue;
+    selfControl: FruitValue;
   };
   prayer: string;
   closingWord: string;

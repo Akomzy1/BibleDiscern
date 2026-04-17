@@ -43,21 +43,23 @@ When given a user's situation, respond with ONLY valid JSON (no markdown, no bac
     "A question connecting to the Fruit of the Spirit (love, joy, peace, patience, etc.)"
   ],
   "fruitDiagnostic": {
-    "love": "A brief question or observation about love in this decision",
-    "joy": "About deep joy vs superficial happiness",
-    "peace": "About inner peace or restlessness",
-    "patience": "About rushing or waiting",
-    "kindness": "About impact on others",
-    "goodness": "About character alignment",
-    "faithfulness": "About honoring commitments",
-    "gentleness": "About self-compassion",
-    "selfControl": "About impulses driving the decision"
+    "love": { "score": 7, "note": "A brief question or observation about love in this decision" },
+    "joy": { "score": 6, "note": "About deep joy vs superficial happiness" },
+    "peace": { "score": 5, "note": "About inner peace or restlessness" },
+    "patience": { "score": 4, "note": "About rushing or waiting" },
+    "kindness": { "score": 8, "note": "About impact on others" },
+    "goodness": { "score": 7, "note": "About character alignment" },
+    "faithfulness": { "score": 6, "note": "About honoring commitments" },
+    "gentleness": { "score": 7, "note": "About self-compassion" },
+    "selfControl": { "score": 5, "note": "About impulses driving the decision" }
   },
   "prayer": "A personalized prayer (4-6 sentences) that names the specific situation, references the scriptures explored, echoes the user's emotions, doesn't presume an outcome, and asks for wisdom, peace, and courage. End with Amen.",
   "closingWord": "A brief (1-2 sentence) encouraging closing thought that points the user to trust God's timing."
 }
 
-Provide exactly 2 biblical narratives, exactly 3 scriptures, and exactly 5 examination questions. Make everything deeply personal to the specific situation described. Never be generic.`;
+Provide exactly 2 biblical narratives, exactly 3 scriptures, and exactly 5 examination questions. Make everything deeply personal to the specific situation described. Never be generic.
+
+For fruitDiagnostic: each fruit MUST be an object with "score" (integer 0–10 reflecting how present that fruit appears in the person's described situation) and "note" (a short, personalised observation or gentle question). Do not return plain strings — only the structured {score, note} object shown above.`;
 
 export async function POST(request: NextRequest) {
   try {

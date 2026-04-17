@@ -35,6 +35,10 @@ interface Session {
     created_at: string;
     completed_at: string | null;
 }
+type FruitValue = string | {
+    score: number;
+    note: string;
+};
 interface DiscernmentResponse {
     summary: string;
     biblicalNarratives: {
@@ -50,15 +54,15 @@ interface DiscernmentResponse {
     }[];
     examination: string[];
     fruitDiagnostic: {
-        love: string;
-        joy: string;
-        peace: string;
-        patience: string;
-        kindness: string;
-        goodness: string;
-        faithfulness: string;
-        gentleness: string;
-        selfControl: string;
+        love: FruitValue;
+        joy: FruitValue;
+        peace: FruitValue;
+        patience: FruitValue;
+        kindness: FruitValue;
+        goodness: FruitValue;
+        faithfulness: FruitValue;
+        gentleness: FruitValue;
+        selfControl: FruitValue;
     };
     prayer: string;
     closingWord: string;
@@ -342,35 +346,170 @@ declare const ScriptureSchema: z.ZodObject<{
     context: string;
 }>;
 declare const FruitDiagnosticSchema: z.ZodObject<{
-    love: z.ZodString;
-    joy: z.ZodString;
-    peace: z.ZodString;
-    patience: z.ZodString;
-    kindness: z.ZodString;
-    goodness: z.ZodString;
-    faithfulness: z.ZodString;
-    gentleness: z.ZodString;
-    selfControl: z.ZodString;
+    love: z.ZodUnion<[z.ZodString, z.ZodObject<{
+        score: z.ZodNumber;
+        note: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        score: number;
+        note: string;
+    }, {
+        score: number;
+        note: string;
+    }>]>;
+    joy: z.ZodUnion<[z.ZodString, z.ZodObject<{
+        score: z.ZodNumber;
+        note: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        score: number;
+        note: string;
+    }, {
+        score: number;
+        note: string;
+    }>]>;
+    peace: z.ZodUnion<[z.ZodString, z.ZodObject<{
+        score: z.ZodNumber;
+        note: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        score: number;
+        note: string;
+    }, {
+        score: number;
+        note: string;
+    }>]>;
+    patience: z.ZodUnion<[z.ZodString, z.ZodObject<{
+        score: z.ZodNumber;
+        note: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        score: number;
+        note: string;
+    }, {
+        score: number;
+        note: string;
+    }>]>;
+    kindness: z.ZodUnion<[z.ZodString, z.ZodObject<{
+        score: z.ZodNumber;
+        note: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        score: number;
+        note: string;
+    }, {
+        score: number;
+        note: string;
+    }>]>;
+    goodness: z.ZodUnion<[z.ZodString, z.ZodObject<{
+        score: z.ZodNumber;
+        note: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        score: number;
+        note: string;
+    }, {
+        score: number;
+        note: string;
+    }>]>;
+    faithfulness: z.ZodUnion<[z.ZodString, z.ZodObject<{
+        score: z.ZodNumber;
+        note: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        score: number;
+        note: string;
+    }, {
+        score: number;
+        note: string;
+    }>]>;
+    gentleness: z.ZodUnion<[z.ZodString, z.ZodObject<{
+        score: z.ZodNumber;
+        note: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        score: number;
+        note: string;
+    }, {
+        score: number;
+        note: string;
+    }>]>;
+    selfControl: z.ZodUnion<[z.ZodString, z.ZodObject<{
+        score: z.ZodNumber;
+        note: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        score: number;
+        note: string;
+    }, {
+        score: number;
+        note: string;
+    }>]>;
 }, "strip", z.ZodTypeAny, {
-    love: string;
-    joy: string;
-    peace: string;
-    patience: string;
-    kindness: string;
-    goodness: string;
-    faithfulness: string;
-    gentleness: string;
-    selfControl: string;
+    love: string | {
+        score: number;
+        note: string;
+    };
+    joy: string | {
+        score: number;
+        note: string;
+    };
+    peace: string | {
+        score: number;
+        note: string;
+    };
+    patience: string | {
+        score: number;
+        note: string;
+    };
+    kindness: string | {
+        score: number;
+        note: string;
+    };
+    goodness: string | {
+        score: number;
+        note: string;
+    };
+    faithfulness: string | {
+        score: number;
+        note: string;
+    };
+    gentleness: string | {
+        score: number;
+        note: string;
+    };
+    selfControl: string | {
+        score: number;
+        note: string;
+    };
 }, {
-    love: string;
-    joy: string;
-    peace: string;
-    patience: string;
-    kindness: string;
-    goodness: string;
-    faithfulness: string;
-    gentleness: string;
-    selfControl: string;
+    love: string | {
+        score: number;
+        note: string;
+    };
+    joy: string | {
+        score: number;
+        note: string;
+    };
+    peace: string | {
+        score: number;
+        note: string;
+    };
+    patience: string | {
+        score: number;
+        note: string;
+    };
+    kindness: string | {
+        score: number;
+        note: string;
+    };
+    goodness: string | {
+        score: number;
+        note: string;
+    };
+    faithfulness: string | {
+        score: number;
+        note: string;
+    };
+    gentleness: string | {
+        score: number;
+        note: string;
+    };
+    selfControl: string | {
+        score: number;
+        note: string;
+    };
 }>;
 declare const DiscernmentResponseSchema: z.ZodObject<{
     summary: z.ZodString;
@@ -405,35 +544,170 @@ declare const DiscernmentResponseSchema: z.ZodObject<{
     }>, "many">;
     examination: z.ZodArray<z.ZodString, "many">;
     fruitDiagnostic: z.ZodObject<{
-        love: z.ZodString;
-        joy: z.ZodString;
-        peace: z.ZodString;
-        patience: z.ZodString;
-        kindness: z.ZodString;
-        goodness: z.ZodString;
-        faithfulness: z.ZodString;
-        gentleness: z.ZodString;
-        selfControl: z.ZodString;
+        love: z.ZodUnion<[z.ZodString, z.ZodObject<{
+            score: z.ZodNumber;
+            note: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            score: number;
+            note: string;
+        }, {
+            score: number;
+            note: string;
+        }>]>;
+        joy: z.ZodUnion<[z.ZodString, z.ZodObject<{
+            score: z.ZodNumber;
+            note: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            score: number;
+            note: string;
+        }, {
+            score: number;
+            note: string;
+        }>]>;
+        peace: z.ZodUnion<[z.ZodString, z.ZodObject<{
+            score: z.ZodNumber;
+            note: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            score: number;
+            note: string;
+        }, {
+            score: number;
+            note: string;
+        }>]>;
+        patience: z.ZodUnion<[z.ZodString, z.ZodObject<{
+            score: z.ZodNumber;
+            note: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            score: number;
+            note: string;
+        }, {
+            score: number;
+            note: string;
+        }>]>;
+        kindness: z.ZodUnion<[z.ZodString, z.ZodObject<{
+            score: z.ZodNumber;
+            note: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            score: number;
+            note: string;
+        }, {
+            score: number;
+            note: string;
+        }>]>;
+        goodness: z.ZodUnion<[z.ZodString, z.ZodObject<{
+            score: z.ZodNumber;
+            note: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            score: number;
+            note: string;
+        }, {
+            score: number;
+            note: string;
+        }>]>;
+        faithfulness: z.ZodUnion<[z.ZodString, z.ZodObject<{
+            score: z.ZodNumber;
+            note: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            score: number;
+            note: string;
+        }, {
+            score: number;
+            note: string;
+        }>]>;
+        gentleness: z.ZodUnion<[z.ZodString, z.ZodObject<{
+            score: z.ZodNumber;
+            note: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            score: number;
+            note: string;
+        }, {
+            score: number;
+            note: string;
+        }>]>;
+        selfControl: z.ZodUnion<[z.ZodString, z.ZodObject<{
+            score: z.ZodNumber;
+            note: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            score: number;
+            note: string;
+        }, {
+            score: number;
+            note: string;
+        }>]>;
     }, "strip", z.ZodTypeAny, {
-        love: string;
-        joy: string;
-        peace: string;
-        patience: string;
-        kindness: string;
-        goodness: string;
-        faithfulness: string;
-        gentleness: string;
-        selfControl: string;
+        love: string | {
+            score: number;
+            note: string;
+        };
+        joy: string | {
+            score: number;
+            note: string;
+        };
+        peace: string | {
+            score: number;
+            note: string;
+        };
+        patience: string | {
+            score: number;
+            note: string;
+        };
+        kindness: string | {
+            score: number;
+            note: string;
+        };
+        goodness: string | {
+            score: number;
+            note: string;
+        };
+        faithfulness: string | {
+            score: number;
+            note: string;
+        };
+        gentleness: string | {
+            score: number;
+            note: string;
+        };
+        selfControl: string | {
+            score: number;
+            note: string;
+        };
     }, {
-        love: string;
-        joy: string;
-        peace: string;
-        patience: string;
-        kindness: string;
-        goodness: string;
-        faithfulness: string;
-        gentleness: string;
-        selfControl: string;
+        love: string | {
+            score: number;
+            note: string;
+        };
+        joy: string | {
+            score: number;
+            note: string;
+        };
+        peace: string | {
+            score: number;
+            note: string;
+        };
+        patience: string | {
+            score: number;
+            note: string;
+        };
+        kindness: string | {
+            score: number;
+            note: string;
+        };
+        goodness: string | {
+            score: number;
+            note: string;
+        };
+        faithfulness: string | {
+            score: number;
+            note: string;
+        };
+        gentleness: string | {
+            score: number;
+            note: string;
+        };
+        selfControl: string | {
+            score: number;
+            note: string;
+        };
     }>;
     prayer: z.ZodString;
     closingWord: z.ZodString;
@@ -453,15 +727,42 @@ declare const DiscernmentResponseSchema: z.ZodObject<{
         context: string;
     }[];
     fruitDiagnostic: {
-        love: string;
-        joy: string;
-        peace: string;
-        patience: string;
-        kindness: string;
-        goodness: string;
-        faithfulness: string;
-        gentleness: string;
-        selfControl: string;
+        love: string | {
+            score: number;
+            note: string;
+        };
+        joy: string | {
+            score: number;
+            note: string;
+        };
+        peace: string | {
+            score: number;
+            note: string;
+        };
+        patience: string | {
+            score: number;
+            note: string;
+        };
+        kindness: string | {
+            score: number;
+            note: string;
+        };
+        goodness: string | {
+            score: number;
+            note: string;
+        };
+        faithfulness: string | {
+            score: number;
+            note: string;
+        };
+        gentleness: string | {
+            score: number;
+            note: string;
+        };
+        selfControl: string | {
+            score: number;
+            note: string;
+        };
     };
     closingWord: string;
 }, {
@@ -480,15 +781,42 @@ declare const DiscernmentResponseSchema: z.ZodObject<{
         context: string;
     }[];
     fruitDiagnostic: {
-        love: string;
-        joy: string;
-        peace: string;
-        patience: string;
-        kindness: string;
-        goodness: string;
-        faithfulness: string;
-        gentleness: string;
-        selfControl: string;
+        love: string | {
+            score: number;
+            note: string;
+        };
+        joy: string | {
+            score: number;
+            note: string;
+        };
+        peace: string | {
+            score: number;
+            note: string;
+        };
+        patience: string | {
+            score: number;
+            note: string;
+        };
+        kindness: string | {
+            score: number;
+            note: string;
+        };
+        goodness: string | {
+            score: number;
+            note: string;
+        };
+        faithfulness: string | {
+            score: number;
+            note: string;
+        };
+        gentleness: string | {
+            score: number;
+            note: string;
+        };
+        selfControl: string | {
+            score: number;
+            note: string;
+        };
     };
     closingWord: string;
 }>;
@@ -537,35 +865,170 @@ declare const DiscernSessionResponseSchema: z.ZodObject<{
         }>, "many">;
         examination: z.ZodArray<z.ZodString, "many">;
         fruitDiagnostic: z.ZodObject<{
-            love: z.ZodString;
-            joy: z.ZodString;
-            peace: z.ZodString;
-            patience: z.ZodString;
-            kindness: z.ZodString;
-            goodness: z.ZodString;
-            faithfulness: z.ZodString;
-            gentleness: z.ZodString;
-            selfControl: z.ZodString;
+            love: z.ZodUnion<[z.ZodString, z.ZodObject<{
+                score: z.ZodNumber;
+                note: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                score: number;
+                note: string;
+            }, {
+                score: number;
+                note: string;
+            }>]>;
+            joy: z.ZodUnion<[z.ZodString, z.ZodObject<{
+                score: z.ZodNumber;
+                note: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                score: number;
+                note: string;
+            }, {
+                score: number;
+                note: string;
+            }>]>;
+            peace: z.ZodUnion<[z.ZodString, z.ZodObject<{
+                score: z.ZodNumber;
+                note: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                score: number;
+                note: string;
+            }, {
+                score: number;
+                note: string;
+            }>]>;
+            patience: z.ZodUnion<[z.ZodString, z.ZodObject<{
+                score: z.ZodNumber;
+                note: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                score: number;
+                note: string;
+            }, {
+                score: number;
+                note: string;
+            }>]>;
+            kindness: z.ZodUnion<[z.ZodString, z.ZodObject<{
+                score: z.ZodNumber;
+                note: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                score: number;
+                note: string;
+            }, {
+                score: number;
+                note: string;
+            }>]>;
+            goodness: z.ZodUnion<[z.ZodString, z.ZodObject<{
+                score: z.ZodNumber;
+                note: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                score: number;
+                note: string;
+            }, {
+                score: number;
+                note: string;
+            }>]>;
+            faithfulness: z.ZodUnion<[z.ZodString, z.ZodObject<{
+                score: z.ZodNumber;
+                note: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                score: number;
+                note: string;
+            }, {
+                score: number;
+                note: string;
+            }>]>;
+            gentleness: z.ZodUnion<[z.ZodString, z.ZodObject<{
+                score: z.ZodNumber;
+                note: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                score: number;
+                note: string;
+            }, {
+                score: number;
+                note: string;
+            }>]>;
+            selfControl: z.ZodUnion<[z.ZodString, z.ZodObject<{
+                score: z.ZodNumber;
+                note: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                score: number;
+                note: string;
+            }, {
+                score: number;
+                note: string;
+            }>]>;
         }, "strip", z.ZodTypeAny, {
-            love: string;
-            joy: string;
-            peace: string;
-            patience: string;
-            kindness: string;
-            goodness: string;
-            faithfulness: string;
-            gentleness: string;
-            selfControl: string;
+            love: string | {
+                score: number;
+                note: string;
+            };
+            joy: string | {
+                score: number;
+                note: string;
+            };
+            peace: string | {
+                score: number;
+                note: string;
+            };
+            patience: string | {
+                score: number;
+                note: string;
+            };
+            kindness: string | {
+                score: number;
+                note: string;
+            };
+            goodness: string | {
+                score: number;
+                note: string;
+            };
+            faithfulness: string | {
+                score: number;
+                note: string;
+            };
+            gentleness: string | {
+                score: number;
+                note: string;
+            };
+            selfControl: string | {
+                score: number;
+                note: string;
+            };
         }, {
-            love: string;
-            joy: string;
-            peace: string;
-            patience: string;
-            kindness: string;
-            goodness: string;
-            faithfulness: string;
-            gentleness: string;
-            selfControl: string;
+            love: string | {
+                score: number;
+                note: string;
+            };
+            joy: string | {
+                score: number;
+                note: string;
+            };
+            peace: string | {
+                score: number;
+                note: string;
+            };
+            patience: string | {
+                score: number;
+                note: string;
+            };
+            kindness: string | {
+                score: number;
+                note: string;
+            };
+            goodness: string | {
+                score: number;
+                note: string;
+            };
+            faithfulness: string | {
+                score: number;
+                note: string;
+            };
+            gentleness: string | {
+                score: number;
+                note: string;
+            };
+            selfControl: string | {
+                score: number;
+                note: string;
+            };
         }>;
         prayer: z.ZodString;
         closingWord: z.ZodString;
@@ -585,15 +1048,42 @@ declare const DiscernSessionResponseSchema: z.ZodObject<{
             context: string;
         }[];
         fruitDiagnostic: {
-            love: string;
-            joy: string;
-            peace: string;
-            patience: string;
-            kindness: string;
-            goodness: string;
-            faithfulness: string;
-            gentleness: string;
-            selfControl: string;
+            love: string | {
+                score: number;
+                note: string;
+            };
+            joy: string | {
+                score: number;
+                note: string;
+            };
+            peace: string | {
+                score: number;
+                note: string;
+            };
+            patience: string | {
+                score: number;
+                note: string;
+            };
+            kindness: string | {
+                score: number;
+                note: string;
+            };
+            goodness: string | {
+                score: number;
+                note: string;
+            };
+            faithfulness: string | {
+                score: number;
+                note: string;
+            };
+            gentleness: string | {
+                score: number;
+                note: string;
+            };
+            selfControl: string | {
+                score: number;
+                note: string;
+            };
         };
         closingWord: string;
     }, {
@@ -612,15 +1102,42 @@ declare const DiscernSessionResponseSchema: z.ZodObject<{
             context: string;
         }[];
         fruitDiagnostic: {
-            love: string;
-            joy: string;
-            peace: string;
-            patience: string;
-            kindness: string;
-            goodness: string;
-            faithfulness: string;
-            gentleness: string;
-            selfControl: string;
+            love: string | {
+                score: number;
+                note: string;
+            };
+            joy: string | {
+                score: number;
+                note: string;
+            };
+            peace: string | {
+                score: number;
+                note: string;
+            };
+            patience: string | {
+                score: number;
+                note: string;
+            };
+            kindness: string | {
+                score: number;
+                note: string;
+            };
+            goodness: string | {
+                score: number;
+                note: string;
+            };
+            faithfulness: string | {
+                score: number;
+                note: string;
+            };
+            gentleness: string | {
+                score: number;
+                note: string;
+            };
+            selfControl: string | {
+                score: number;
+                note: string;
+            };
         };
         closingWord: string;
     }>;
@@ -642,15 +1159,42 @@ declare const DiscernSessionResponseSchema: z.ZodObject<{
             context: string;
         }[];
         fruitDiagnostic: {
-            love: string;
-            joy: string;
-            peace: string;
-            patience: string;
-            kindness: string;
-            goodness: string;
-            faithfulness: string;
-            gentleness: string;
-            selfControl: string;
+            love: string | {
+                score: number;
+                note: string;
+            };
+            joy: string | {
+                score: number;
+                note: string;
+            };
+            peace: string | {
+                score: number;
+                note: string;
+            };
+            patience: string | {
+                score: number;
+                note: string;
+            };
+            kindness: string | {
+                score: number;
+                note: string;
+            };
+            goodness: string | {
+                score: number;
+                note: string;
+            };
+            faithfulness: string | {
+                score: number;
+                note: string;
+            };
+            gentleness: string | {
+                score: number;
+                note: string;
+            };
+            selfControl: string | {
+                score: number;
+                note: string;
+            };
         };
         closingWord: string;
     };
@@ -672,15 +1216,42 @@ declare const DiscernSessionResponseSchema: z.ZodObject<{
             context: string;
         }[];
         fruitDiagnostic: {
-            love: string;
-            joy: string;
-            peace: string;
-            patience: string;
-            kindness: string;
-            goodness: string;
-            faithfulness: string;
-            gentleness: string;
-            selfControl: string;
+            love: string | {
+                score: number;
+                note: string;
+            };
+            joy: string | {
+                score: number;
+                note: string;
+            };
+            peace: string | {
+                score: number;
+                note: string;
+            };
+            patience: string | {
+                score: number;
+                note: string;
+            };
+            kindness: string | {
+                score: number;
+                note: string;
+            };
+            goodness: string | {
+                score: number;
+                note: string;
+            };
+            faithfulness: string | {
+                score: number;
+                note: string;
+            };
+            gentleness: string | {
+                score: number;
+                note: string;
+            };
+            selfControl: string | {
+                score: number;
+                note: string;
+            };
         };
         closingWord: string;
     };
@@ -815,4 +1386,4 @@ declare class LibratoApiClient {
 }
 declare function createApiClient(baseUrl: string, authToken?: string): LibratoApiClient;
 
-export { API_TIMEOUT, type ApiError, type ApiResponse, type ApiSuccess, BRAND, BiblicalNarrativeSchema, CACHE_TTL, COLORS, CRISIS_KEYWORDS, CRISIS_RESOURCES, type CreateJournalEntryRequest, type CreateJournalEntryRequestInput, CreateJournalEntryRequestSchema, type DailyMoment, type DailyScale, type DailyScaleHistoryEntry, type DailyScalePhase, type DailyScaleResponse, type DailyScaleResults, type DiscernSessionRequest, type DiscernSessionRequestInput, DiscernSessionRequestSchema, DiscernSessionResponseSchema, type DiscernmentResponse, type DiscernmentResponseOutput, DiscernmentResponseSchema, FRUIT_LABELS, FruitDiagnosticSchema, IAP_PRODUCTS, JOURNEY_STEPS, type JournalEntry, type JourneyStepId, LOADING_MESSAGES, LibratoApiClient, LibratoApiError, PRICING, type Profile, STILLNESS, ScriptureSchema, type Session, type Subscription, TIER_CONFIG, TONES, type TierConfig, type ToneId, type UpdateProfileRequest, type UpdateProfileRequestInput, UpdateProfileRequestSchema, type UpdateSessionRequest, type UpdateSessionRequestInput, UpdateSessionRequestSchema, type ValidateReceiptRequest, type ValidateReceiptRequestInput, ValidateReceiptRequestSchema, containsCrisisKeywords, createApiClient };
+export { API_TIMEOUT, type ApiError, type ApiResponse, type ApiSuccess, BRAND, BiblicalNarrativeSchema, CACHE_TTL, COLORS, CRISIS_KEYWORDS, CRISIS_RESOURCES, type CreateJournalEntryRequest, type CreateJournalEntryRequestInput, CreateJournalEntryRequestSchema, type DailyMoment, type DailyScale, type DailyScaleHistoryEntry, type DailyScalePhase, type DailyScaleResponse, type DailyScaleResults, type DiscernSessionRequest, type DiscernSessionRequestInput, DiscernSessionRequestSchema, DiscernSessionResponseSchema, type DiscernmentResponse, type DiscernmentResponseOutput, DiscernmentResponseSchema, FRUIT_LABELS, FruitDiagnosticSchema, type FruitValue, IAP_PRODUCTS, JOURNEY_STEPS, type JournalEntry, type JourneyStepId, LOADING_MESSAGES, LibratoApiClient, LibratoApiError, PRICING, type Profile, STILLNESS, ScriptureSchema, type Session, type Subscription, TIER_CONFIG, TONES, type TierConfig, type ToneId, type UpdateProfileRequest, type UpdateProfileRequestInput, UpdateProfileRequestSchema, type UpdateSessionRequest, type UpdateSessionRequestInput, UpdateSessionRequestSchema, type ValidateReceiptRequest, type ValidateReceiptRequestInput, ValidateReceiptRequestSchema, containsCrisisKeywords, createApiClient };

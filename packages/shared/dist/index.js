@@ -199,16 +199,23 @@ var ScriptureSchema = import_zod.z.object({
   text: import_zod.z.string().min(1),
   context: import_zod.z.string().min(1)
 });
+var FruitValueSchema = import_zod.z.union([
+  import_zod.z.string().min(1),
+  import_zod.z.object({
+    score: import_zod.z.number().min(0).max(10),
+    note: import_zod.z.string().min(1)
+  })
+]);
 var FruitDiagnosticSchema = import_zod.z.object({
-  love: import_zod.z.string().min(1),
-  joy: import_zod.z.string().min(1),
-  peace: import_zod.z.string().min(1),
-  patience: import_zod.z.string().min(1),
-  kindness: import_zod.z.string().min(1),
-  goodness: import_zod.z.string().min(1),
-  faithfulness: import_zod.z.string().min(1),
-  gentleness: import_zod.z.string().min(1),
-  selfControl: import_zod.z.string().min(1)
+  love: FruitValueSchema,
+  joy: FruitValueSchema,
+  peace: FruitValueSchema,
+  patience: FruitValueSchema,
+  kindness: FruitValueSchema,
+  goodness: FruitValueSchema,
+  faithfulness: FruitValueSchema,
+  gentleness: FruitValueSchema,
+  selfControl: FruitValueSchema
 });
 var DiscernmentResponseSchema = import_zod.z.object({
   summary: import_zod.z.string().min(1),

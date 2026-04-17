@@ -1,9 +1,20 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, Animated } from 'react-native';
 import Svg, { Circle, Line, Polygon, Text as SvgText, G } from 'react-native-svg';
-import type { DiscernmentResponse } from '@librato/shared';
+import type { DiscernmentResponse, FruitValue } from '@librato/shared';
 import { Card } from '@/components/ui/Card';
 import { COLORS, FONTS, SPACING, BORDER_RADIUS } from '@/constants/theme';
+
+// Coerce legacy strings OR structured {score,note} into a safe numeric score.
+// Without this, feeding a string into Svg Polygon points or style width crashes
+// the native view on Android.
+function coerceScore(value: FruitValue | undefined): number {
+  if (typeof value === 'object' && value !== null && typeof value.score === 'number') {
+    const s = value.score;
+    return Number.isFinite(s) ? Math.max(0, Math.min(10, s)) : 5;
+  }
+  return 5;
+}
 
 interface StepFruitProps {
   response: DiscernmentResponse;
@@ -185,8 +196,16 @@ export function StepFruit({ response, isPremium }: StepFruitProps) {
   const scored = FRUIT_KEYS.map((k) => ({
     key: k,
     label: FRUIT_LABELS[k],
-    score: diagnostic[k] ?? 5,
+    score: coerceScore(diagnostic[k]),
   })).sort((a, b) => b.score - a.score);
+
+  const chartData: Record<string, number> = FRUIT_KEYS.reduce(
+    (acc, k) => {
+      acc[k] = coerceScore(diagnostic[k]);
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
   return (
     <ScrollView
@@ -198,7 +217,7 @@ export function StepFruit({ response, isPremium }: StepFruitProps) {
 
       {/* Radar chart */}
       <Animated.View style={[styles.chartContainer, { opacity: fadeAnim }]}>
-        <RadarChart data={diagnostic} />
+        <RadarChart data={chartData} />
       </Animated.View>
 
       {/* Score bars */}

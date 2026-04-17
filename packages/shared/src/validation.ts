@@ -30,16 +30,26 @@ export const ScriptureSchema = z.object({
   context: z.string().min(1),
 });
 
+// Accept a legacy string (observation-only) OR a structured {score, note}.
+// Front-end coerces both into {score:number, note:string} before rendering.
+const FruitValueSchema = z.union([
+  z.string().min(1),
+  z.object({
+    score: z.number().min(0).max(10),
+    note: z.string().min(1),
+  }),
+]);
+
 export const FruitDiagnosticSchema = z.object({
-  love: z.string().min(1),
-  joy: z.string().min(1),
-  peace: z.string().min(1),
-  patience: z.string().min(1),
-  kindness: z.string().min(1),
-  goodness: z.string().min(1),
-  faithfulness: z.string().min(1),
-  gentleness: z.string().min(1),
-  selfControl: z.string().min(1),
+  love: FruitValueSchema,
+  joy: FruitValueSchema,
+  peace: FruitValueSchema,
+  patience: FruitValueSchema,
+  kindness: FruitValueSchema,
+  goodness: FruitValueSchema,
+  faithfulness: FruitValueSchema,
+  gentleness: FruitValueSchema,
+  selfControl: FruitValueSchema,
 });
 
 export const DiscernmentResponseSchema = z.object({
