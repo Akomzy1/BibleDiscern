@@ -45,10 +45,10 @@ const FRUIT_LABELS: Record<(typeof FRUIT_KEYS)[number], string> = {
   selfControl: 'Self-Ctrl',
 };
 
-const CHART_SIZE = 240;
+const CHART_SIZE = 300;
 const CENTER = CHART_SIZE / 2;
 const RADIUS = 90;
-const LABEL_RADIUS = RADIUS + 18;
+const LABEL_RADIUS = RADIUS + 22;
 const NUM_AXES = FRUIT_KEYS.length;
 
 function polarToCartesian(angle: number, r: number) {
@@ -146,7 +146,7 @@ function RadarChart({ data }: RadarChartProps) {
             key={key}
             x={pt.x}
             y={pt.y + 4}
-            fontSize={9}
+            fontSize={10}
             fontFamily={FONTS.bodyBold}
             fill={COLORS.navy}
             textAnchor={textAnchor}
