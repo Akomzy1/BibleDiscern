@@ -18,6 +18,7 @@ import { Badge } from '@/components/ui/Badge';
 import { SectionLabel } from '@/components/ui/SectionLabel';
 import { OfflineBanner } from '@/components/common/OfflineBanner';
 import { Disclaimer } from '@/components/common/Disclaimer';
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { COLORS, FONTS, SPACING, BORDER_RADIUS } from '@/constants/theme';
 
 function getGreeting(): string {
@@ -32,6 +33,14 @@ function formatDate(iso: string): string {
 }
 
 export default function HomeScreen() {
+  return (
+    <ErrorBoundary>
+      <HomeScreenContent />
+    </ErrorBoundary>
+  );
+}
+
+function HomeScreenContent() {
   const { user } = useAuthStore();
   const { sessions, fetchSessions } = useSessionStore();
   const { fetchSubscription, sessionsUsed, sessionsLimit, isAtLimit, isTrial, isPremium } =
@@ -40,10 +49,9 @@ export default function HomeScreen() {
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const displayName =
-    user?.user_metadata?.display_name ??
-    user?.user_metadata?.full_name?.split(' ')[0] ??
-    'Friend';
+  const fullName = user?.user_metadata?.full_name;
+  const firstName = typeof fullName === 'string' ? fullName.split(' ')[0] : undefined;
+  const displayName = user?.user_metadata?.display_name ?? firstName ?? 'Friend';
 
   useEffect(() => {
     fetchTodayScale();
@@ -57,7 +65,7 @@ export default function HomeScreen() {
     setRefreshing(false);
   };
 
-  const recentSessions = sessions.slice(0, 3);
+  const recentSessions = Array.isArray(sessions) ? sessions.slice(0, 3) : [];
 
   return (
     <ScreenWrapper onRefresh={handleRefresh} isRefreshing={refreshing}>
