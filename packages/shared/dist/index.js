@@ -46,8 +46,14 @@ __export(index_exports, {
   UpdateProfileRequestSchema: () => UpdateProfileRequestSchema,
   UpdateSessionRequestSchema: () => UpdateSessionRequestSchema,
   ValidateReceiptRequestSchema: () => ValidateReceiptRequestSchema,
+  color: () => color,
   containsCrisisKeywords: () => containsCrisisKeywords,
-  createApiClient: () => createApiClient
+  createApiClient: () => createApiClient,
+  font: () => font,
+  giltBorderOnNavy: () => giltBorderOnNavy,
+  glowOnNavy: () => glowOnNavy,
+  motion: () => motion,
+  radius: () => radius
 });
 module.exports = __toCommonJS(index_exports);
 
@@ -446,6 +452,54 @@ var LibratoApiClient = class {
 function createApiClient(baseUrl, authToken) {
   return new LibratoApiClient(baseUrl, authToken);
 }
+
+// src/tokens.ts
+var color = {
+  nave950: "#0D1520",
+  // deepest ground — Stillness, immersive
+  nave900: "#14213A",
+  // app chrome background
+  nave800: "#1B2A4A",
+  // brand navy, primary surfaces
+  nave700: "#2D4166",
+  // raised surfaces, hover
+  vellum100: "#FDF6EC",
+  // page panels (never full-bleed)
+  vellum200: "#F5ECD7",
+  // inset panels, quotes
+  gilt500: "#C8A45E",
+  // gold — the ONE emphasis per screen
+  gilt300: "#E8D5A3",
+  // gold text/glow on navy
+  ink900: "#2C2418",
+  // text on vellum
+  ink500: "#5C5144",
+  // secondary text on vellum
+  olive500: "#7A8B6F",
+  // success, affirmation
+  ember600: "#C0392B"
+  // errors, crisis accents (rare)
+};
+var font = {
+  display: '"Playfair Display", Georgia, serif',
+  // display ONLY
+  scripture: '"Cormorant Garamond", Georgia, serif',
+  // scripture/prayer/questions, italic
+  body: '"Source Sans 3", system-ui, sans-serif'
+  // all UI + body
+};
+var radius = { panel: 14, pill: 999 };
+var motion = {
+  easeSelah: "cubic-bezier(0.22, 0.8, 0.24, 1)",
+  durWhisper: 250,
+  // hovers, focus, small reveals
+  durSettle: 450,
+  // beam settle, card commit
+  durBreath: 700
+  // page/panel transitions (fade + 8px rise)
+};
+var giltBorderOnNavy = "rgba(200,164,94,0.12)";
+var glowOnNavy = "rgba(200,164,94,0.06)";
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   API_TIMEOUT,
@@ -474,6 +528,12 @@ function createApiClient(baseUrl, authToken) {
   UpdateProfileRequestSchema,
   UpdateSessionRequestSchema,
   ValidateReceiptRequestSchema,
+  color,
   containsCrisisKeywords,
-  createApiClient
+  createApiClient,
+  font,
+  giltBorderOnNavy,
+  glowOnNavy,
+  motion,
+  radius
 });

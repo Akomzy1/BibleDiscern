@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Motion tokens as CSS custom properties (SKILL.md §2/§7) so keyframes and
+   transitions read them. Color custom properties are injected from
+   packages/shared/src/tokens.ts in app/layout.tsx — no hex lives here. */
+:root {
+  --ease-selah: cubic-bezier(0.22, 0.8, 0.24, 1);
+  --dur-whisper: 250ms;
+  --dur-settle: 450ms;
+  --dur-breath: 700ms;
+}
+
+/* Selah keyframes (SKILL.md §5, §9.2) */
+@keyframes beam-sway {
+  0%,
+  100% {
+    transform: rotate(-1.5deg);
+  }
+  50% {
+    transform: rotate(1.5deg);
+  }
+}
+
+@keyframes stone-settle {
+  0% {
+    transform: translateY(-14px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 4s in / 2s hold / 4s out over a 10s loop */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.28);
+  }
+  63% {
+    transform: scale(1.28);
+  }
+}
+
+@layer base {
+  /* Prevent iOS font-size inflation on rotation */
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* Comfortable default line-height for all body text */
+  body {
+    @apply leading-relaxed;
+  }
+
+  /* Ensure buttons/links respond immediately on touch devices */
+  a,
+  button {
+    touch-action: manipulation;
+  }
+}
+
+@layer utilities {
+  /* Standalone-PWA safe-area insets (SKILL.md §11) */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* Reduced motion: the four orchestrated moments degrade to instant/fade;
+   the Beam never sways or animates its settle. (SKILL.md §7, §12) */
+@media (prefers-reduced-motion: reduce) {
+  .beam-rotor,
+  .beam-stone,
+  .breathe-disc {
+    animation: none !important;
+    transition: none !important;
+  }
+}

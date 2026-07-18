@@ -1,7 +1,27 @@
 import type { Metadata } from 'next';
 import { Playfair_Display, Cormorant_Garamond, Source_Sans_3 } from 'next/font/google';
+import { color, giltBorderOnNavy, glowOnNavy } from '@librato/shared';
 import { BASE_URL, orgSchema, appSchema } from '@/lib/seo';
-import './globals.css';
+import '../styles/globals.css';
+
+// Selah color tokens exposed as CSS custom properties — injected from
+// packages/shared/src/tokens.ts so no hex value lives in web/ source.
+const selahVars = {
+  '--nave-950': color.nave950,
+  '--nave-900': color.nave900,
+  '--nave-800': color.nave800,
+  '--nave-700': color.nave700,
+  '--vellum-100': color.vellum100,
+  '--vellum-200': color.vellum200,
+  '--gilt': color.gilt500,
+  '--gilt-300': color.gilt300,
+  '--ink-900': color.ink900,
+  '--ink-500': color.ink500,
+  '--olive': color.olive500,
+  '--ember': color.ember600,
+  '--gilt-border': giltBorderOnNavy,
+  '--glow': glowOnNavy,
+} as React.CSSProperties;
 
 // Display / heading font — used for font-display class
 const playfair = Playfair_Display({
@@ -80,6 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       className={`${playfair.variable} ${cormorant.variable} ${sourceSans.variable}`}
+      style={selahVars}
     >
       <body className="font-sans antialiased">
         {jsonLd.map((schema, i) => (
