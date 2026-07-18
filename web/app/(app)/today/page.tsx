@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useDailyScale } from '@/hooks/useDailyScale';
 import { DailyScale } from '@/components/scale/DailyScale';
+import { InstallCard } from '@/components/common/InstallCard';
 import { Beam, Eyebrow, GiltButton, Panel } from '@/components/selah';
 
 function QuietState({
@@ -100,6 +101,8 @@ export default function TodayPage() {
   return (
     <main>
       <DailyScale s={s} />
+      {/* Install affordance — only after the day's scale is weighed (high intent) */}
+      {(s.phase === 'learn' || s.phase === 'completed') && <InstallCard className="mt-6" />}
     </main>
   );
 }

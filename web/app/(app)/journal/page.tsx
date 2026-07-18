@@ -8,6 +8,7 @@ import type { JournalEntry } from '@librato/shared';
 import { TRIAL_LINE } from '@librato/shared';
 import { Eyebrow, GiltButton, VellumGrain } from '@/components/selah';
 import { Timeline, EntryCard, Stone } from '@/components/journal/Timeline';
+import { InstallCard } from '@/components/common/InstallCard';
 import { useJournalList } from '@/hooks/useJournal';
 import { useSubscription } from '@/hooks/useSubscription';
 
@@ -168,6 +169,8 @@ export default function JournalPage() {
         <>
           <Timeline entries={list.entries.slice(0, isFreeCapped ? 3 : undefined)} spineGold={!isFreeCapped} />
           {isFreeCapped && <FreeTierLock />}
+          {/* Install affordance — after the first journey has set a stone */}
+          <InstallCard className="mt-6" />
         </>
       )}
     </main>

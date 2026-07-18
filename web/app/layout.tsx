@@ -1,8 +1,16 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Playfair_Display, Cormorant_Garamond, Source_Sans_3 } from 'next/font/google';
 import { color, giltBorderOnNavy, glowOnNavy } from '@librato/shared';
 import { BASE_URL, orgSchema, appSchema } from '@/lib/seo';
+import { RegisterSW } from '@/components/common/RegisterSW';
 import '../styles/globals.css';
+
+export const viewport: Viewport = {
+  themeColor: color.nave800,
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
 
 // Selah color tokens exposed as CSS custom properties — injected from
 // packages/shared/src/tokens.ts so no hex value lives in web/ source.
@@ -50,6 +58,16 @@ const sourceSans = Source_Sans_3({
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'BibleDiscern',
+  },
+  icons: {
+    icon: '/icons/icon-192.png',
+    apple: '/icons/icon-192.png',
+  },
   title: {
     default: 'BibleDiscern — Weigh it with wisdom',
     template: '%s — BibleDiscern',
@@ -110,6 +128,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
           />
         ))}
+        <RegisterSW />
         {children}
       </body>
     </html>

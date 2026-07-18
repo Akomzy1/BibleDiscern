@@ -3,6 +3,10 @@
     {
       "path": "/api/follow-up",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/daily-scale-push",
+      "schedule": "0 * * * *"
     }
   ]
 }

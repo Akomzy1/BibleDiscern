@@ -22,6 +22,7 @@ import { DailyScale } from '@/components/scale/DailyScale';
 import { useDailyScale } from '@/hooks/useDailyScale';
 import { getAuthedClient } from '@/lib/api';
 import { useSubscription } from '@/hooks/useSubscription';
+import { usePush } from '@/hooks/usePush';
 
 function Shell({ step, children }: { step: number; children: React.ReactNode }) {
   return (
@@ -277,19 +278,14 @@ function YourTimeScreen({
 }) {
   const [value, setValue] = useState<string>('8:00 AM');
   const [showInstall, setShowInstall] = useState(false);
+  const { subscribe } = usePush();
 
   const begin = async () => {
     if (isIosSafariNotInstalled()) {
       setShowInstall(true);
       return;
     }
-    try {
-      if ('Notification' in window && Notification.permission === 'default') {
-        await Notification.requestPermission();
-      }
-    } catch {
-      // permission prompt unavailable — continue regardless
-    }
+    await subscribe(); // request Web Push; degrades silently if declined
     onDone(TIME_VALUES[value]);
   };
 
