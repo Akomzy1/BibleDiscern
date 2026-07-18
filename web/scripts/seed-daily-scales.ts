@@ -422,12 +422,24 @@ const scales = [
   },
 ];
 
+// Slug matches migration 005 + web/lib/slug.ts: slugified question + ISO date
+function scaleSlug(question: string, date: string): string {
+  const base = question
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80)
+    .replace(/-+$/g, '');
+  return `${base}-${date}`;
+}
+
 async function seed() {
   console.log(`Seeding ${scales.length} daily scales...`);
 
+  const rows = scales.map((s) => ({ ...s, slug: scaleSlug(s.question, s.date) }));
   const { error } = await supabase
     .from('daily_scales')
-    .upsert(scales, { onConflict: 'date' });
+    .upsert(rows, { onConflict: 'date' });
 
   if (error) {
     console.error('Seed failed:', error.message);
