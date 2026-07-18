@@ -15,3 +15,4 @@ export { CrossGlyph } from './CrossGlyph';
 export { ProgressDots } from './ProgressDots';
 export { Wordmark } from './Wordmark';
 export { TimePills } from './TimePills';
+export { Toggle } from './Toggle';

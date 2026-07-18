@@ -4,6 +4,11 @@ import Link from 'next/link';
 import { useDailyScale } from '@/hooks/useDailyScale';
 import { DailyScale } from '@/components/scale/DailyScale';
 import { InstallCard } from '@/components/common/InstallCard';
+import {
+  TrialEndingBanner,
+  PaymentFailedScreen,
+  usePaymentFailedGate,
+} from '@/components/common/SubscriptionStates';
 import { Beam, Eyebrow, GiltButton, Panel } from '@/components/selah';
 
 function QuietState({
@@ -32,6 +37,15 @@ function QuietState({
 
 export default function TodayPage() {
   const s = useDailyScale();
+  const paymentGate = usePaymentFailedGate();
+
+  if (paymentGate.failed) {
+    return (
+      <main>
+        <PaymentFailedScreen onLater={paymentGate.dismiss} />
+      </main>
+    );
+  }
 
   if (s.status === 'loading') {
     return (
@@ -103,6 +117,7 @@ export default function TodayPage() {
       <DailyScale s={s} />
       {/* Install affordance — only after the day's scale is weighed (high intent) */}
       {(s.phase === 'learn' || s.phase === 'completed') && <InstallCard className="mt-6" />}
+      <TrialEndingBanner />
     </main>
   );
 }

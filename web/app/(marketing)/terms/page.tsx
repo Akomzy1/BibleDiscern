@@ -1,78 +1,79 @@
+// Terms of Service — the v2 quiet document layout with the frame's copy.
+// (legal-system-states.html Frame B)
+
 import type { Metadata } from 'next';
-import { BASE_URL, breadcrumbSchema } from '@/lib/seo';
+import { BASE_URL } from '@/lib/seo';
+import { LegalDoc, DocSection } from '@/components/site/LegalDoc';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — BibleDiscern',
-  description: 'BibleDiscern terms of service. Review the terms governing use of the BibleDiscern app and website.',
+  title: 'Terms of Service',
+  description:
+    'BibleDiscern terms of service — short on purpose. What BibleDiscern is, your account, billing, acceptable use, and how to leave.',
   alternates: { canonical: `${BASE_URL}/terms` },
 };
 
-const LAST_UPDATED = 'March 1, 2026';
-
 export default function TermsPage() {
-  const crumbs = breadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'Terms of Service', url: '/terms' }]);
-
   return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbs) }} />
-
-      <div className="bg-navy py-14 text-center">
-        <h1 className="font-display text-4xl text-cream">Terms of Service</h1>
-        <p className="text-cream/50 mt-2 text-sm">Last updated: {LAST_UPDATED}</p>
-      </div>
-
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 py-14 prose prose-lg text-text-dark">
-        <p className="lead text-text-medium">
-          By using BibleDiscern, you agree to these terms. Please read them carefully.
+    <LegalDoc
+      title="Terms of Service"
+      updated="July 1, 2026"
+      anchors={[
+        ['t1', 'What BibleDiscern is'],
+        ['t2', 'Your account'],
+        ['t3', 'Free trial and billing'],
+        ['t4', 'Acceptable use'],
+        ['t5', 'Ending your account'],
+        ['t6', 'Changes to these terms'],
+      ]}
+      intro="By creating an account you agree to these terms. They are short on purpose; read them."
+    >
+      <DocSection id="t1" title="What BibleDiscern is">
+        <p>
+          BibleDiscern offers Scripture for reflection, not a verdict. It is a guided practice, not
+          medical, legal, financial, or pastoral counsel. The decisions you weigh — and their
+          outcomes — remain yours, before God.
         </p>
-
-        <h2 className="font-display text-navy">1. Acceptance of Terms</h2>
-        <p>By downloading, installing, or using the BibleDiscern mobile application or website, you agree to be bound by these Terms of Service. If you do not agree, do not use the service.</p>
-
-        <h2 className="font-display text-navy">2. Description of Service</h2>
-        <p>BibleDiscern is an AI-powered Christian discernment companion application. The service provides structured biblical guidance for personal decision-making, drawing on Scripture, Christian tradition, and AI technology.</p>
-        <p><strong>Important:</strong> BibleDiscern is a spiritual reflection tool. It does not provide professional counseling, medical advice, legal advice, or financial advice. It does not replace the guidance of a pastor, spiritual director, therapist, or other qualified professional. For crisis situations, please contact emergency services (911 in the US) or the 988 Suicide and Crisis Lifeline.</p>
-
-        <h2 className="font-display text-navy">3. User Accounts</h2>
-        <p>You must create an account to use BibleDiscern. You are responsible for maintaining the security of your account credentials and for all activities that occur under your account. You must be at least 13 years of age to create an account.</p>
-
-        <h2 className="font-display text-navy">4. Subscriptions and Billing</h2>
-        <p>BibleDiscern offers a free plan and a Premium subscription. Premium subscriptions are billed through the Apple App Store or Google Play Store, subject to their respective terms. We also offer web-based subscriptions through Stripe.</p>
-        <p>Free trials, where offered, automatically convert to paid subscriptions unless cancelled before the trial period ends. Cancellation policies are governed by the platform through which you subscribed (App Store, Google Play, or Stripe).</p>
-        <p>Prices may change with reasonable notice. Changes to subscription prices will be communicated in advance.</p>
-
-        <h2 className="font-display text-navy">5. Acceptable Use</h2>
-        <p>You agree not to:</p>
-        <ul>
-          <li>Use BibleDiscern for any unlawful purpose</li>
-          <li>Attempt to reverse-engineer, scrape, or extract data from the service</li>
-          <li>Use the service to generate content intended to deceive, harm, or manipulate others</li>
-          <li>Share, sell, or transfer your account to another person</li>
-          <li>Use the service in a manner that violates any applicable law or regulation</li>
-        </ul>
-
-        <h2 className="font-display text-navy">6. AI-Generated Content</h2>
-        <p>BibleDiscern's responses are generated by AI and are provided for reflection and discernment purposes only. They do not constitute definitive divine guidance, prophetic utterance, or professional advice of any kind. You are solely responsible for any decisions you make, and BibleDiscern expressly disclaims any liability for the outcomes of your decisions.</p>
-        <p>AI-generated content may contain errors, omissions, or theological perspectives that do not align with your own tradition. Always weigh AI-generated content against Scripture, your own conscience, and the counsel of trusted human advisors.</p>
-
-        <h2 className="font-display text-navy">7. Intellectual Property</h2>
-        <p>The BibleDiscern app, its design, and its underlying code are owned by BibleDiscern and protected by applicable intellectual property laws. The content of your discernment sessions belongs to you. By using the service, you grant BibleDiscern a limited license to store and process your content for the purpose of providing the service.</p>
-
-        <h2 className="font-display text-navy">8. Disclaimer of Warranties</h2>
-        <p>BibleDiscern is provided "as is" and "as available" without warranties of any kind, express or implied. We do not warrant that the service will be uninterrupted, error-free, or free of harmful components.</p>
-
-        <h2 className="font-display text-navy">9. Limitation of Liability</h2>
-        <p>To the maximum extent permitted by law, BibleDiscern shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the service. Our total liability to you shall not exceed the amount you paid for the service in the 12 months preceding the claim.</p>
-
-        <h2 className="font-display text-navy">10. Changes to Terms</h2>
-        <p>We may update these terms from time to time. Material changes will be communicated through the app or by email. Continued use of the service after changes constitute acceptance of the updated terms.</p>
-
-        <h2 className="font-display text-navy">11. Governing Law</h2>
-        <p>These terms are governed by applicable law. Any disputes shall be resolved through binding arbitration in accordance with applicable arbitration rules, except that either party may seek injunctive relief in court for intellectual property matters.</p>
-
-        <h2 className="font-display text-navy">12. Contact</h2>
-        <p>For questions about these terms, contact us at: <a href="mailto:support@librato.ai" className="text-gold">support@librato.ai</a></p>
-      </div>
-    </>
+        <p>
+          If you are in crisis, BibleDiscern is not a crisis service. Crisis resources are listed
+          in the app and available without an account.
+        </p>
+      </DocSection>
+      <DocSection id="t2" title="Your account">
+        <p>
+          You must be 13 or older. Keep your password to yourself; you are responsible for activity
+          under your account. One account per person.
+        </p>
+      </DocSection>
+      <DocSection id="t3" title="Free trial and billing">
+        <p>
+          Premium is free for 7 days. Cancel anytime during the trial and you will not be charged.
+          Subscriptions renew automatically — $49.99/year or $7.99/month — until you cancel.
+        </p>
+        <p>
+          Purchases made through an app store are billed and refunded by that store, under its
+          terms.
+        </p>
+      </DocSection>
+      <DocSection id="t4" title="Acceptable use">
+        <p>
+          Do not attempt to access another person&apos;s journal, disrupt the service, or scrape
+          community data. Daily Scale questions and community results are for your personal
+          reflection, not republication.
+        </p>
+      </DocSection>
+      <DocSection id="t5" title="Ending your account">
+        <p>
+          You may delete your account at any time from Settings; deletion is permanent. We may
+          close accounts that violate these terms, with notice and a chance to export your journal
+          where the law allows.
+        </p>
+      </DocSection>
+      <DocSection id="t6" title="Changes to these terms">
+        <p>
+          If these terms change in a way that matters, we will tell you in the app at least 30 days
+          before the change takes effect. Continued use after that date is acceptance.
+        </p>
+      </DocSection>
+    </LegalDoc>
   );
 }
