@@ -35,6 +35,49 @@
   }
 }
 
+/* Staged entrances (onboarding S1 & S6, auth) — fade + 8px rise; annual card
+   scales 0.95→1. Apply .stage/.stage-scale with an inline animation-delay. */
+@keyframes stage-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes stage-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.stage {
+  opacity: 0;
+  animation: stage-rise var(--dur-breath) var(--ease-selah) forwards;
+}
+
+.stage-scale {
+  opacity: 0;
+  animation: stage-scale var(--dur-breath) var(--ease-selah) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage,
+  .stage-scale {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* 4s in / 2s hold / 4s out over a 10s loop */
 @keyframes breathe {
   0%,

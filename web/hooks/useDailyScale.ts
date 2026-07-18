@@ -1,9 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { createApiClient, LibratoApiError } from '@librato/shared';
+import { LibratoApiError } from '@librato/shared';
 import type { DailyScaleResponse } from '@librato/shared';
-import { getBrowserClient } from '@/lib/supabase/browser';
+import { getAuthedClient } from '@/lib/api';
 
 export type ScalePhase = 'weigh' | 'see' | 'learn' | 'completed';
 export type ScaleStatus = 'loading' | 'ready' | 'error' | 'offline' | 'unauthenticated';
@@ -23,14 +23,7 @@ export function useDailyScale() {
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const getClient = useCallback(async () => {
-    const supabase = getBrowserClient();
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    if (!session) return null;
-    return createApiClient('', session.access_token);
-  }, []);
+  const getClient = getAuthedClient;
 
   const load = useCallback(async () => {
     setStatus('loading');

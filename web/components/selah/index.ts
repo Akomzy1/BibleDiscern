@@ -11,3 +11,7 @@ export { TabBar } from './TabBar';
 export { TextField, TextArea } from './Field';
 export { StatusChip } from './StatusChip';
 export { PrayerCard } from './PrayerCard';
+export { CrossGlyph } from './CrossGlyph';
+export { ProgressDots } from './ProgressDots';
+export { Wordmark } from './Wordmark';
+export { TimePills } from './TimePills';
