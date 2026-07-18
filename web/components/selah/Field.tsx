@@ -56,10 +56,15 @@ export function TextArea({
   className,
   id,
   rows = 5,
+  onNavy = false,
   ...rest
-}: CommonProps & TextareaHTMLAttributes<HTMLTextAreaElement>) {
+}: CommonProps & { onNavy?: boolean } & TextareaHTMLAttributes<HTMLTextAreaElement>) {
   const autoId = useId();
   const fieldId = id ?? autoId;
+  const navyField =
+    'w-full rounded-panel border border-gilt-edge bg-nave-800 px-4 py-3 font-body text-vellum-100 ' +
+    'placeholder:text-vellum-200/40 transition duration-whisper ease-selah ' +
+    'focus:outline-none focus:ring-2 focus:ring-gilt-500';
   return (
     <div className={className}>
       {label && (
@@ -72,7 +77,7 @@ export function TextArea({
         rows={rows}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${fieldId}-error` : undefined}
-        className={`${FIELD} ${fieldBorder(error)} resize-none leading-relaxed`}
+        className={`${onNavy ? navyField : `${FIELD} ${fieldBorder(error)}`} resize-none leading-relaxed`}
         {...rest}
       />
       {error && (
