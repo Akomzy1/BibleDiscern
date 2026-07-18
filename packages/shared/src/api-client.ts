@@ -12,6 +12,8 @@ import type {
   CreateJournalEntryRequest,
   UpdateProfileRequest,
   ValidateReceiptRequest,
+  CheckoutRequest,
+  PushSubscribeRequest,
   ApiError,
 } from './types';
 
@@ -192,6 +194,21 @@ export class LibratoApiClient {
     return res.entry;
   }
 
+  async updateJournalEntry(
+    id: string,
+    data: Partial<CreateJournalEntryRequest>,
+  ): Promise<JournalEntry> {
+    const res = await this.request<{ entry: JournalEntry }>(`/api/journal/${id}`, {
+      method: 'PATCH',
+      body: data,
+    });
+    return res.entry;
+  }
+
+  async deleteJournalEntry(id: string): Promise<void> {
+    await this.request<void>(`/api/journal/${id}`, { method: 'DELETE' });
+  }
+
   // ─── Profile ────────────────────────────────
 
   async getProfile(): Promise<Profile> {
@@ -233,6 +250,31 @@ export class LibratoApiClient {
       },
     );
     return res.subscription;
+  }
+
+  // ─── Stripe (v2 PWA — Checkout + Customer Portal) ───
+
+  /** Create a Stripe Checkout session (7-day trial). Returns the redirect URL. */
+  async createCheckoutSession(plan: CheckoutRequest['plan']): Promise<{ url: string }> {
+    return this.request<{ url: string }>('/api/stripe/checkout', {
+      method: 'POST',
+      body: { plan } satisfies CheckoutRequest,
+    });
+  }
+
+  /** Create a Stripe Customer Portal session. Returns the redirect URL. */
+  async createPortalSession(): Promise<{ url: string }> {
+    return this.request<{ url: string }>('/api/stripe/portal', { method: 'POST' });
+  }
+
+  // ─── Web Push (v2 PWA) ──────────────────────
+
+  /** Store a Web Push subscription for daily-scale reminders. */
+  async subscribePush(subscription: PushSubscribeRequest): Promise<void> {
+    await this.request<void>('/api/push/subscribe', {
+      method: 'POST',
+      body: subscription,
+    });
   }
 
   // ─── Daily Moment ───────────────────────────

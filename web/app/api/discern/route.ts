@@ -5,6 +5,7 @@ import {
   DiscernmentResponseSchema,
   containsCrisisKeywords,
   CRISIS_RESOURCES,
+  DISCLAIMER,
 } from '@librato/shared';
 import { requireAuth } from '@/lib/auth';
 import { adminClient } from '@/lib/supabase/admin';
@@ -109,15 +110,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 6. Call Claude
+    // 6. Call Claude — model strings via env (Sonnet free / Opus premium)
     const model =
-      sub.tier === 'premium' ? 'claude-opus-4-6' : 'claude-sonnet-4-6';
+      sub.tier === 'premium'
+        ? (process.env.ANTHROPIC_MODEL_PREMIUM ?? 'claude-opus-4-8')
+        : (process.env.ANTHROPIC_MODEL_FREE ?? 'claude-sonnet-5');
 
     const userMessage = `My situation: ${situation}\n\nEmotional tone: ${tone}\n\nProvide your full discernment guidance as JSON.`;
 
     const message = await anthropic.messages.create({
       model,
-      max_tokens: 4000,
+      max_tokens: 8000,
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userMessage }],
     });
@@ -176,8 +179,8 @@ export async function POST(request: NextRequest) {
         .eq('user_id', user.id);
     }
 
-    // 10. Return session
-    return ok({ sessionId: session.id, session }, 201);
+    // 10. Return session with the permanent disclaimer (shown on every session)
+    return ok({ sessionId: session.id, session, disclaimer: DISCLAIMER }, 201);
   } catch (e) {
     return handleError(e);
   }

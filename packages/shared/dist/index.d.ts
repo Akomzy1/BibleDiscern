@@ -7,6 +7,8 @@ interface Profile {
     display_name: string | null;
     timezone: string;
     onboarding_completed: boolean;
+    onboarding_season: string | null;
+    daily_scale_time: string;
     subscription_tier: 'free' | 'premium';
     subscription_source: 'stripe' | 'apple' | 'google';
     stripe_customer_id: string | null;
@@ -188,6 +190,16 @@ interface ValidateReceiptRequest {
     platform: 'apple' | 'google';
     product_id: string;
 }
+interface CheckoutRequest {
+    plan: 'monthly' | 'annual';
+}
+interface PushSubscribeRequest {
+    endpoint: string;
+    keys: {
+        p256dh: string;
+        auth: string;
+    };
+}
 
 declare const BRAND: {
     readonly name: "BibleDiscern";
@@ -219,10 +231,12 @@ declare const PRICING: {
     readonly annual: {
         readonly price: 49.99;
         readonly label: "$49.99/year";
-        readonly perMonth: "$7.99/month";
+        readonly perMonth: "$4.17/month";
         readonly savings: "48%";
     };
 };
+declare const DISCLAIMER = "This tool supports reflection \u2014 it does not replace God, Scripture, or wise counsel.";
+declare const TRIAL_LINE = "Free for 7 days. Cancel anytime.";
 declare const IAP_PRODUCTS: {
     readonly monthly: "librato_premium_monthly";
     readonly annual: "librato_premium_annual";
@@ -1339,12 +1353,46 @@ declare const ValidateReceiptRequestSchema: z.ZodObject<{
     platform: "apple" | "google";
     product_id: string;
 }>;
+declare const CheckoutRequestSchema: z.ZodObject<{
+    plan: z.ZodEnum<["monthly", "annual"]>;
+}, "strip", z.ZodTypeAny, {
+    plan: "monthly" | "annual";
+}, {
+    plan: "monthly" | "annual";
+}>;
+declare const PushSubscribeRequestSchema: z.ZodObject<{
+    endpoint: z.ZodString;
+    keys: z.ZodObject<{
+        p256dh: z.ZodString;
+        auth: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        p256dh: string;
+        auth: string;
+    }, {
+        p256dh: string;
+        auth: string;
+    }>;
+}, "strip", z.ZodTypeAny, {
+    keys: {
+        p256dh: string;
+        auth: string;
+    };
+    endpoint: string;
+}, {
+    keys: {
+        p256dh: string;
+        auth: string;
+    };
+    endpoint: string;
+}>;
 type DiscernSessionRequestInput = z.infer<typeof DiscernSessionRequestSchema>;
 type UpdateSessionRequestInput = z.infer<typeof UpdateSessionRequestSchema>;
 type CreateJournalEntryRequestInput = z.infer<typeof CreateJournalEntryRequestSchema>;
 type UpdateProfileRequestInput = z.infer<typeof UpdateProfileRequestSchema>;
 type ValidateReceiptRequestInput = z.infer<typeof ValidateReceiptRequestSchema>;
 type DiscernmentResponseOutput = z.infer<typeof DiscernmentResponseSchema>;
+type CheckoutRequestInput = z.infer<typeof CheckoutRequestSchema>;
+type PushSubscribeRequestInput = z.infer<typeof PushSubscribeRequestSchema>;
 declare function containsCrisisKeywords(text: string): boolean;
 
 declare class LibratoApiError extends Error {
@@ -1375,11 +1423,23 @@ declare class LibratoApiClient {
     getJournal(): Promise<JournalEntry[]>;
     getJournalEntry(id: string): Promise<JournalEntry>;
     createJournalEntry(data: CreateJournalEntryRequest): Promise<JournalEntry>;
+    updateJournalEntry(id: string, data: Partial<CreateJournalEntryRequest>): Promise<JournalEntry>;
+    deleteJournalEntry(id: string): Promise<void>;
     getProfile(): Promise<Profile>;
     updateProfile(data: UpdateProfileRequest): Promise<Profile>;
     getSubscription(): Promise<Subscription | null>;
     /** Validate an Apple or Google receipt and upgrade the subscription if valid */
     validateReceipt(receipt: string, platform: ValidateReceiptRequest['platform'], product_id: string): Promise<Subscription>;
+    /** Create a Stripe Checkout session (7-day trial). Returns the redirect URL. */
+    createCheckoutSession(plan: CheckoutRequest['plan']): Promise<{
+        url: string;
+    }>;
+    /** Create a Stripe Customer Portal session. Returns the redirect URL. */
+    createPortalSession(): Promise<{
+        url: string;
+    }>;
+    /** Store a Web Push subscription for daily-scale reminders. */
+    subscribePush(subscription: PushSubscribeRequest): Promise<void>;
     getDailyMoment(): Promise<DailyMoment>;
     getDailyScale(): Promise<DailyScaleResponse>;
     castScaleVote(scaleId: string, vote: 'a' | 'b'): Promise<DailyScaleResponse>;
@@ -1387,4 +1447,4 @@ declare class LibratoApiClient {
 }
 declare function createApiClient(baseUrl: string, authToken?: string): LibratoApiClient;
 
-export { API_TIMEOUT, type ApiError, type ApiResponse, type ApiSuccess, BRAND, BiblicalNarrativeSchema, CACHE_TTL, COLORS, CRISIS_KEYWORDS, CRISIS_RESOURCES, type CreateJournalEntryRequest, type CreateJournalEntryRequestInput, CreateJournalEntryRequestSchema, type DailyMoment, type DailyScale, type DailyScaleHistoryEntry, type DailyScalePhase, type DailyScaleResponse, type DailyScaleResults, type DiscernSessionRequest, type DiscernSessionRequestInput, DiscernSessionRequestSchema, DiscernSessionResponseSchema, type DiscernmentResponse, type DiscernmentResponseOutput, DiscernmentResponseSchema, FRUIT_LABELS, FruitDiagnosticSchema, type FruitValue, IAP_PRODUCTS, JOURNEY_STEPS, type JournalEntry, type JourneyStepId, LOADING_MESSAGES, LibratoApiClient, LibratoApiError, PRICING, type Profile, STILLNESS, ScriptureSchema, type Session, type Subscription, TIER_CONFIG, TONES, type TierConfig, type ToneId, type UpdateProfileRequest, type UpdateProfileRequestInput, UpdateProfileRequestSchema, type UpdateSessionRequest, type UpdateSessionRequestInput, UpdateSessionRequestSchema, type ValidateReceiptRequest, type ValidateReceiptRequestInput, ValidateReceiptRequestSchema, containsCrisisKeywords, createApiClient };
+export { API_TIMEOUT, type ApiError, type ApiResponse, type ApiSuccess, BRAND, BiblicalNarrativeSchema, CACHE_TTL, COLORS, CRISIS_KEYWORDS, CRISIS_RESOURCES, type CheckoutRequest, type CheckoutRequestInput, CheckoutRequestSchema, type CreateJournalEntryRequest, type CreateJournalEntryRequestInput, CreateJournalEntryRequestSchema, DISCLAIMER, type DailyMoment, type DailyScale, type DailyScaleHistoryEntry, type DailyScalePhase, type DailyScaleResponse, type DailyScaleResults, type DiscernSessionRequest, type DiscernSessionRequestInput, DiscernSessionRequestSchema, DiscernSessionResponseSchema, type DiscernmentResponse, type DiscernmentResponseOutput, DiscernmentResponseSchema, FRUIT_LABELS, FruitDiagnosticSchema, type FruitValue, IAP_PRODUCTS, JOURNEY_STEPS, type JournalEntry, type JourneyStepId, LOADING_MESSAGES, LibratoApiClient, LibratoApiError, PRICING, type Profile, type PushSubscribeRequest, type PushSubscribeRequestInput, PushSubscribeRequestSchema, STILLNESS, ScriptureSchema, type Session, type Subscription, TIER_CONFIG, TONES, TRIAL_LINE, type TierConfig, type ToneId, type UpdateProfileRequest, type UpdateProfileRequestInput, UpdateProfileRequestSchema, type UpdateSessionRequest, type UpdateSessionRequestInput, UpdateSessionRequestSchema, type ValidateReceiptRequest, type ValidateReceiptRequestInput, ValidateReceiptRequestSchema, containsCrisisKeywords, createApiClient };

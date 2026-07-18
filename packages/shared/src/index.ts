@@ -21,11 +21,15 @@ export type {
   CreateJournalEntryRequest,
   UpdateProfileRequest,
   ValidateReceiptRequest,
+  CheckoutRequest,
+  PushSubscribeRequest,
 } from './types';
 
 // Constants
 export {
   BRAND,
+  DISCLAIMER,
+  TRIAL_LINE,
   COLORS,
   TIER_CONFIG,
   PRICING,
@@ -55,6 +59,8 @@ export {
   CreateJournalEntryRequestSchema,
   UpdateProfileRequestSchema,
   ValidateReceiptRequestSchema,
+  CheckoutRequestSchema,
+  PushSubscribeRequestSchema,
   containsCrisisKeywords,
 } from './validation';
 
@@ -65,6 +71,8 @@ export type {
   UpdateProfileRequestInput,
   ValidateReceiptRequestInput,
   DiscernmentResponseOutput,
+  CheckoutRequestInput,
+  PushSubscribeRequestInput,
 } from './validation';
 
 // API Client

@@ -119,6 +119,20 @@ export const ValidateReceiptRequestSchema = z.object({
   product_id: z.string().min(1),
 });
 
+// v2 (PWA) additive contracts
+
+export const CheckoutRequestSchema = z.object({
+  plan: z.enum(['monthly', 'annual']),
+});
+
+export const PushSubscribeRequestSchema = z.object({
+  endpoint: z.string().url().max(1000),
+  keys: z.object({
+    p256dh: z.string().min(1).max(500),
+    auth: z.string().min(1).max(500),
+  }),
+});
+
 // ─────────────────────────────────────────────
 // Inferred types from schemas
 // ─────────────────────────────────────────────
@@ -129,6 +143,8 @@ export type CreateJournalEntryRequestInput = z.infer<typeof CreateJournalEntryRe
 export type UpdateProfileRequestInput = z.infer<typeof UpdateProfileRequestSchema>;
 export type ValidateReceiptRequestInput = z.infer<typeof ValidateReceiptRequestSchema>;
 export type DiscernmentResponseOutput = z.infer<typeof DiscernmentResponseSchema>;
+export type CheckoutRequestInput = z.infer<typeof CheckoutRequestSchema>;
+export type PushSubscribeRequestInput = z.infer<typeof PushSubscribeRequestSchema>;
 
 // ─────────────────────────────────────────────
 // Crisis detection helper

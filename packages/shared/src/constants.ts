@@ -60,8 +60,14 @@ export const TIER_CONFIG: Record<string, TierConfig> = {
 
 export const PRICING = {
   monthly: { price: 7.99, label: '$7.99/month' },
-  annual: { price: 49.99, label: '$49.99/year', perMonth: '$7.99/month', savings: '48%' },
+  annual: { price: 49.99, label: '$49.99/year', perMonth: '$4.17/month', savings: '48%' },
 } as const;
+
+// Canonical lines (SKILL.md §13) — never drift from these.
+export const DISCLAIMER =
+  'This tool supports reflection — it does not replace God, Scripture, or wise counsel.';
+
+export const TRIAL_LINE = 'Free for 7 days. Cancel anytime.';
 
 export const IAP_PRODUCTS = {
   monthly: 'librato_premium_monthly',

@@ -8,6 +8,8 @@ export interface Profile {
   display_name: string | null;
   timezone: string;
   onboarding_completed: boolean;
+  onboarding_season: string | null;
+  daily_scale_time: string;
   subscription_tier: 'free' | 'premium';
   subscription_source: 'stripe' | 'apple' | 'google';
   stripe_customer_id: string | null;
@@ -220,4 +222,18 @@ export interface ValidateReceiptRequest {
   receipt: string;
   platform: 'apple' | 'google';
   product_id: string;
+}
+
+// v2 (PWA) additive contracts — Stripe Checkout/Portal + Web Push
+
+export interface CheckoutRequest {
+  plan: 'monthly' | 'annual';
+}
+
+export interface PushSubscribeRequest {
+  endpoint: string;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
 }

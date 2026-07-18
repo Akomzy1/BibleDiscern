@@ -27,7 +27,9 @@ __export(index_exports, {
   COLORS: () => COLORS,
   CRISIS_KEYWORDS: () => CRISIS_KEYWORDS,
   CRISIS_RESOURCES: () => CRISIS_RESOURCES,
+  CheckoutRequestSchema: () => CheckoutRequestSchema,
   CreateJournalEntryRequestSchema: () => CreateJournalEntryRequestSchema,
+  DISCLAIMER: () => DISCLAIMER,
   DiscernSessionRequestSchema: () => DiscernSessionRequestSchema,
   DiscernSessionResponseSchema: () => DiscernSessionResponseSchema,
   DiscernmentResponseSchema: () => DiscernmentResponseSchema,
@@ -39,10 +41,12 @@ __export(index_exports, {
   LibratoApiClient: () => LibratoApiClient,
   LibratoApiError: () => LibratoApiError,
   PRICING: () => PRICING,
+  PushSubscribeRequestSchema: () => PushSubscribeRequestSchema,
   STILLNESS: () => STILLNESS,
   ScriptureSchema: () => ScriptureSchema,
   TIER_CONFIG: () => TIER_CONFIG,
   TONES: () => TONES,
+  TRIAL_LINE: () => TRIAL_LINE,
   UpdateProfileRequestSchema: () => UpdateProfileRequestSchema,
   UpdateSessionRequestSchema: () => UpdateSessionRequestSchema,
   ValidateReceiptRequestSchema: () => ValidateReceiptRequestSchema,
@@ -99,8 +103,10 @@ var TIER_CONFIG = {
 };
 var PRICING = {
   monthly: { price: 7.99, label: "$7.99/month" },
-  annual: { price: 49.99, label: "$49.99/year", perMonth: "$7.99/month", savings: "48%" }
+  annual: { price: 49.99, label: "$49.99/year", perMonth: "$4.17/month", savings: "48%" }
 };
+var DISCLAIMER = "This tool supports reflection \u2014 it does not replace God, Scripture, or wise counsel.";
+var TRIAL_LINE = "Free for 7 days. Cancel anytime.";
 var IAP_PRODUCTS = {
   monthly: "librato_premium_monthly",
   annual: "librato_premium_annual"
@@ -270,6 +276,16 @@ var ValidateReceiptRequestSchema = import_zod.z.object({
   platform: import_zod.z.enum(["apple", "google"]),
   product_id: import_zod.z.string().min(1)
 });
+var CheckoutRequestSchema = import_zod.z.object({
+  plan: import_zod.z.enum(["monthly", "annual"])
+});
+var PushSubscribeRequestSchema = import_zod.z.object({
+  endpoint: import_zod.z.string().url().max(1e3),
+  keys: import_zod.z.object({
+    p256dh: import_zod.z.string().min(1).max(500),
+    auth: import_zod.z.string().min(1).max(500)
+  })
+});
 function containsCrisisKeywords(text) {
   const lower = text.toLowerCase();
   return CRISIS_KEYWORDS.some((keyword) => lower.includes(keyword));
@@ -394,6 +410,16 @@ var LibratoApiClient = class {
     });
     return res.entry;
   }
+  async updateJournalEntry(id, data) {
+    const res = await this.request(`/api/journal/${id}`, {
+      method: "PATCH",
+      body: data
+    });
+    return res.entry;
+  }
+  async deleteJournalEntry(id) {
+    await this.request(`/api/journal/${id}`, { method: "DELETE" });
+  }
   // ─── Profile ────────────────────────────────
   async getProfile() {
     const res = await this.request("/api/profile");
@@ -426,6 +452,26 @@ var LibratoApiClient = class {
       }
     );
     return res.subscription;
+  }
+  // ─── Stripe (v2 PWA — Checkout + Customer Portal) ───
+  /** Create a Stripe Checkout session (7-day trial). Returns the redirect URL. */
+  async createCheckoutSession(plan) {
+    return this.request("/api/stripe/checkout", {
+      method: "POST",
+      body: { plan }
+    });
+  }
+  /** Create a Stripe Customer Portal session. Returns the redirect URL. */
+  async createPortalSession() {
+    return this.request("/api/stripe/portal", { method: "POST" });
+  }
+  // ─── Web Push (v2 PWA) ──────────────────────
+  /** Store a Web Push subscription for daily-scale reminders. */
+  async subscribePush(subscription) {
+    await this.request("/api/push/subscribe", {
+      method: "POST",
+      body: subscription
+    });
   }
   // ─── Daily Moment ───────────────────────────
   async getDailyMoment() {
@@ -509,7 +555,9 @@ var glowOnNavy = "rgba(200,164,94,0.06)";
   COLORS,
   CRISIS_KEYWORDS,
   CRISIS_RESOURCES,
+  CheckoutRequestSchema,
   CreateJournalEntryRequestSchema,
+  DISCLAIMER,
   DiscernSessionRequestSchema,
   DiscernSessionResponseSchema,
   DiscernmentResponseSchema,
@@ -521,10 +569,12 @@ var glowOnNavy = "rgba(200,164,94,0.06)";
   LibratoApiClient,
   LibratoApiError,
   PRICING,
+  PushSubscribeRequestSchema,
   STILLNESS,
   ScriptureSchema,
   TIER_CONFIG,
   TONES,
+  TRIAL_LINE,
   UpdateProfileRequestSchema,
   UpdateSessionRequestSchema,
   ValidateReceiptRequestSchema,
