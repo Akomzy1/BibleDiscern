@@ -189,6 +189,8 @@ export function useJourney(sessionId?: string) {
         title: session.situation.slice(0, 120),
         content: ai?.prayer ?? undefined,
         entry_type: 'discernment',
+        // first tag carries the primary scripture reference for the timeline badge
+        tags: ai?.scriptures[0]?.reference ? [ai.scriptures[0].reference] : [],
       });
       try {
         sessionStorage.removeItem(STORE_KEY);

@@ -5,7 +5,7 @@ import {
   glowOnNavy,
   motion,
   radius
-} from "./chunk-MQGIMVLC.mjs";
+} from "./chunk-2TZY4GF3.mjs";
 
 // src/constants.ts
 var BRAND = {

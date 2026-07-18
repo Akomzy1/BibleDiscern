@@ -11,6 +11,8 @@ export const color = {
   vellum200: '#F5ECD7', // inset panels, quotes
   gilt500: '#C8A45E', // gold — the ONE emphasis per screen
   gilt300: '#E8D5A3', // gold text/glow on navy
+  gilt700: '#8A6D35', // gold ink — accessible gold text on vellum (links, refs)
+  olive700: '#5C6B53', // olive ink — accessible olive text on vellum
   ink900: '#2C2418', // text on vellum
   ink500: '#5C5144', // secondary text on vellum
   olive500: '#7A8B6F', // success, affirmation
