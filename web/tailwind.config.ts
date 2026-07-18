@@ -56,6 +56,7 @@ const config: Config = {
       },
       borderRadius: {
         panel: `${radius.panel}px`,
+        control: `${radius.control}px`,
         pill: `${radius.pill}px`,
       },
       boxShadow: {

@@ -534,7 +534,7 @@ var font = {
   body: '"Source Sans 3", system-ui, sans-serif'
   // all UI + body
 };
-var radius = { panel: 14, pill: 999 };
+var radius = { panel: 14, control: 10, pill: 999 };
 var motion = {
   easeSelah: "cubic-bezier(0.22, 0.8, 0.24, 1)",
   durWhisper: 250,

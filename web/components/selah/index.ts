@@ -9,3 +9,5 @@ export { GiltButton } from './GiltButton';
 export { SideBadge } from './SideBadge';
 export { TabBar } from './TabBar';
 export { TextField, TextArea } from './Field';
+export { StatusChip } from './StatusChip';
+export { PrayerCard } from './PrayerCard';

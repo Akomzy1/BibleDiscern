@@ -10,6 +10,7 @@
   --dur-whisper: 250ms;
   --dur-settle: 450ms;
   --dur-breath: 700ms;
+  --dur-reveal: 1.5s; /* SEE percentage reveal (prototype --dur-reveal) */
 }
 
 /* Selah keyframes (SKILL.md §5, §9.2) */

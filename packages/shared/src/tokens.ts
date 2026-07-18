@@ -23,7 +23,7 @@ export const font = {
   body: '"Source Sans 3", system-ui, sans-serif', // all UI + body
 } as const;
 
-export const radius = { panel: 14, pill: 999 } as const;
+export const radius = { panel: 14, control: 10, pill: 999 } as const;
 
 export const motion = {
   easeSelah: 'cubic-bezier(0.22, 0.8, 0.24, 1)',
