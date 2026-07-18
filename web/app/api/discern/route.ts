@@ -135,7 +135,8 @@ export async function POST(request: NextRequest) {
     try {
       aiResponse = JSON.parse(content.text);
     } catch {
-      console.error('[discern] JSON parse failed:', content.text.slice(0, 200));
+      // Never log response content — it can echo the user's situation.
+      console.error('[discern] JSON parse failed. length:', content.text.length);
       return err(
         'server_error',
         'Something went wrong preparing your discernment journey. Please try again.',
