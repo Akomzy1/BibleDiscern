@@ -393,7 +393,7 @@ function HomeFaq() {
     ['Does the AI speak for God?', 'Never. The Scripture Lens never declares a winner — it holds up the Word and leaves the discernment between you and the Lord.'],
     ['What denominations is this for?', 'Any believer who takes Scripture seriously. We stay on the broad, historic center of the faith.'],
     ['Is my data private?', 'Your journal is a confession — held in confidence. No trackers, no ad networks, no selling data.'],
-    ["What's free vs Premium?", 'Free: one journey a month, the Daily Scale, your last three journal entries, the Stillness. Premium removes the limits.'],
+    ["What's free vs Premium?", 'Free: the Daily Scale every morning — weigh, see, and learn — plus your last three journal entries. Premium: every Deep Discernment journey, the Stillness, the Fruit of the Spirit diagnostic, unlimited journal, follow-ups, and sharing.'],
     ['How does the trial work?', '7 days of Premium, free. We remind you 2 days before it ends. Cancel anytime.'],
   ];
   return (

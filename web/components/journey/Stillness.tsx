@@ -7,7 +7,8 @@
 // the "What surfaced?" capture. (Frames G / G2)
 
 import { useState } from 'react';
-import { GiltButton, TextArea } from '@/components/selah';
+import { GiltButton, StatusChip, TextArea } from '@/components/selah';
+import { TRIAL_LINE } from '@librato/shared';
 import { useStillness } from '@/hooks/useStillness';
 
 const R = 131;
@@ -54,6 +55,63 @@ function BreathingDisc() {
           <path d="M12 3v18" />
           <path d="M6.5 9.5h11" />
         </svg>
+      </div>
+    </div>
+  );
+}
+
+// The Stillness Engine is Premium-only. Free users (e.g. viewing a journey
+// begun before this became Premium) see the breathing disc behind a lock with a
+// trial CTA, and may continue past it to the Prayer.
+export function StillnessLocked({
+  onStartTrial,
+  onSkip,
+  busy,
+}: {
+  onStartTrial: () => void;
+  onSkip: () => void;
+  busy: boolean;
+}) {
+  return (
+    <div className="relative flex min-h-screen flex-col items-center overflow-hidden bg-nave-950 px-7">
+      <div className="pt-safe" />
+      <div className="flex-1" />
+      <div className="relative">
+        <div className="blur-[6px]" aria-hidden>
+          <BreathingDisc />
+        </div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5">
+          <span className="inline-flex text-gilt-300" aria-hidden>
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+              <rect x="5" y="11" width="14" height="9" rx="2" />
+              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+            </svg>
+          </span>
+          <StatusChip tone="gold">Premium</StatusChip>
+        </div>
+      </div>
+      <div className="mt-6 px-4 text-center">
+        <h1 className="font-display text-[27px] font-medium leading-tight text-vellum-100">
+          Enter the Stillness
+        </h1>
+        <p className="mt-2.5 font-body text-[13.5px] leading-[1.55] text-vellum-200/60">
+          Ninety seconds of guided silence — the quiet center of the journey, where you listen for
+          what the Spirit is saying. Premium opens it.
+        </p>
+      </div>
+      <div className="flex-1" />
+      <div className="w-full max-w-[420px] pb-8">
+        <GiltButton fullWidth onClick={onStartTrial} disabled={busy}>
+          {busy ? 'One moment…' : 'Start free trial'}
+        </GiltButton>
+        <p className="mt-2.5 text-center font-body text-[12.5px] text-vellum-200/60">{TRIAL_LINE}</p>
+        <button
+          type="button"
+          onClick={onSkip}
+          className="mt-2.5 w-full py-1 text-center font-body text-[13px] font-semibold text-vellum-200/60 transition-colors duration-whisper ease-selah hover:text-vellum-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gilt-500"
+        >
+          Continue without it
+        </button>
       </div>
     </div>
   );

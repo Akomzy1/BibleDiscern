@@ -31,7 +31,10 @@ var COLORS = {
 };
 var TIER_CONFIG = {
   free: {
-    sessions_limit: 1,
+    sessions_limit: 0,
+    // Deep Discernment journeys are Premium-only
+    has_discernment_journey: false,
+    has_stillness: false,
     has_fruit_diagnostic: false,
     has_follow_ups: false,
     has_full_journal: false,
@@ -40,6 +43,8 @@ var TIER_CONFIG = {
   },
   premium: {
     sessions_limit: 9999,
+    has_discernment_journey: true,
+    has_stillness: true,
     has_fruit_diagnostic: true,
     has_follow_ups: true,
     has_full_journal: true,
@@ -57,6 +62,14 @@ var IAP_PRODUCTS = {
   monthly: "librato_premium_monthly",
   annual: "librato_premium_annual"
 };
+var ONBOARDING_SEASONS = [
+  "Career crossroads",
+  "Relationship decision",
+  "Financial uncertainty",
+  "Spiritual dryness",
+  "I just want to grow in discernment",
+  "unnamed"
+];
 var TONES = [
   { id: "reflective", label: "Reflective", icon: "\u{1F30A}" },
   { id: "urgent", label: "Urgent", icon: "\u26A1" },
@@ -483,6 +496,7 @@ export {
   LOADING_MESSAGES,
   LibratoApiClient,
   LibratoApiError,
+  ONBOARDING_SEASONS,
   PRICING,
   PushSubscribeRequestSchema,
   SCALE_INVENTORY,

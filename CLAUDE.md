@@ -124,12 +124,15 @@ Two tiers. Stripe only this phase.
 | | Free | Premium |
 |---|---|---|
 | Price | $0 | **$7.99/month or $49.99/year** (save 48%, $4.17/mo effective) |
-| Discernment sessions | 1/month | Unlimited |
-| Daily Scale (weigh + see + learn) | Full | Full |
+| Deep Discernment journey | — (Premium-only) | Unlimited |
+| Daily Scale (weigh + see + learn) | Full — the free tier's headline benefit | Full |
 | Daily Scale history | — | Last 7 days |
 | Journal | Last 3 entries | Unlimited |
-| Fruit diagnostic (Step 6) | Locked | Included |
+| The Stillness Engine (Step 6) | Locked | Included |
+| Fruit diagnostic (Step 5) | Locked | Included |
 | Follow-ups, sharing, streaks | — | Included |
+
+The tier gate is data in `@librato/shared` `TIER_CONFIG` (`has_discernment_journey`, `has_stillness`, `has_fruit_diagnostic`, …). Both the UI and `/api/discern` read it — never hardcode a gate in a component. Trial (`subscriptions.status === 'trialing'`) counts as premium access. The Deep Discernment journey (and therefore The Stillness inside it) is Premium-only; `/api/discern` rejects free-tier journey requests server-side before any Claude call.
 
 **Sacred Seven Trial:** 7-day free trial via Stripe Checkout trial. Stripe requires a card for trials — copy everywhere reads **"Free for 7 days. Cancel anytime."** NEVER "no credit card."
 

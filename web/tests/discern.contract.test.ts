@@ -55,14 +55,14 @@ describe('/api/discern contract', () => {
     expect(fromMock).not.toHaveBeenCalled();
   });
 
-  it("blocks a free user's session past the monthly limit (403 limit_reached)", async () => {
+  it('blocks a free user from the journey entirely (Premium-only, 403 limit_reached)', async () => {
     fromMock.mockImplementation((table: string) => {
       if (table === 'subscriptions') {
         return makeBuilder({
           data: {
             tier: 'free',
-            sessions_used_this_month: 1,
-            sessions_limit: 1,
+            sessions_used_this_month: 0, // even the first journey is Premium-only now
+            sessions_limit: 0,
             status: 'active',
           },
           error: null,
@@ -81,6 +81,59 @@ describe('/api/discern contract', () => {
     const json = await res.json();
     expect(json.error).toBe('limit_reached');
     expect(anthropicCreate).not.toHaveBeenCalled();
+  });
+
+  it('lets a Premium user through the gate and calls Claude', async () => {
+    const validAi = {
+      summary: 'A weighty decision.',
+      biblicalNarratives: [
+        { character: 'Ruth', reference: 'Ruth 1:16', connection: 'c', lesson: 'l' },
+        { character: 'Paul', reference: 'Acts 16:9', connection: 'c', lesson: 'l' },
+      ],
+      scriptures: [
+        { reference: 'Proverbs 3:5', text: 't', context: 'c' },
+        { reference: 'Psalm 37:4', text: 't', context: 'c' },
+        { reference: 'Jeremiah 29:11', text: 't', context: 'c' },
+      ],
+      examination: ['q1', 'q2', 'q3', 'q4', 'q5'],
+      fruitDiagnostic: {
+        love: { score: 7, note: 'n' },
+        joy: { score: 6, note: 'n' },
+        peace: { score: 5, note: 'n' },
+        patience: { score: 4, note: 'n' },
+        kindness: { score: 8, note: 'n' },
+        goodness: { score: 7, note: 'n' },
+        faithfulness: { score: 6, note: 'n' },
+        gentleness: { score: 7, note: 'n' },
+        selfControl: { score: 5, note: 'n' },
+      },
+      prayer: 'Lord, grant wisdom. Amen.',
+      closingWord: 'Trust His timing.',
+    };
+    anthropicCreate.mockResolvedValue({ content: [{ type: 'text', text: JSON.stringify(validAi) }] });
+    fromMock.mockImplementation((table: string) => {
+      if (table === 'subscriptions') {
+        return makeBuilder({
+          data: { tier: 'premium', sessions_used_this_month: 3, sessions_limit: 9999, status: 'active' },
+          error: null,
+        });
+      }
+      if (table === 'sessions') {
+        return makeBuilder({ data: { id: 'sess-1', status: 'active', ai_response: validAi }, error: null });
+      }
+      throw new Error(`unexpected table ${table}`);
+    });
+
+    const res = await POST(
+      jsonRequest('http://test/api/discern', {
+        situation: 'Should I take the new job in another city or stay near family?',
+        tone: 'reflective',
+      }) as never,
+    );
+    expect(res.status).toBe(201);
+    const json = await res.json();
+    expect(json.data.sessionId).toBe('sess-1');
+    expect(anthropicCreate).toHaveBeenCalledOnce();
   });
 
   it('rejects invalid input with a validation error before any Claude call', async () => {

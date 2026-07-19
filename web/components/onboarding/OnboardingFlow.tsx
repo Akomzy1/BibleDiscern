@@ -7,6 +7,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import type { OnboardingSeason } from '@librato/shared';
 import {
   Beam,
   CrossGlyph,
@@ -80,6 +81,13 @@ const SEASON_FULL = {
   t: 'I just want to grow in discernment',
   s: 'No urgent decision — just practice',
 } as const;
+// Catch-all for a real decision that resists a category. Stored value is the
+// code 'unnamed' (see @librato/shared ONBOARDING_SEASONS), not the card title.
+const SEASON_UNNAMED = {
+  t: "A crossroads I can't quite name",
+  s: 'A quiet unease you can’t yet place',
+  value: 'unnamed' satisfies OnboardingSeason,
+} as const;
 
 function SeasonCard({
   t,
@@ -148,6 +156,15 @@ function SeasonScreen({ onPick }: { onPick: (season: string) => void }) {
           full
           selected={picked === SEASON_FULL.t}
           onClick={() => pick(SEASON_FULL.t)}
+        />
+      </div>
+      <div className="mt-2.5">
+        <SeasonCard
+          t={SEASON_UNNAMED.t}
+          s={SEASON_UNNAMED.s}
+          full
+          selected={picked === SEASON_UNNAMED.value}
+          onClick={() => pick(SEASON_UNNAMED.value)}
         />
       </div>
       <p className="mt-[18px] text-center font-body text-[12.5px] text-vellum-200/60">
@@ -442,9 +459,10 @@ function PaywallScreen({
       </div>
 
       <div className="mx-1 mt-[18px] grid gap-[9px]">
-        <ValueRow delay={500}>Unlimited discernment journeys</ValueRow>
-        <ValueRow delay={560}>Fruit of the Spirit diagnostic</ValueRow>
-        <ValueRow delay={620}>Your full spiritual history</ValueRow>
+        <ValueRow delay={500}>Every Deep Discernment journey</ValueRow>
+        <ValueRow delay={560}>The Stillness Engine</ValueRow>
+        <ValueRow delay={620}>Fruit of the Spirit diagnostic</ValueRow>
+        <ValueRow delay={680}>Your full spiritual history</ValueRow>
       </div>
 
       <PlanCards plan={plan} onSelect={setPlan} stagedDelays={{ annual: 800, monthly: 1100 }} />

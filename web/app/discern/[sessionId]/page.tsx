@@ -10,7 +10,7 @@ import { StepWord } from '@/components/journey/StepWord';
 import { StepWalked } from '@/components/journey/StepWalked';
 import { StepExamination } from '@/components/journey/StepExamination';
 import { StepFruit, StepFruitLocked } from '@/components/journey/StepFruit';
-import { Stillness } from '@/components/journey/Stillness';
+import { Stillness, StillnessLocked } from '@/components/journey/Stillness';
 import { StepPrayer } from '@/components/journey/StepPrayer';
 import { Beam, GiltButton, Panel } from '@/components/selah';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -51,8 +51,19 @@ export default function JourneyPage({
     );
   }
 
-  // The Stillness is its own full-bleed screen — no journey chrome
+  // The Stillness is its own full-bleed screen — no journey chrome.
+  // Premium-only: a free user (e.g. on a journey begun before this gate) sees
+  // the locked variant and may continue to the Prayer.
   if (j.step === 6) {
+    if (!sub.isPremium) {
+      return (
+        <StillnessLocked
+          busy={sub.busy}
+          onStartTrial={() => void j.startCheckout('annual')}
+          onSkip={() => j.goToStep(7)}
+        />
+      );
+    }
     return (
       <Stillness
         onFinished={(note) => {

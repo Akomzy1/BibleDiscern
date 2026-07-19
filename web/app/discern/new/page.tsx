@@ -1,47 +1,50 @@
 'use client';
 
 // Journey step 1 — The Crossroads (full-bleed journey shell, no tab bar).
+// The journey is Premium-only: free users see the upgrade lock instead of the
+// Crossroads form (server enforces the same gate in /api/discern).
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useJourney } from '@/hooks/useJourney';
+import { useSubscription } from '@/hooks/useSubscription';
 import { JourneyShell } from '@/components/journey/JourneyShell';
 import { Crossroads } from '@/components/journey/Crossroads';
+import { JourneyUpgradeLock } from '@/components/journey/JourneyLock';
 import { CrisisScreen } from '@/components/common/CrisisScreen';
-import { GiltButton, Panel } from '@/components/selah';
-import { TRIAL_LINE } from '@librato/shared';
+import { Beam } from '@/components/selah';
 
 export default function NewJourneyPage() {
   const router = useRouter();
   const j = useJourney();
+  const sub = useSubscription();
 
   if (j.status === 'crisis') return <CrisisScreen />;
 
-  if (j.status === 'limit') {
+  const back = () => router.push('/discern');
+
+  if (sub.status === 'loading') {
     return (
-      <JourneyShell step={1} onBack={() => router.push('/discern')}>
+      <JourneyShell step={1} onBack={back}>
+        <div className="flex flex-1 flex-col items-center justify-center">
+          <Beam sway />
+        </div>
+      </JourneyShell>
+    );
+  }
+
+  // Pre-gate free users, and catch the server 'limit' response as a fallback.
+  if (!sub.isPremium || j.status === 'limit') {
+    return (
+      <JourneyShell step={1} onBack={back}>
         <div className="flex flex-1 flex-col justify-center">
-          <Panel className="p-6 text-center">
-            <h2 className="font-display text-xl font-medium text-ink-900">
-              You&apos;ve used your free journey this month
-            </h2>
-            <p className="mt-2 font-body text-sm leading-relaxed text-ink-500">
-              Premium opens unlimited discernment journeys — every decision, every day.
-            </p>
-            <div className="mt-5">
-              <Link href="/upgrade">
-                <GiltButton fullWidth>Start my 7-day free trial</GiltButton>
-              </Link>
-            </div>
-            <p className="mt-3 font-body text-xs text-ink-500">{TRIAL_LINE}</p>
-          </Panel>
+          <JourneyUpgradeLock />
         </div>
       </JourneyShell>
     );
   }
 
   return (
-    <JourneyShell step={1} onBack={() => router.push('/discern')}>
+    <JourneyShell step={1} onBack={back}>
       <Crossroads j={j} />
     </JourneyShell>
   );

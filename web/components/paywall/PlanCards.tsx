@@ -95,14 +95,14 @@ export function PlanCards({ plan, onSelect, stagedDelays }: PlanCardsProps) {
 }
 
 const COMPARE: [string, string | boolean, string | boolean][] = [
-  ['Journeys', '1 active', 'Unlimited'],
+  ['Deep Discernment', false, 'Unlimited'],
+  ['The Stillness', false, true],
   ['Daily Scale', true, true],
   ['Scale history', '7 days', 'Full archive'],
   ['Journal', '3 stones', 'Unlimited'],
   ['Fruit diagnostic', false, true],
   ['Follow-ups', false, true],
   ['Sharing', false, true],
-  ['Streaks', true, true],
 ];
 
 function Cell({ v, strong }: { v: string | boolean; strong?: boolean }) {

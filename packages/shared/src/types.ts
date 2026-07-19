@@ -158,6 +158,8 @@ export type DailyScalePhase = 'weigh' | 'see' | 'learn';
 
 export type TierConfig = {
   sessions_limit: number;
+  has_discernment_journey: boolean;
+  has_stillness: boolean;
   has_fruit_diagnostic: boolean;
   has_follow_ups: boolean;
   has_full_journal: boolean;

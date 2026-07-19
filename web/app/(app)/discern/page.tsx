@@ -9,30 +9,54 @@ import type { Session } from '@librato/shared';
 import { TONES, TRIAL_LINE } from '@librato/shared';
 import { Beam, Eyebrow, GiltButton, Panel, StatusChip, VellumGrain } from '@/components/selah';
 import { CrisisScreen } from '@/components/common/CrisisScreen';
+import { JourneyUpgradeLock } from '@/components/journey/JourneyLock';
 import { useJourney } from '@/hooks/useJourney';
+import { useSubscription } from '@/hooks/useSubscription';
 import { getAuthedClient } from '@/lib/api';
 
 // Empty hub (legal-system-states Frame H): level beam, invitation, and the
 // crossroads inline on vellum — the first journey starts right here.
 function EmptyHub() {
   const j = useJourney();
+  const sub = useSubscription();
   const [situation, setSituation] = useState('');
   const [tone, setTone] = useState<string>(TONES[0].id);
   const canBegin = situation.trim().length >= 10 && j.status !== 'submitting';
 
   if (j.status === 'crisis') return <CrisisScreen />;
 
-  return (
-    <div className="flex flex-1 flex-col">
-      <div className="mx-6 mt-8 text-center">
-        <Beam />
-        <p className="mt-[18px] font-scripture text-[21px] font-medium italic leading-[1.45] text-vellum-100">
-          Bring your first decision before God.
-        </p>
-        <p className="mt-2.5 font-body text-[13.5px] leading-[1.55] text-vellum-200/60">
-          A guided journey in seven steps — Scripture, examination, stillness, prayer.
+  const invitation = (
+    <div className="mx-6 mt-8 text-center">
+      <Beam />
+      <p className="mt-[18px] font-scripture text-[21px] font-medium italic leading-[1.45] text-vellum-100">
+        Bring your first decision before God.
+      </p>
+      <p className="mt-2.5 font-body text-[13.5px] leading-[1.55] text-vellum-200/60">
+        A guided journey in seven steps — Scripture, examination, stillness, prayer.
+      </p>
+    </div>
+  );
+
+  // The journey is Premium-only — free users see the upgrade lock in place of
+  // the Crossroads form (server enforces the same gate).
+  if (sub.status === 'ready' && !sub.isPremium) {
+    return (
+      <div className="flex flex-1 flex-col">
+        {invitation}
+        <div className="mt-[26px]">
+          <JourneyUpgradeLock />
+        </div>
+        <div className="flex-1" />
+        <p className="pt-6 text-center font-body text-xs leading-normal text-vellum-200/60">
+          Your journey is private — between you and the Lord.
         </p>
       </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-1 flex-col">
+      {invitation}
       <Panel className="mt-[26px] p-5">
         <textarea
           rows={4}

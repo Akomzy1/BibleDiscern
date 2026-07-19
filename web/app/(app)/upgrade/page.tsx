@@ -27,7 +27,8 @@ function FreeUpgrade() {
       </div>
 
       <div className="mx-1 mt-[18px] grid gap-[9px]">
-        <ValueRow>Unlimited discernment journeys</ValueRow>
+        <ValueRow>Every Deep Discernment journey</ValueRow>
+        <ValueRow>The Stillness Engine</ValueRow>
         <ValueRow>Fruit of the Spirit diagnostic</ValueRow>
         <ValueRow>Your full spiritual history</ValueRow>
       </div>

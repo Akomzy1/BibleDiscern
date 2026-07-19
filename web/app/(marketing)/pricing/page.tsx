@@ -17,10 +17,9 @@ export const metadata: Metadata = {
 };
 
 const FREE_TIER = [
-  'One Deep Discernment journey each month',
-  'The Daily Scale, every morning',
+  'The Daily Scale — weigh, see, and learn, every morning',
+  'The Scripture Lens on each day’s question',
   'Your three most recent journal entries',
-  'The Stillness — always free',
 ];
 
 const BILLING_FAQ: [string, string][] = [

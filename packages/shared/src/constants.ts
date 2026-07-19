@@ -35,9 +35,14 @@ export const COLORS = {
 // Subscription tiers
 // ─────────────────────────────────────────────
 
+// The single feature-gating source of truth. Both the UI and the API read
+// these — never hardcode a tier gate in a component or route.
+// Trial (subscriptions.status === 'trialing') is treated as premium access.
 export const TIER_CONFIG: Record<string, TierConfig> = {
   free: {
-    sessions_limit: 1,
+    sessions_limit: 0, // Deep Discernment journeys are Premium-only
+    has_discernment_journey: false,
+    has_stillness: false,
     has_fruit_diagnostic: false,
     has_follow_ups: false,
     has_full_journal: false,
@@ -46,6 +51,8 @@ export const TIER_CONFIG: Record<string, TierConfig> = {
   },
   premium: {
     sessions_limit: 9999,
+    has_discernment_journey: true,
+    has_stillness: true,
     has_fruit_diagnostic: true,
     has_follow_ups: true,
     has_full_journal: true,
@@ -73,6 +80,26 @@ export const IAP_PRODUCTS = {
   monthly: 'librato_premium_monthly',
   annual: 'librato_premium_annual',
 } as const;
+
+// ─────────────────────────────────────────────
+// Onboarding seasons (screen 2 — "where are you right now?")
+// ─────────────────────────────────────────────
+//
+// Stored on profiles.onboarding_season (free TEXT — no DB CHECK / Zod enum
+// constrains it, so these are the canonical values, not an enforced set).
+// The five life-context cards store their display title; 'unnamed' is the
+// catch-all for a real decision that doesn't fit a named category.
+
+export const ONBOARDING_SEASONS = [
+  'Career crossroads',
+  'Relationship decision',
+  'Financial uncertainty',
+  'Spiritual dryness',
+  'I just want to grow in discernment',
+  'unnamed',
+] as const;
+
+export type OnboardingSeason = (typeof ONBOARDING_SEASONS)[number];
 
 // ─────────────────────────────────────────────
 // Discernment tones

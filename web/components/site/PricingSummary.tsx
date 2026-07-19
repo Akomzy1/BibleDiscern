@@ -7,9 +7,10 @@ import { Sec, SiteH2 } from '@/components/site/Site';
 import { TRIAL_LINE } from '@librato/shared';
 
 export const PLAN_FEATURES = [
-  'Unlimited discernment journeys',
-  'Full journal history',
+  'Every Deep Discernment journey',
+  'The Stillness Engine',
   'Fruit of the Spirit diagnostic',
+  'Full journal history',
   'Daily Scale history & follow-ups',
 ];
 

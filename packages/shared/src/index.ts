@@ -42,13 +42,14 @@ export {
   TERRITORIES,
   SCALE_STATUSES,
   SCALE_INVENTORY,
+  ONBOARDING_SEASONS,
   CACHE_TTL,
   API_TIMEOUT,
   STILLNESS,
   LOADING_MESSAGES,
 } from './constants';
 
-export type { ToneId, JourneyStepId, Territory, ScaleStatus } from './constants';
+export type { ToneId, JourneyStepId, Territory, ScaleStatus, OnboardingSeason } from './constants';
 
 // Validation schemas
 export {

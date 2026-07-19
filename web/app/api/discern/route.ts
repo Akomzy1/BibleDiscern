@@ -6,6 +6,7 @@ import {
   containsCrisisKeywords,
   CRISIS_RESOURCES,
   DISCLAIMER,
+  TIER_CONFIG,
 } from '@librato/shared';
 import { requireAuth } from '@/lib/auth';
 import { adminClient } from '@/lib/supabase/admin';
@@ -85,7 +86,9 @@ export async function POST(request: NextRequest) {
       return ok({ crisis: true, resources: CRISIS_RESOURCES });
     }
 
-    // 5. Check subscription / session limit
+    // 5. Tier gate — the Deep Discernment journey is Premium-only (the gate
+    //    lives in @librato/shared TIER_CONFIG, the same source the UI reads).
+    //    Enforced server-side, BEFORE any Claude call. Trial counts as premium.
     const { data: sub, error: subError } = await adminClient
       .from('subscriptions')
       .select('tier, sessions_used_this_month, sessions_limit, status')
@@ -97,15 +100,24 @@ export async function POST(request: NextRequest) {
     }
 
     const isTrial = sub.status === 'trialing';
-    const isLimitReached =
-      sub.tier === 'free' &&
-      !isTrial &&
-      sub.sessions_used_this_month >= sub.sessions_limit;
+    const hasJourneyAccess =
+      isTrial || (TIER_CONFIG[sub.tier]?.has_discernment_journey ?? false);
 
-    if (isLimitReached) {
+    if (!hasJourneyAccess) {
       return err(
         'limit_reached',
-        'You have used your free session this month. Upgrade to Premium for unlimited discernment.',
+        'The Deep Discernment journey is a Premium feature. Start your free trial to begin.',
+        403,
+      );
+    }
+
+    // Premium tiers may still carry a monthly cap (currently effectively
+    // unlimited); trial is uncapped.
+    const monthlyLimit = TIER_CONFIG[sub.tier]?.sessions_limit ?? 0;
+    if (!isTrial && sub.sessions_used_this_month >= monthlyLimit) {
+      return err(
+        'limit_reached',
+        'You have reached your discernment limit for this month.',
         403,
       );
     }
