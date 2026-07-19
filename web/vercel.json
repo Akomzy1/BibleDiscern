@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/cron/daily-scale-push",
-      "schedule": "0 * * * *"
+      "schedule": "0 13 * * *"
     }
   ]
 }
