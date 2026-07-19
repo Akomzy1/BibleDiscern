@@ -82,9 +82,12 @@ export async function GET(req: NextRequest) {
             padding: '56px 72px 56px 72px',
           }}
         >
-          {/* Brand mark */}
+          {/* Brand mark — gilt cross (two hairline strokes, crossbar at 26%) + name */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <span style={{ fontSize: 28, color: GOLD }}>✝</span>
+            <div style={{ display: 'flex', position: 'relative', width: 16, height: 26 }}>
+              <div style={{ position: 'absolute', left: 6.8, top: 0, width: 2.4, height: 26, background: GOLD }} />
+              <div style={{ position: 'absolute', left: 0, top: 6.8, width: 16, height: 2.4, background: GOLD }} />
+            </div>
             <span
               style={{
                 fontFamily: 'Georgia, serif',
@@ -172,7 +175,7 @@ export async function GET(req: NextRequest) {
                 letterSpacing: 1,
               }}
             >
-              librato.ai
+              biblediscern.com
             </div>
           </div>
         </div>

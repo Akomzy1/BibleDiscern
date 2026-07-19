@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { adminClient } from '@/lib/supabase/admin';
+import { EMAIL_LOCKUP } from '@/lib/email';
 import { SignJWT, jwtVerify } from 'jose';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -9,7 +10,7 @@ const SECRET = new TextEncoder().encode(
   process.env.DELETE_ACCOUNT_JWT_SECRET ?? process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://librato.ai';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://www.biblediscern.com';
 
 // ── POST /api/delete-account ───────────────────────────────────────────────
 // Accepts { email } — verifies user exists, sends confirmation email.
@@ -49,7 +50,7 @@ export async function POST(request: NextRequest) {
     const deleteLink = `${BASE_URL}/api/delete-account?token=${encodeURIComponent(token)}`;
 
     await resend.emails.send({
-      from: 'BibleDiscern <noreply@biblediscern.app>',
+      from: 'BibleDiscern <noreply@biblediscern.com>',
       to: email,
       subject: 'Confirm Account Deletion — BibleDiscern',
       html: `
@@ -58,7 +59,7 @@ export async function POST(request: NextRequest) {
         <body style="font-family: Georgia, serif; background: #FDF6EC; margin: 0; padding: 40px 20px;">
           <div style="max-width: 520px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e8d5a3;">
             <div style="background: #1B2A4A; padding: 28px; text-align: center;">
-              <p style="color: #C8A45E; font-size: 1.15rem; font-weight: 700; margin: 0;">✝ BibleDiscern</p>
+              <p style="margin: 0; line-height: 18px;">${EMAIL_LOCKUP}</p>
             </div>
             <div style="padding: 36px 32px;">
               <h1 style="color: #1B2A4A; font-size: 1.4rem; margin-bottom: 12px;">Confirm Account Deletion</h1>
@@ -143,7 +144,7 @@ export async function GET(request: NextRequest) {
 
     // Send goodbye email (fire-and-forget)
     resend.emails.send({
-      from: 'BibleDiscern <noreply@biblediscern.app>',
+      from: 'BibleDiscern <noreply@biblediscern.com>',
       to: email,
       subject: 'Your BibleDiscern account has been deleted',
       html: `
@@ -152,7 +153,7 @@ export async function GET(request: NextRequest) {
         <body style="font-family: Georgia, serif; background: #FDF6EC; margin: 0; padding: 40px 20px;">
           <div style="max-width: 520px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e8d5a3;">
             <div style="background: #1B2A4A; padding: 28px; text-align: center;">
-              <p style="color: #C8A45E; font-size: 1.15rem; font-weight: 700; margin: 0;">✝ BibleDiscern</p>
+              <p style="margin: 0; line-height: 18px;">${EMAIL_LOCKUP}</p>
             </div>
             <div style="padding: 36px 32px;">
               <h1 style="color: #1B2A4A; font-size: 1.4rem; margin-bottom: 12px;">Account Deleted</h1>

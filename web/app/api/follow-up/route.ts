@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { adminClient } from '@/lib/supabase/admin';
 import { sendPushNotification } from '@/lib/push';
+import { EMAIL_LOCKUP } from '@/lib/email';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -122,7 +123,7 @@ async function sendFollowUpEmail(
 
     const name = profile?.display_name ?? 'Friend';
     const pushToken = profile?.expo_push_token as string | undefined;
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://librato.ai';
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://www.biblediscern.com';
     const deepLink = `${appUrl}/app/journal/${session.id}`;
     const situationPreview = session.situation.slice(0, 100) + (session.situation.length > 100 ? '...' : '');
 
@@ -139,7 +140,7 @@ async function sendFollowUpEmail(
     };
 
     const { error } = await resend.emails.send({
-      from: 'BibleDiscern <noreply@librato.ai>',
+      from: 'BibleDiscern <noreply@biblediscern.com>',
       to: userData.user.email,
       subject: subjectMap[period],
       html: buildEmailHtml({
@@ -165,7 +166,7 @@ async function sendFollowUpEmail(
       };
       await sendPushNotification(
         pushToken,
-        'How did it turn out? ✝',
+        'How did it turn out?',
         pushBodyMap[period],
         { type: 'follow_up', entryId: session.id },
       );
@@ -203,7 +204,7 @@ function buildEmailHtml({
 
     <!-- Header -->
     <div style="background:#1B2A4A;padding:32px;text-align:center;">
-      <div style="color:#C8A45E;font-size:13px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">BibleDiscern</div>
+      <div style="line-height:18px;margin-bottom:10px;">${EMAIL_LOCKUP}</div>
       <div style="color:#E8D5A3;font-size:22px;font-style:italic;">${periodLabel}</div>
     </div>
 
