@@ -1,6 +1,6 @@
 'use client';
 
-// Auth behavior — Supabase email + Google OAuth. Pure logic; pages render.
+// Auth behavior — Supabase email/password. Pure logic; pages render.
 
 import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -74,19 +74,6 @@ export function useAuth() {
     [router],
   );
 
-  const signInWithGoogle = useCallback(async () => {
-    setError(null);
-    try {
-      const supabase = getBrowserClient();
-      await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: `${window.location.origin}/auth/callback` },
-      });
-    } catch {
-      setError(GENERIC_ERROR);
-    }
-  }, []);
-
   const resetPassword = useCallback(async (email: string) => {
     setBusy(true);
     setError(null);
@@ -108,5 +95,5 @@ export function useAuth() {
     }
   }, []);
 
-  return { busy, error, notice, signUp, signIn, signInWithGoogle, resetPassword };
+  return { busy, error, notice, signUp, signIn, resetPassword };
 }

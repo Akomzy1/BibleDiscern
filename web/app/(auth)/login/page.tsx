@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { AuthShell, OrDivider, GoogleButton } from '@/components/auth/AuthShell';
+import { AuthShell } from '@/components/auth/AuthShell';
 import { GiltButton, TextField } from '@/components/selah';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -64,9 +64,6 @@ export default function LoginPage() {
           {auth.busy ? 'Signing in…' : 'Log in'}
         </GiltButton>
       </form>
-
-      <OrDivider />
-      <GoogleButton onClick={() => void auth.signInWithGoogle()} disabled={auth.busy} />
     </AuthShell>
   );
 }

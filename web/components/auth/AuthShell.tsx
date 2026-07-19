@@ -23,31 +23,3 @@ export function AuthShell({ children, below }: AuthShellProps) {
   );
 }
 
-export function OrDivider() {
-  return (
-    <div className="my-4 flex items-center gap-3" aria-hidden>
-      <span className="h-px flex-1 bg-ink-900/10" />
-      <span className="font-body text-xs text-ink-500">or</span>
-      <span className="h-px flex-1 bg-ink-900/10" />
-    </div>
-  );
-}
-
-export function GoogleButton({
-  onClick,
-  disabled,
-}: {
-  onClick: () => void;
-  disabled?: boolean;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      className="min-h-[48px] w-full rounded-control border border-ink-900/20 bg-transparent font-body text-[15px] font-semibold text-ink-900 transition-colors duration-whisper ease-selah hover:bg-ink-900/5 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gilt-500"
-    >
-      Continue with Google
-    </button>
-  );
-}
