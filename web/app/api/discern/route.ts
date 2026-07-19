@@ -17,6 +17,21 @@ export const maxDuration = 60;
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
+/** Retry once, after a short pause, on transient upstream failures only. */
+async function callClaudeWithRetry<T>(call: () => Promise<T>): Promise<T> {
+  try {
+    return await call();
+  } catch (e) {
+    const status = e instanceof Anthropic.APIError ? e.status : undefined;
+    const transient =
+      status === 429 || status === 529 || (status !== undefined && status >= 500) ||
+      e instanceof Anthropic.APIConnectionError;
+    if (!transient) throw e;
+    await new Promise((r) => setTimeout(r, 2000));
+    return await call();
+  }
+}
+
 const SYSTEM_PROMPT = `You are BibleDiscern, an AI Christian Discernment Companion. Your name comes from the Latin "librato" meaning "to weigh, to balance, to ponder." You speak like a wise, gentle spiritual mentor — warm, theologically grounded, never preachy. You NEVER claim to speak for God or give directive advice like "You should..." Instead you facilitate discernment through Scripture, reflection, and prayer.
 
 When given a user's situation, respond with ONLY valid JSON (no markdown, no backticks) in this exact structure:
@@ -130,16 +145,43 @@ export async function POST(request: NextRequest) {
 
     const userMessage = `My situation: ${situation}\n\nEmotional tone: ${tone}\n\nProvide your full discernment guidance as JSON.`;
 
-    const message = await anthropic.messages.create({
-      model,
-      max_tokens: 8000,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: userMessage }],
-    });
+    // One retry on transient Claude failures (overloaded/5xx/timeout) — this is
+    // a ~40s user-facing flow; a single upstream hiccup shouldn't kill it.
+    let message;
+    try {
+      message = await callClaudeWithRetry(() =>
+        anthropic.messages.create({
+          model,
+          max_tokens: 8000,
+          system: SYSTEM_PROMPT,
+          messages: [{ role: 'user', content: userMessage }],
+        }),
+      );
+    } catch (e) {
+      const status = e instanceof Anthropic.APIError ? e.status : undefined;
+      console.error('[discern] Claude call failed. status:', status ?? 'unknown');
+      return err(
+        'ai_unavailable',
+        'The guide is quiet for a moment. Please try again shortly.',
+        503,
+      );
+    }
 
-    // 7. Parse and validate Claude's JSON response
-    const content = message.content[0];
-    if (content.type !== 'text') {
+    if (message.stop_reason === 'max_tokens') {
+      console.error('[discern] Response truncated at max_tokens.');
+      return err(
+        'server_error',
+        'Something went wrong preparing your discernment journey. Please try again.',
+        500,
+      );
+    }
+
+    // 7. Parse and validate Claude's JSON response. Thinking models (e.g.
+    //    Sonnet 5) emit a thinking block BEFORE the text block — find the text
+    //    block rather than assuming content[0].
+    const content = message.content.find((b) => b.type === 'text');
+    if (!content || content.type !== 'text') {
+      console.error('[discern] No text block in response. blocks:', message.content.map((b) => b.type).join(','));
       return err('server_error', 'Unexpected response type from AI.', 500);
     }
 

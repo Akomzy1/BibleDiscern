@@ -3,7 +3,7 @@
 // Discern hub — past journeys + the quiet entry into a new one.
 // (Empty-state frame refined in Stage 8.)
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import type { Session } from '@librato/shared';
 import { TONES, TRIAL_LINE } from '@librato/shared';
@@ -126,21 +126,24 @@ export default function DiscernHubPage() {
     'loading',
   );
 
-  useEffect(() => {
-    void (async () => {
-      try {
-        const client = await getAuthedClient();
-        if (!client) {
-          setStatus('unauthenticated');
-          return;
-        }
-        setSessions(await client.getSessions());
-        setStatus('ready');
-      } catch {
-        setStatus('error');
+  const load = useCallback(async () => {
+    setStatus('loading');
+    try {
+      const client = await getAuthedClient();
+      if (!client) {
+        setStatus('unauthenticated');
+        return;
       }
-    })();
+      setSessions(await client.getSessions());
+      setStatus('ready');
+    } catch {
+      setStatus('error');
+    }
   }, []);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
 
   if (status === 'ready' && sessions && sessions.length === 0) {
     return (
@@ -198,9 +201,16 @@ export default function DiscernHubPage() {
       )}
 
       {status === 'error' && (
-        <p className="mt-8 text-center font-body text-sm text-vellum-200/60">
-          We couldn&apos;t reach the server. Your words are saved — try again in a moment.
-        </p>
+        <div className="mt-8 text-center">
+          <p className="font-body text-sm text-vellum-200/60">
+            We couldn&apos;t reach the server. Your words are saved — try again in a moment.
+          </p>
+          <div className="mt-4 flex justify-center">
+            <GiltButton variant="secondary" onClick={() => void load()}>
+              Try again
+            </GiltButton>
+          </div>
+        </div>
       )}
     </main>
   );
