@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { AuthError } from './auth';
+import { NotFoundError } from './admin';
 import { ZodError } from 'zod';
 
 /** Wrap a successful payload in the standard { data } envelope */
@@ -22,6 +23,11 @@ export function err(
  * Handles AuthError, ZodError, and unknown errors uniformly.
  */
 export function handleError(e: unknown): NextResponse {
+  if (e instanceof NotFoundError) {
+    // Admin surfaces present the same 404 to non-admins as to the public.
+    return err('not_found', e.message, 404);
+  }
+
   if (e instanceof AuthError) {
     return err('unauthorized', e.message, e.status);
   }

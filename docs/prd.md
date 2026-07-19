@@ -80,7 +80,7 @@ Repeated questions would erode community trust faster than almost anything else,
 - Inventory alerting: Resend email to the admin when the approved pool drops below 21 (warning) and below 7 (critical).
 - The 30 seeded scales are migrated into this lifecycle (past dates → `published`, territory tags backfilled).
 
-Content supply beyond the seeded 30 comes from the **AI scale-generation pipeline** — human-review-gated, specified in `biblediscern-scale-pipeline-spec.md`, built as the first post-launch update before inventory runs low. Deliberate *spaced revisits* (re-asking a great tension 6+ months later, framed as a revisit and showing the user their prior vote) are a Phase 2+ concept reserved in that spec — never accidental repetition.
+Content supply beyond the seeded 30 comes from the **AI scale-generation pipeline** — human-review-gated, specified in `biblediscern-scale-pipeline-spec.md`, built as the first post-launch update before inventory runs low. Its human gate lives on a lean **`/admin/scales` surface that ships in this phase** (inventory header, manual scale creation, approve/edit/retire, LEARN-styled preview) — the pipeline later extends that page with the generated-drafts queue. Deliberate *spaced revisits* (re-asking a great tension 6+ months later, framed as a revisit and showing the user their prior vote) are a Phase 2+ concept reserved in that spec — never accidental repetition.
 
 **Web-specific additions (additive, nothing removed):**
 - **Public teaser:** the landing page shows today's question and both arguments to anonymous visitors. Voting requires an account (guest-vote upgrade path is a Phase 2 experiment, not MVP).
@@ -296,7 +296,7 @@ Active voice, sentence case, calm and specific — "Weigh in," "Set my Ebenezer 
 
 **Marketing (public):** Landing (hero with The Beam + live today's-scale teaser + how-it-works + pricing + FAQ) · Pricing · Scale archive index + `/scale/[slug]` · Privacy · Delete-account · Terms.
 
-**App (auth):** Auth (email + Google) · Onboarding 1–6 · Today (Daily Scale states: weigh / see / learn / completed-collapsed) · Discern hub + 7 journey steps · Session detail · Journal timeline + entry detail · Upgrade (reuses paywall design) · Settings (profile, notification time, sound toggle, subscription via Stripe Portal, install app, sign out, delete account link).
+**App (auth):** Auth (email + Google) · Onboarding 1–6 · Today (Daily Scale states: weigh / see / learn / completed-collapsed) · Discern hub + 7 journey steps · Session detail · Journal timeline + entry detail · Upgrade (reuses paywall design) · Settings (profile, notification time, sound toggle, subscription via Stripe Portal, install app, sign out, delete account link) · **Admin** — `/admin/scales` (allowlisted internal tooling: inventory, manual scales, approve/retire; prototype-fidelity-exempt).
 
 **System states designed, not defaulted:** offline, crisis resources, empty journal, trial-ending banner, payment-failed.
 
@@ -313,7 +313,7 @@ Active voice, sentence case, calm and specific — "Weigh in," "Set my Ebenezer 
 | Auth (Supabase email + Google) | Public scale archive pages (SEO) |
 | Brand assets, store listing copy, screenshots (parked for native) | Wake Lock + sound cue system |
 | 15-day content strategy + Remotion project | Landing page in Selah |
-| Onboarding/paywall copy & choreography specs | — |
+| Onboarding/paywall copy & choreography specs | Admin scale-management page (`/admin/scales`) |
 
 Estimated effort: **~3 focused weeks** (≈70% of the thinking already exists).
 
@@ -377,6 +377,7 @@ Until then: no work in `mobile/`, no RevenueCat changes, no store submissions.
 - [ ] Onboarding 1–6 incl. iOS install-sheet branch + Stripe trial checkout
 - [ ] PWA: installable (Lighthouse pass), offline states, push on Android/desktop + installed iOS
 - [ ] Privacy + delete-account pages live (URLs already registered with Google Play)
+- [ ] Admin `/admin/scales` live: allowlist enforced (non-admins 404), inventory header accurate, manual scale create → approve → selectable by the daily selector
 - [ ] All API keys rotated (Anthropic, Stripe, Resend) — the pre-launch step deferred from v1
 - [ ] Vercel production deploy green on `biblediscern.app`
 - [ ] Day-1 content from the 15-day campaign queued

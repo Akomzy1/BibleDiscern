@@ -38,7 +38,8 @@ biblediscern/
 │   │   │   ├── discern/                 # Hub + [sessionId] journey
 │   │   │   ├── journal/                 # Timeline + [entryId]
 │   │   │   ├── upgrade/
-│   │   │   └── settings/
+│   │   │   ├── settings/
+│   │   │   └── admin/scales/            # Allowlisted internal tooling: inventory, manual scales, approve/retire
 │   │   ├── (auth)/            # Signup, login, reset-password
 │   │   └── api/              # All routes (contracts frozen — see below)
 │   ├── components/
@@ -107,6 +108,7 @@ Operating requirements for every UI build session:
 - **Do not invent sections** the prototype doesn't contain. **Do not omit states** the prototype shows (selected, locked, blurred, empty, sent, error, offline). A screen is incomplete until every state in its prototype exists in code.
 - **Match spacing, sizing, and hierarchy** to the frame. Consume tokens for the values (never hardcode), but the *arrangement* comes from the prototype.
 - If a needed screen or state is missing from the prototype, **stop and request it** — never fill the gap with an improvised layout.
+- **Exception — internal admin surfaces (`/admin/*`):** fidelity-exempt. No prototype frames exist or are required; build them plainly from Selah primitives and tokens. This is the only exemption.
 - Every PR/commit that touches UI states, in its description, which prototype frame it implements and confirms visual parity.
 
 The purpose of this project's entire pipeline (PRD → Relume wireframes → Claude Design prototype → this build) is that **the build is an act of faithful translation, not fresh design.** Fresh design during the build is how the premium, deliberate feel gets diluted into generic output. Translate the prototype exactly.
@@ -137,7 +139,7 @@ Payments: Stripe Checkout to purchase, Stripe Customer Portal to manage, existin
 
 Primary retention mechanic. 3-phase flow: **WEIGH** (read question + two argued sides, pick one, one vote/user enforced by `daily_scale_votes` unique constraint) → **SEE** (animated results reveal, "N believers weighed in", majority/minority line) → **LEARN** (Scripture Lens: reference, verse, teaching that NEVER declares a winner, closing prayer). Expires at local midnight. Seeded baseline votes prevent empty-room effect. Free users get the full daily experience; Premium unlocks 7-day history.
 
-**Selection (v2):** a daily pg_cron selector promotes exactly one `approved` scale to `published` by stamping `published_date` — the selector excludes any scale whose `published_date` is set, so **a question can never appear twice** (query constraint, not policy). It refuses same-`territory` back-to-back days (relaxing territory rather than ever skipping a day), rotates least-recently-used territories, FIFO by `approved_at`. Lazy fallback selection inside GET `/api/daily-scale` if the cron misses. Resend admin alert when the approved pool < 21 (warning) / < 7 (critical). Content supply beyond the seeded 30: the review-gated AI generation pipeline (post-launch — see `biblediscern-scale-pipeline-spec.md`); generated scales NEVER auto-publish.
+**Selection (v2):** a daily pg_cron selector promotes exactly one `approved` scale to `published` by stamping `published_date` — the selector excludes any scale whose `published_date` is set, so **a question can never appear twice** (query constraint, not policy). It refuses same-`territory` back-to-back days (relaxing territory rather than ever skipping a day), rotates least-recently-used territories, FIFO by `approved_at`. Lazy fallback selection inside GET `/api/daily-scale` if the cron misses. Resend admin alert when the approved pool < 21 (warning) / < 7 (critical). Content supply beyond the seeded 30: the review-gated AI generation pipeline (post-launch — see `biblediscern-scale-pipeline-spec.md`); generated scales NEVER auto-publish. Manual curation and approvals happen on the in-phase `/admin/scales` surface.
 
 Web additions (additive): public teaser on landing (voting requires account), share card after SEE (OG image via `/api/og`), public archive at `/scale/[slug]` (30 seeded scales = 30 SEO pages at launch, +1 daily).
 
@@ -180,8 +182,10 @@ Every completed journey saves an entry. Types: discernment / reflection / answer
 | /api/webhooks/stripe | POST | Subscription events | Webhook |
 | /api/og | GET | OG images (scale share cards) | Public |
 | /api/push/subscribe | POST | Store Web Push subscription | Yes |
+| /api/admin/scales | GET/POST | Admin: list/filter scales; create manual scale | Admin |
+| /api/admin/scales/[id] | PATCH | Admin: edit draft/approved, approve, retire | Admin |
 
-Rate limit: 10 req/min/user on /api/discern. Any new route is additive — never change an existing contract.
+Rate limit: 10 req/min/user on /api/discern. Any new route is additive — never change an existing contract. **Admin routes:** every request re-checks the `ADMIN_EMAILS` allowlist server-side; non-admins receive **404** (never a redirect that advertises the route). Admin writes go through the service-role client on the server *after* the allowlist check — client RLS still only exposes `published` rows.
 
 ## PWA Requirements
 
@@ -226,6 +230,7 @@ Rate limit: 10 req/min/user on /api/discern. Any new route is additive — never
 - Always show the disclaimer on every session: "This tool supports reflection — it does not replace God, Scripture, or wise counsel."
 - Always enforce rate limiting on /api/discern.
 - Always use the canonical trial line: "Free for 7 days. Cancel anytime."
+- Always enforce the ADMIN_EMAILS allowlist server-side on every /admin page and /api/admin route; non-admins receive 404.
 - Always list env vars in turbo.json globalEnv.
 
 ## Environment Variables
@@ -251,6 +256,7 @@ VAPID_PRIVATE_KEY=
 NEXT_PUBLIC_VAPID_PUBLIC_KEY=
 # App
 NEXT_PUBLIC_APP_URL=https://biblediscern.app
+ADMIN_EMAILS=            # comma-separated; gates /admin pages and /api/admin routes (server-side)
 ```
 
 All non-`NEXT_PUBLIC_` vars must be in `turbo.json` globalEnv for Vercel builds. Rotate Anthropic/Stripe/Resend keys before public launch (deferred pre-launch step).

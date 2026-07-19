@@ -1,9 +1,9 @@
 # BibleDiscern — AI Scale-Generation Pipeline
 ### Post-Launch Update Spec (v1.0)
 
-**Status:** Specified, NOT in the Phase 1 build. The scheduling substrate it feeds (status lifecycle, `published_date` no-repeat guarantee, territory spacing, inventory alerts) **ships in Phase 1** — see PRD §4.1 and Build Prompts Stage 1, task 7.
+**Status:** Specified, NOT in the Phase 1 build. The scheduling substrate it feeds (status lifecycle, `published_date` no-repeat guarantee, territory spacing, inventory alerts) **ships in Phase 1** — see PRD §4.1 and Build Prompts Stage 1, task 7. A lean **`/admin/scales` surface also ships in Phase 1** (Stage 8, task 5: inventory header, manual scale creation, approve/edit/retire, LEARN-styled preview). This pipeline **extends** that existing page — it does not create it.
 **Build trigger:** whichever comes first — the approved pool dropping below **21** (the warning alert), or three weeks after launch. At 30 seeded scales this arrives fast; do not wait for the critical alert.
-**Effort:** ~2–3 focused days on the existing stack.
+**Effort:** ~2 focused days on the existing stack (down from 3 — the admin base ships in Phase 1).
 
 ---
 
@@ -98,7 +98,7 @@ The prompt-side exclusion list is the first line; the database is the second:
 
 ## 7. The Review Gate (non-negotiable)
 
-- `/admin/scales` — a route-protected page (allowlist by admin email in env: `ADMIN_EMAILS`), server-checked, inside the existing app. Not fancy: a list of `draft` rows, newest first.
+- `/admin/scales` — **already live from Phase 1** (allowlisted via `ADMIN_EMAILS`, server-checked, non-admins 404; base features: inventory header, manual create, approve/edit/retire, LEARN-styled preview). The pipeline **adds a generated-drafts review queue** to that page: `draft` rows with `source='generated'`, newest first.
 - Each row: full preview (question, both sides, lens, prayer, territory) rendered in the actual DailyScale LEARN styling so quality is judged as users will see it · inline **Edit** (all fields) · **Approve** (→ `approved`, `approved_at = now()`) · **Reject** (→ `retired`, with an optional one-line reason stored for prompt-tuning).
 - A small inventory header: approved count, days of runway, territory distribution bar.
 - **The invariant, restated because it is the whole point:** no path exists from `generated` to `published` that does not pass a human Approve click. If the founder is unavailable and inventory hits zero, the correct behavior is the critical alert firing — not silent auto-publish. Quality failure is worse than a gap.
@@ -129,8 +129,7 @@ Not built now; designed so nothing blocks it later:
 ## 11. Build Plan (~2–3 days when triggered)
 
 Day 1: migration (`revisit_of`, pg_trgm, rejection log table) · generation job + Zod contract · dedupe guard.
-Day 2: `/admin/scales` review surface with the LEARN-styled preview, approve/edit/reject, inventory header.
-Day 3: cron + manual trigger wiring, alert additions, threshold logging, first live batch reviewed end-to-end.
+Day 2: extend `/admin/scales` — generated-drafts review queue, rejection reasons, batch-run context (the base page, preview, approve/edit/retire, and inventory header already exist from Phase 1) · cron + manual trigger wiring · alert additions · threshold logging · first live batch reviewed end-to-end.
 
 ## 12. Risks
 

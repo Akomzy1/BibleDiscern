@@ -194,9 +194,9 @@ Read CLAUDE.md "PWA Requirements" and SKILL.md §10.
 
 ---
 
-## STAGE 8 — Settings, Legal, System States
+## STAGE 8 — Settings, Legal, Admin & System States
 
-*Attach: Settings, Privacy, Terms, Delete Account, and the system-state frames (offline, crisis, trial-ending, payment-failed, empty-discern).*
+*Attach: Settings, Privacy, Terms, Delete Account, and the system-state frames (offline, crisis, trial-ending, payment-failed, empty-discern). No frame for the admin page — it is fidelity-exempt internal tooling.*
 
 ```
 Read SKILL.md §8 and CLAUDE.md safety rules. Build to the attached frames exactly.
@@ -205,11 +205,18 @@ Read SKILL.md §8 and CLAUDE.md safety rules. Build to the attached frames exact
 2. Legal: Privacy and Terms as quiet document layouts (Playfair title, last-updated, anchor list, prose). Use the v1 privacy content already written for the app.
 3. Delete Account (public): branded header, exact list of what's removed, warning line, email field + ember-outlined "Request account deletion" (the one screen where emphasis is NOT gold), sent-state, support line. Wire /api/delete-account (confirmation email via Resend + signed-token deletion of all user rows + auth user).
 4. System states, each matching its frame: OFFLINE, CRISIS RESOURCES (full vellum, the app's calmest surface, 988/Crisis Text Line/RAINN, zero decorative accents, "BibleDiscern is not a crisis service."), TRIAL-ENDING banner, PAYMENT-FAILED card, EMPTY DISCERN hub.
+5. ADMIN — /admin/scales. Internal tooling, EXEMPT from the prototype-fidelity mandate (no Claude Design frame exists or is required — CLAUDE.md "Prototype Fidelity" exception). Use Selah primitives/tokens in a plain utilitarian layout; no TabBar.
+   a. Access: server layout guard reading ADMIN_EMAILS (comma-separated env). Non-admins get a 404, never a redirect. Every /api/admin route re-checks the allowlist server-side; admin writes use the service-role client AFTER that check (client RLS still exposes published rows only).
+   b. Inventory header: approved count, days of runway, territory distribution, and the next 7 scheduled/published dates.
+   c. Scales table: filter by status (draft/approved/scheduled/published/retired); row click opens full content with the preview rendered through the REAL DailyScale LEARN component (judge quality as users will see it).
+   d. Create manual scale: Zod-validated form matching the table shape, territory from the fixed vocabulary (picker, never free text), source='manual', with "Save as draft" and "Save & approve" (approve stamps approved_at).
+   e. Edit / Approve / Retire for draft and approved rows. Published rows are IMMUTABLE from the UI (votes exist against them; the archive is permanent).
+   f. Backing routes: /api/admin/scales (GET list w/ filters, POST create) and /api/admin/scales/[id] (PATCH transitions/edits) — additive, per the frozen-contracts rule.
 
 The Crisis screen is the deliberate exception to the navy-ground and one-gold rules — full vellum, no accents. Build it exactly as framed.
 ```
 
-**Verify:** Settings matches its frame incl. the hidden-when-installed install row; delete-account flow sends the email and removes all rows on confirm; the crisis screen renders full-vellum with no gold; trial-ending and payment-failed states appear under the right conditions.
+**Verify:** Settings matches its frame incl. the hidden-when-installed install row; delete-account flow sends the email and removes all rows on confirm; the crisis screen renders full-vellum with no gold; trial-ending and payment-failed states appear under the right conditions; a non-admin hitting /admin/scales (or any /api/admin route) gets 404; creating a manual scale, approving it, and running the selector makes it publishable; published rows cannot be edited from the admin UI.
 
 ---
 
@@ -220,7 +227,7 @@ The Crisis screen is the deliberate exception to the navy-ground and one-gold ru
 ```
 Read SKILL.md §14 (Definition of Done) and CLAUDE.md.
 
-1. Prototype parity audit: for every screen, confirm it matches its Claude Design frame — layout, section order, spacing, and every state (selected/locked/blurred/empty/sent/error/offline). List and fix any drift.
+1. Prototype parity audit: for every screen, confirm it matches its Claude Design frame — layout, section order, spacing, and every state (selected/locked/blurred/empty/sent/error/offline). List and fix any drift. (Admin surfaces are fidelity-exempt — audit them against Stage 8 task 5 and Selah token usage instead.)
 2. Selah consistency audit (SKILL.md laws): exactly one gold moment per screen (except Crisis=none); navy ground / vellum never full-bleed (except Crisis); every Scripture drop-capped; every Daily Scale question Cormorant italic; radius 14 + 12%-gilt navy borders + no gray navy shadows; identical TabBar; motion annotations only on the four orchestrated moments, nothing bouncy.
 3. Copy audit: trial line is "Free for 7 days. Cancel anytime." everywhere; no "unlock/seamless/elevate"; canonical lines match SKILL.md §13.
 4. Token audit: grep for hardcoded hex/duration/size in components — replace with tokens.
@@ -241,6 +248,6 @@ Return a short report of what you changed and any prototype gaps you had to flag
 |---|---|---|
 | 1 | 0 · 1 · 2 | Foundations + backend spine + the Daily Scale working end to end |
 | 2 | 3 · 4 · 5 | Auth, onboarding + paywall, the full journey + Stillness, the journal |
-| 3 | 6 · 7 · 8 · 9 | Marketing + SEO, the PWA layer, settings/legal/system states, hardening + launch |
+| 3 | 6 · 7 · 8 · 9 | Marketing + SEO, the PWA layer, settings/legal/admin/system states, hardening + launch |
 
 Every stage builds to the prototype. The build is faithful translation, not fresh design.

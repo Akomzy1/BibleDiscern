@@ -12,13 +12,12 @@ import {
   Panel,
   Eyebrow,
   GiltButton,
-  ScriptureBlock,
-  PrayerCard,
   StatusChip,
   VellumGrain,
 } from '@/components/selah';
 import { ResultBars } from './ResultBars';
 import { ShareCard } from './ShareCard';
+import { ScaleLens } from './ScaleLens';
 
 // ─── Small icons (hairline stroke, per prototype) ────────────────────────────
 
@@ -256,26 +255,11 @@ function MiniScale({ q }: { q: string }) {
 function LearnPhase({ scale }: { scale: Scale }) {
   return (
     <div>
-      <div className="mt-2.5 text-center">
-        <Eyebrow className="justify-center">The Scripture Lens</Eyebrow>
-        <h2 className="mt-2.5 font-display text-2xl font-medium leading-tight text-gilt-500">
-          {scale.scripture_reference}
-        </h2>
-      </div>
-
-      <Panel className="mt-4 p-5">
-        <div className="rounded-control bg-vellum-200 px-4 py-[18px]">
-          <ScriptureBlock>{scale.scripture_text ?? ''}</ScriptureBlock>
-          <p className="mt-2 font-body text-sm text-ink-500">— {scale.scripture_reference}</p>
-        </div>
-        <p className="mx-0.5 mt-4 font-body text-[14.5px] leading-[1.6] text-ink-900">
-          {scale.scripture_lens}
-        </p>
-        <PrayerCard className="mt-4">{scale.prayer}</PrayerCard>
+      <ScaleLens scale={scale}>
         <div className="mt-4">
           <ShareCard question={scale.question} />
         </div>
-      </Panel>
+      </ScaleLens>
 
       {/* Past scales — locked strip (Premium) */}
       <div className="mt-[22px]">
