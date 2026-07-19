@@ -5,8 +5,12 @@
  * Dates: today - 5 days through today + 24 days (30 total)
  * Skips dates that already exist.
  */
-import 'dotenv/config';
+import { config } from 'dotenv';
+import { resolve } from 'path';
 import { createClient } from '@supabase/supabase-js';
+
+config({ path: resolve(process.cwd(), '.env.local') });
+config({ path: resolve(process.cwd(), '.env') });
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
