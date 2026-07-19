@@ -102,6 +102,24 @@ var CRISIS_RESOURCES = [
   { name: "Crisis Text Line", action: "sms:741741&body=HOME", type: "text" },
   { name: "RAINN", action: "tel:18006564673", type: "call" }
 ];
+var TERRITORIES = [
+  "peace-vs-truth",
+  "forgiveness",
+  "money-stewardship",
+  "ambition-calling",
+  "faith-vs-planning",
+  "mercy-vs-justice",
+  "community-vs-conviction",
+  "rest-vs-diligence",
+  "contentment-vs-growth",
+  "boldness-vs-patience",
+  "suffering-healing",
+  "doubt-certainty",
+  "family-boundaries",
+  "witness-relationships"
+];
+var SCALE_STATUSES = ["draft", "approved", "scheduled", "published", "retired"];
+var SCALE_INVENTORY = { warning: 21, critical: 7 };
 var CACHE_TTL = {
   dailyMoment: 24 * 60 * 60 * 1e3,
   // 24 hours
@@ -467,8 +485,11 @@ export {
   LibratoApiError,
   PRICING,
   PushSubscribeRequestSchema,
+  SCALE_INVENTORY,
+  SCALE_STATUSES,
   STILLNESS,
   ScriptureSchema,
+  TERRITORIES,
   TIER_CONFIG,
   TONES,
   TRIAL_LINE,

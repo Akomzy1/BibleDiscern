@@ -22,6 +22,7 @@ export function makeBuilder(result: { data: unknown; error: unknown }) {
     builder[m] = vi.fn(() => builder);
   }
   builder.single = vi.fn(() => Promise.resolve(result));
+  builder.maybeSingle = vi.fn(() => Promise.resolve(result));
   // Support `await builder` (updates/deletes without .single())
   builder.then = (resolve: (v: unknown) => unknown) => Promise.resolve(result).then(resolve);
   return builder;

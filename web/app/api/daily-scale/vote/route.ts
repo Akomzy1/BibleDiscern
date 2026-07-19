@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { requireAuth } from '@/lib/auth';
 import { adminClient } from '@/lib/supabase/admin';
 import { ok, err, handleError } from '@/lib/response';
+import { toClientScale, type ScaleRow } from '@/lib/daily-selector';
 import type { DailyScaleResults } from '@librato/shared';
 
 const VoteSchema = z.object({
@@ -28,11 +29,12 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { scale_id, vote } = VoteSchema.parse(body);
 
-    // Check the scale exists
+    // Check the scale exists AND is published (you can only vote on the live scale)
     const { data: scale, error: scaleError } = await adminClient
       .from('daily_scales')
       .select('*')
       .eq('id', scale_id)
+      .eq('status', 'published')
       .single();
 
     if (scaleError || !scale) {
@@ -82,7 +84,7 @@ export async function POST(request: NextRequest) {
       console.error('[daily-scale vote count update]', updateError);
       // Vote was recorded — return best-effort results using pre-update counts
       return ok({
-        scale,
+        scale: toClientScale(scale as ScaleRow),
         hasVoted: true,
         userVote: vote,
         results: computeResults(scale.votes_a, scale.votes_b),
@@ -90,7 +92,7 @@ export async function POST(request: NextRequest) {
     }
 
     return ok({
-      scale: updated,
+      scale: toClientScale(updated as ScaleRow),
       hasVoted: true,
       userVote: vote,
       results: computeResults(updated.votes_a, updated.votes_b),

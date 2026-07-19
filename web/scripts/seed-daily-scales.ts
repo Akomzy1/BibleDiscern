@@ -436,10 +436,25 @@ function scaleSlug(question: string, date: string): string {
 async function seed() {
   console.log(`Seeding ${scales.length} daily scales...`);
 
-  const rows = scales.map((s) => ({ ...s, slug: scaleSlug(s.question, s.date) }));
+  // v2 lifecycle: past/today -> published, future -> scheduled (pinned to date).
+  // Territory is left null here; run scripts/classify-territories.ts to tag on a
+  // fresh re-seed (the live DB already has confirmed tags from migration 006).
+  const todayIso = new Date().toISOString().split('T')[0];
+  const nowIso = new Date().toISOString();
+  const rows = scales.map((s) => {
+    const { date, ...rest } = s;
+    return {
+      ...rest,
+      published_date: date,
+      status: date <= todayIso ? 'published' : 'scheduled',
+      source: 'seeded',
+      approved_at: nowIso,
+      slug: scaleSlug(rest.question, date),
+    };
+  });
   const { error } = await supabase
     .from('daily_scales')
-    .upsert(rows, { onConflict: 'date' });
+    .upsert(rows, { onConflict: 'published_date' });
 
   if (error) {
     console.error('Seed failed:', error.message);

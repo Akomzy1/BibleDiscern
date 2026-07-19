@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { requireAuth } from '@/lib/auth';
 import { adminClient } from '@/lib/supabase/admin';
 import { ok, handleError } from '@/lib/response';
+import { ensureDayPublished, toClientScale } from '@/lib/daily-selector';
 import type { DailyScale, DailyScaleResults } from '@librato/shared';
 
 // Safety-net fallback — shown when no scale has been seeded for today
@@ -42,29 +43,25 @@ function computeResults(votes_a: number, votes_b: number): DailyScaleResults {
 export async function GET(request: NextRequest) {
   try {
     const { user } = await requireAuth(request);
-    const today = new Date().toISOString().split('T')[0];
 
-    // Fetch today's scale
-    const { data: scaleRow } = await adminClient
-      .from('daily_scales')
-      .select('*')
-      .eq('date', today)
-      .single();
+    // Lazy selection (no-cron safety): ensure today's scale is published, then
+    // read it. Falls back to a hardcoded scale only if the pool is truly empty.
+    const row = await ensureDayPublished();
+    const scale: DailyScale = row ? toClientScale(row) : FALLBACK_SCALE;
+    const scaleId = row?.id ?? 'fallback';
 
-    const scale = scaleRow ?? FALLBACK_SCALE;
-
-    // Check if user has already voted
-    const { data: voteRow } = scale.id !== 'fallback'
-      ? await adminClient
-          .from('daily_scale_votes')
-          .select('vote')
-          .eq('user_id', user.id)
-          .eq('scale_id', scale.id)
-          .single()
-      : { data: null };
+    // Check if user has already voted (only for a real published scale)
+    const { data: voteRow } =
+      scaleId !== 'fallback'
+        ? await adminClient
+            .from('daily_scale_votes')
+            .select('vote')
+            .eq('user_id', user.id)
+            .eq('scale_id', scaleId)
+            .maybeSingle()
+        : { data: null };
 
     if (voteRow) {
-      // User has voted — return full scale + results
       return ok({
         scale,
         hasVoted: true,
@@ -73,7 +70,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Not yet voted — strip scripture fields
+    // Not yet voted — strip the Scripture Lens fields
     const { scripture_reference, scripture_text, scripture_lens, prayer, ...preview } = scale;
     return ok({ scale: preview, hasVoted: false });
   } catch (e) {

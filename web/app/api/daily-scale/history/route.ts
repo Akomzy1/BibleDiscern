@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { requireAuth } from '@/lib/auth';
 import { adminClient } from '@/lib/supabase/admin';
 import { ok, err, handleError } from '@/lib/response';
+import { toClientScale, type ScaleRow } from '@/lib/daily-selector';
 import type { DailyScaleResults } from '@librato/shared';
 
 function computeResults(votes_a: number, votes_b: number): DailyScaleResults {
@@ -33,11 +34,12 @@ export async function GET(request: NextRequest) {
       return err('upgrade_required', 'Scale history requires BibleDiscern Premium.', 403);
     }
 
-    // Fetch last 7 days of scales
+    // Fetch last 7 published scales
     const { data: scales, error: scalesError } = await adminClient
       .from('daily_scales')
       .select('*')
-      .order('date', { ascending: false })
+      .eq('status', 'published')
+      .order('published_date', { ascending: false })
       .limit(7);
 
     if (scalesError || !scales) {
@@ -60,7 +62,7 @@ export async function GET(request: NextRequest) {
     const voteMap = new Map((votes ?? []).map((v) => [v.scale_id, v.vote as 'a' | 'b']));
 
     const history = scales.map((scale) => ({
-      scale,
+      scale: toClientScale(scale as ScaleRow),
       hasVoted: voteMap.has(scale.id),
       userVote: voteMap.get(scale.id),
       results: computeResults(scale.votes_a, scale.votes_b),

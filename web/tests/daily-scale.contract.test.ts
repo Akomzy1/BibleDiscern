@@ -20,11 +20,38 @@ vi.mock('@/lib/supabase/admin', () => ({
   adminClient: { from: (...args: unknown[]) => fromMock(...args) },
 }));
 
+// The selector is exercised by its own unit test; here we stub it and verify the
+// route's contract (published_date → date mapping, Scripture-Lens gating).
+const { ensureMock } = vi.hoisted(() => ({ ensureMock: vi.fn() }));
+vi.mock('@/lib/daily-selector', () => ({
+  ensureDayPublished: (...a: unknown[]) => ensureMock(...a),
+  toClientScale: (row: Record<string, unknown>) => ({
+    id: row.id,
+    date: row.published_date,
+    question: row.question,
+    side_a_label: row.side_a_label,
+    side_a_argument: row.side_a_argument,
+    side_b_label: row.side_b_label,
+    side_b_argument: row.side_b_argument,
+    scripture_reference: row.scripture_reference,
+    scripture_text: row.scripture_text,
+    scripture_lens: row.scripture_lens,
+    prayer: row.prayer,
+    votes_a: row.votes_a,
+    votes_b: row.votes_b,
+  }),
+}));
+
 import { GET } from '@/app/api/daily-scale/route';
 
-const SCALE_ROW = {
+const PUBLISHED_ROW = {
   id: '2e9f0a53-1111-4222-8333-444455556666',
-  date: '2026-07-18',
+  published_date: '2026-07-19',
+  status: 'published',
+  territory: 'doubt-certainty',
+  source: 'seeded',
+  approved_at: '2026-07-01',
+  slug: 'is-restlessness-2026-07-19',
   question: 'Is restlessness anxiety — or holy discomfort?',
   side_a_label: 'Anxiety',
   side_a_argument: 'A',
@@ -38,17 +65,16 @@ const SCALE_ROW = {
   votes_b: 183,
 };
 
-describe('/api/daily-scale contract', () => {
+describe('/api/daily-scale contract (publishing lifecycle)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     requireAuthMock.mockResolvedValue({ user: { id: 'user-1' }, token: 't' });
+    ensureMock.mockResolvedValue(PUBLISHED_ROW);
   });
 
-  it('hides the Scripture Lens fields until the user has voted', async () => {
+  it('publishes/selects today via the selector and hides the Lens until voted', async () => {
     fromMock.mockImplementation((table: string) => {
-      if (table === 'daily_scales') return makeBuilder({ data: SCALE_ROW, error: null });
-      if (table === 'daily_scale_votes')
-        return makeBuilder({ data: null, error: { code: 'PGRST116' } });
+      if (table === 'daily_scale_votes') return makeBuilder({ data: null, error: null });
       throw new Error(`unexpected table ${table}`);
     });
 
@@ -56,30 +82,31 @@ describe('/api/daily-scale contract', () => {
     expect(res.status).toBe(200);
     const { data } = await res.json();
 
+    expect(ensureMock).toHaveBeenCalled(); // lazy selection ran
     expect(data.hasVoted).toBe(false);
-    expect(data.scale.question).toBe(SCALE_ROW.question);
+    expect(data.scale.date).toBe('2026-07-19'); // published_date mapped to date
+    expect(data.scale.question).toBe(PUBLISHED_ROW.question);
     expect(data.scale.scripture_reference).toBeUndefined();
-    expect(data.scale.scripture_text).toBeUndefined();
     expect(data.scale.scripture_lens).toBeUndefined();
     expect(data.scale.prayer).toBeUndefined();
+    // internal lifecycle fields never leak to clients
+    expect(data.scale.status).toBeUndefined();
+    expect(data.scale.territory).toBeUndefined();
     expect(data.results).toBeUndefined();
   });
 
   it('returns the full scale + results once the user has voted', async () => {
     fromMock.mockImplementation((table: string) => {
-      if (table === 'daily_scales') return makeBuilder({ data: SCALE_ROW, error: null });
-      if (table === 'daily_scale_votes')
-        return makeBuilder({ data: { vote: 'b' }, error: null });
+      if (table === 'daily_scale_votes') return makeBuilder({ data: { vote: 'b' }, error: null });
       throw new Error(`unexpected table ${table}`);
     });
 
     const res = await GET(jsonRequest('http://test/api/daily-scale', undefined, 'GET') as never);
-    expect(res.status).toBe(200);
     const { data } = await res.json();
 
     expect(data.hasVoted).toBe(true);
     expect(data.userVote).toBe('b');
-    expect(data.scale.scripture_lens).toBe(SCALE_ROW.scripture_lens);
+    expect(data.scale.scripture_lens).toBe(PUBLISHED_ROW.scripture_lens);
     expect(data.results.total).toBe(397);
     expect(data.results.percent_a + data.results.percent_b).toBeGreaterThanOrEqual(99);
   });

@@ -39,13 +39,16 @@ export {
   FRUIT_LABELS,
   CRISIS_KEYWORDS,
   CRISIS_RESOURCES,
+  TERRITORIES,
+  SCALE_STATUSES,
+  SCALE_INVENTORY,
   CACHE_TTL,
   API_TIMEOUT,
   STILLNESS,
   LOADING_MESSAGES,
 } from './constants';
 
-export type { ToneId, JourneyStepId } from './constants';
+export type { ToneId, JourneyStepId, Territory, ScaleStatus } from './constants';
 
 // Validation schemas
 export {

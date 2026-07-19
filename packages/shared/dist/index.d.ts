@@ -310,6 +310,14 @@ declare const CRISIS_RESOURCES: readonly [{
     readonly action: "tel:18006564673";
     readonly type: "call";
 }];
+declare const TERRITORIES: readonly ["peace-vs-truth", "forgiveness", "money-stewardship", "ambition-calling", "faith-vs-planning", "mercy-vs-justice", "community-vs-conviction", "rest-vs-diligence", "contentment-vs-growth", "boldness-vs-patience", "suffering-healing", "doubt-certainty", "family-boundaries", "witness-relationships"];
+type Territory = (typeof TERRITORIES)[number];
+declare const SCALE_STATUSES: readonly ["draft", "approved", "scheduled", "published", "retired"];
+type ScaleStatus = (typeof SCALE_STATUSES)[number];
+declare const SCALE_INVENTORY: {
+    readonly warning: 21;
+    readonly critical: 7;
+};
 declare const CACHE_TTL: {
     readonly dailyMoment: number;
     readonly sessions: number;
@@ -1447,4 +1455,4 @@ declare class LibratoApiClient {
 }
 declare function createApiClient(baseUrl: string, authToken?: string): LibratoApiClient;
 
-export { API_TIMEOUT, type ApiError, type ApiResponse, type ApiSuccess, BRAND, BiblicalNarrativeSchema, CACHE_TTL, COLORS, CRISIS_KEYWORDS, CRISIS_RESOURCES, type CheckoutRequest, type CheckoutRequestInput, CheckoutRequestSchema, type CreateJournalEntryRequest, type CreateJournalEntryRequestInput, CreateJournalEntryRequestSchema, DISCLAIMER, type DailyMoment, type DailyScale, type DailyScaleHistoryEntry, type DailyScalePhase, type DailyScaleResponse, type DailyScaleResults, type DiscernSessionRequest, type DiscernSessionRequestInput, DiscernSessionRequestSchema, DiscernSessionResponseSchema, type DiscernmentResponse, type DiscernmentResponseOutput, DiscernmentResponseSchema, FRUIT_LABELS, FruitDiagnosticSchema, type FruitValue, IAP_PRODUCTS, JOURNEY_STEPS, type JournalEntry, type JourneyStepId, LOADING_MESSAGES, LibratoApiClient, LibratoApiError, PRICING, type Profile, type PushSubscribeRequest, type PushSubscribeRequestInput, PushSubscribeRequestSchema, STILLNESS, ScriptureSchema, type Session, type Subscription, TIER_CONFIG, TONES, TRIAL_LINE, type TierConfig, type ToneId, type UpdateProfileRequest, type UpdateProfileRequestInput, UpdateProfileRequestSchema, type UpdateSessionRequest, type UpdateSessionRequestInput, UpdateSessionRequestSchema, type ValidateReceiptRequest, type ValidateReceiptRequestInput, ValidateReceiptRequestSchema, containsCrisisKeywords, createApiClient };
+export { API_TIMEOUT, type ApiError, type ApiResponse, type ApiSuccess, BRAND, BiblicalNarrativeSchema, CACHE_TTL, COLORS, CRISIS_KEYWORDS, CRISIS_RESOURCES, type CheckoutRequest, type CheckoutRequestInput, CheckoutRequestSchema, type CreateJournalEntryRequest, type CreateJournalEntryRequestInput, CreateJournalEntryRequestSchema, DISCLAIMER, type DailyMoment, type DailyScale, type DailyScaleHistoryEntry, type DailyScalePhase, type DailyScaleResponse, type DailyScaleResults, type DiscernSessionRequest, type DiscernSessionRequestInput, DiscernSessionRequestSchema, DiscernSessionResponseSchema, type DiscernmentResponse, type DiscernmentResponseOutput, DiscernmentResponseSchema, FRUIT_LABELS, FruitDiagnosticSchema, type FruitValue, IAP_PRODUCTS, JOURNEY_STEPS, type JournalEntry, type JourneyStepId, LOADING_MESSAGES, LibratoApiClient, LibratoApiError, PRICING, type Profile, type PushSubscribeRequest, type PushSubscribeRequestInput, PushSubscribeRequestSchema, SCALE_INVENTORY, SCALE_STATUSES, STILLNESS, type ScaleStatus, ScriptureSchema, type Session, type Subscription, TERRITORIES, TIER_CONFIG, TONES, TRIAL_LINE, type Territory, type TierConfig, type ToneId, type UpdateProfileRequest, type UpdateProfileRequestInput, UpdateProfileRequestSchema, type UpdateSessionRequest, type UpdateSessionRequestInput, UpdateSessionRequestSchema, type ValidateReceiptRequest, type ValidateReceiptRequestInput, ValidateReceiptRequestSchema, containsCrisisKeywords, createApiClient };

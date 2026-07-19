@@ -145,6 +145,38 @@ export const CRISIS_RESOURCES = [
 ] as const;
 
 // ─────────────────────────────────────────────
+// Daily Scale — territory taxonomy (scale-pipeline-spec §9)
+// Fixed vocabulary; keep tags stable once used. The selector spaces
+// consecutive days by territory; the AI pipeline targets least-represented.
+// ─────────────────────────────────────────────
+
+export const TERRITORIES = [
+  'peace-vs-truth',
+  'forgiveness',
+  'money-stewardship',
+  'ambition-calling',
+  'faith-vs-planning',
+  'mercy-vs-justice',
+  'community-vs-conviction',
+  'rest-vs-diligence',
+  'contentment-vs-growth',
+  'boldness-vs-patience',
+  'suffering-healing',
+  'doubt-certainty',
+  'family-boundaries',
+  'witness-relationships',
+] as const;
+
+export type Territory = (typeof TERRITORIES)[number];
+
+// daily_scales publishing lifecycle
+export const SCALE_STATUSES = ['draft', 'approved', 'scheduled', 'published', 'retired'] as const;
+export type ScaleStatus = (typeof SCALE_STATUSES)[number];
+
+// Approved-pool inventory thresholds for admin alerts
+export const SCALE_INVENTORY = { warning: 21, critical: 7 } as const;
+
+// ─────────────────────────────────────────────
 // Cache TTLs (milliseconds)
 // ─────────────────────────────────────────────
 
