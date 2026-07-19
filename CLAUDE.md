@@ -137,6 +137,8 @@ Payments: Stripe Checkout to purchase, Stripe Customer Portal to manage, existin
 
 Primary retention mechanic. 3-phase flow: **WEIGH** (read question + two argued sides, pick one, one vote/user enforced by `daily_scale_votes` unique constraint) → **SEE** (animated results reveal, "N believers weighed in", majority/minority line) → **LEARN** (Scripture Lens: reference, verse, teaching that NEVER declares a winner, closing prayer). Expires at local midnight. Seeded baseline votes prevent empty-room effect. Free users get the full daily experience; Premium unlocks 7-day history.
 
+**Selection (v2):** a daily pg_cron selector promotes exactly one `approved` scale to `published` by stamping `published_date` — the selector excludes any scale whose `published_date` is set, so **a question can never appear twice** (query constraint, not policy). It refuses same-`territory` back-to-back days (relaxing territory rather than ever skipping a day), rotates least-recently-used territories, FIFO by `approved_at`. Lazy fallback selection inside GET `/api/daily-scale` if the cron misses. Resend admin alert when the approved pool < 21 (warning) / < 7 (critical). Content supply beyond the seeded 30: the review-gated AI generation pipeline (post-launch — see `biblediscern-scale-pipeline-spec.md`); generated scales NEVER auto-publish.
+
 Web additions (additive): public teaser on landing (voting requires account), share card after SEE (OG image via `/api/og`), public archive at `/scale/[slug]` (30 seeded scales = 30 SEO pages at launch, +1 daily).
 
 ## The 7-Step Discernment Journey (depth + monetization surface)
@@ -161,7 +163,7 @@ Every completed journey saves an entry. Types: discernment / reflection / answer
 
 ## Database Tables (Supabase — carried over from v1, unchanged)
 
-7 tables, all with RLS: `profiles` (+ `onboarding_season`, `daily_scale_time`, `onboarding_completed`), `sessions`, `journal_entries`, `subscriptions` (`source` supports stripe/google), `daily_moments` (legacy fallback), `daily_scales`, `daily_scale_votes` (unique per user+scale). RLS: users read/write only their own rows; `daily_scales` readable by all authenticated; votes read/create own only; subscriptions read-only for users (server writes via service role).
+7 tables, all with RLS: `profiles` (+ `onboarding_season`, `daily_scale_time`, `onboarding_completed`), `sessions`, `journal_entries`, `subscriptions` (`source` supports stripe/google), `daily_moments` (legacy fallback), `daily_scales` (+ v2 scheduling lifecycle: `status` draft/approved/scheduled/published/retired · `published_date` nullable-UNIQUE, stamped once by the selector — **the structural no-repeat guarantee** · `territory` topic tag · `source` seeded/manual/generated · `approved_at`), `daily_scale_votes` (unique per user+scale). RLS: users read/write only their own rows; `daily_scales` — clients may read **published rows only** (draft/approved/scheduled/retired are server-side); votes read/create own only; subscriptions read-only for users (server writes via service role).
 
 ## API Routes (web/app/api/ — contracts FROZEN)
 
@@ -255,7 +257,7 @@ All non-`NEXT_PUBLIC_` vars must be in `turbo.json` globalEnv for Vercel builds.
 
 ## What Is NOT in This Phase
 
-Native builds and store submissions · RevenueCat changes · any work in `mobile/` · dark mode (Phase 2: "Vespers") · community/prayer wall/groups · church tiers · multi-language · voice/TTS · widgets · the Follow-Up Agent and AI scale-generation pipeline (first post-launch updates) · guest voting.
+Native builds and store submissions · RevenueCat changes · any work in `mobile/` · dark mode (Phase 2: "Vespers") · community/prayer wall/groups · church tiers · multi-language · voice/TTS · widgets · the Follow-Up Agent · the AI scale-generation pipeline (first post-launch update — specified in `biblediscern-scale-pipeline-spec.md`; the scheduling schema it feeds ships in THIS phase) · guest voting.
 
 ## Native Transition (Phase 3 — pre-committed triggers)
 

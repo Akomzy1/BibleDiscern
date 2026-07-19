@@ -50,11 +50,17 @@ Read CLAUDE.md. Stage 1 goal: the backend spine, all contracts FROZEN per CLAUDE
 4. /api/discern MUST: run crisis-keyword screening BEFORE any Claude call (return a crisis signal, never forward flagged input); validate with Zod; enforce tier gating (Sonnet free / Opus premium) and 1-session/month free cap; rate-limit 10 req/min/user; attach the permanent disclaimer; never log situation text.
 5. Claude integration: use the existing system prompt (Ignatian/Wesleyan discernment, never speaks for God, never directive, Scripture Lens never declares a winner). Model strings via env.
 6. Stripe: Checkout session creation (monthly + annual price IDs from env, 7-day trial), Customer Portal link, and the webhook handler syncing subscriptions.source='stripe'. No RevenueCat this phase.
+7. Daily Scale scheduling — the NO-REPEAT GUARANTEE (PRD §4.1):
+   a. Migration on daily_scales: rename date → published_date (nullable, keep UNIQUE — Postgres allows multiple NULLs); add status TEXT NOT NULL CHECK (status IN ('draft','approved','scheduled','published','retired')); add territory TEXT; add source TEXT NOT NULL DEFAULT 'seeded' CHECK (source IN ('seeded','manual','generated')); add approved_at TIMESTAMPTZ. Backfill seeded rows: published_date <= today → status='published', future → 'scheduled', else 'approved'; approved_at = created_at. Write a one-time script that proposes a territory tag per seeded scale (Claude classify) and outputs it for my confirmation before applying.
+   b. Selector function (SQL or server): for a target date with no published scale, pick ONE from status='approved' WHERE published_date IS NULL, refusing the territory published the previous day, preferring least-recently-used territory then oldest approved_at; if nothing satisfies the territory rule, relax territory rather than skip the day; stamp published_date + status='published'. Idempotent per date.
+   c. Schedule via pg_cron daily; ALSO run lazily inside GET /api/daily-scale when no scale exists for today (cron-miss safety). The published_date UNIQUE constraint makes double-selection impossible under race.
+   d. Inventory alert: after each selection, if COUNT(status='approved') < 21 send a warning email via Resend to the admin; < 7 send critical. 
+   e. RLS: draft/approved/retired rows must NOT be readable by clients — only published (and scheduled excluded too). Adjust the daily_scales SELECT policy accordingly; archive pages read only published rows.
 
 Write a couple of contract tests for /api/daily-scale and /api/discern (crisis path + tier gate). Do not build UI.
 ```
 
-**Verify:** hitting `/api/daily-scale` returns today's scale with results hidden pre-vote; a crisis-keyword payload to `/api/discern` returns the crisis signal and never calls Claude; a free user's 2nd session is blocked; Stripe Checkout URL generates.
+**Verify:** hitting `/api/daily-scale` returns today's scale with results hidden pre-vote; a crisis-keyword payload to `/api/discern` returns the crisis signal and never calls Claude; a free user's 2nd session is blocked; Stripe Checkout URL generates; running the selector twice for the same date is idempotent; a scale with a `published_date` can never be selected again (test it); same-territory back-to-back is refused when an alternative exists and relaxed when none does; clients cannot read draft/approved rows; the low-inventory alert fires below the thresholds.
 
 ---
 
