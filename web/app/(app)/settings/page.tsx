@@ -191,10 +191,14 @@ export default function SettingsPage() {
             if (sub.isPremium) void sub.openPortal();
             else window.location.assign('/upgrade');
           }}
-          className="mt-3 flex w-full items-center justify-between border-t border-ink-900/10 pt-[11px] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gilt-500"
+          className="mt-3 flex w-full items-center justify-between border-t border-ink-900/10 pt-[11px] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gilt-500 disabled:opacity-60"
         >
           <span className="font-body text-[14.5px] font-semibold text-ink-900">
-            {sub.isPremium ? 'Manage billing' : 'Start my 7-day free trial'}
+            {sub.isPremium
+              ? sub.busy
+                ? 'Opening billing…'
+                : 'Manage billing'
+              : 'Start my 7-day free trial'}
           </span>
           <span className="inline-flex text-ink-500" aria-hidden>
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -204,6 +208,9 @@ export default function SettingsPage() {
             </svg>
           </span>
         </button>
+        {sub.error && (
+          <p className="mt-2.5 font-body text-[12.5px] leading-snug text-ember-600">{sub.error}</p>
+        )}
       </RowPanel>
 
       <GroupLabel>App</GroupLabel>

@@ -493,7 +493,7 @@ function PaywallScreen({
 
 export function OnboardingFlow() {
   const router = useRouter();
-  const { startCheckout } = useSubscription();
+  const { createCheckoutUrl } = useSubscription();
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
   const checkedRef = useRef(false);
@@ -563,17 +563,20 @@ export function OnboardingFlow() {
           onStartTrial={(plan) => {
             setBusy(true);
             void (async () => {
-              await markCompleted();
-              const ok = await startCheckout(plan);
-              if (!ok) setBusy(false);
+              // Persist completion and create the Stripe session concurrently,
+              // then redirect once — markCompleted must land before the external
+              // redirect (which would cancel an in-flight PATCH).
+              const [, url] = await Promise.all([markCompleted(), createCheckoutUrl(plan)]);
+              if (url) window.location.href = url;
+              else setBusy(false);
             })();
           }}
           onSkip={() => {
+            // Optimistic: navigate immediately; the completion PATCH runs in the
+            // background (a client-side push keeps the request alive).
             setBusy(true);
-            void (async () => {
-              await markCompleted();
-              router.push('/today');
-            })();
+            void markCompleted();
+            router.push('/today');
           }}
         />
       );
