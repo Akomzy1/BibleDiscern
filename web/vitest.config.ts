@@ -9,6 +9,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, '.'),
+      // `server-only` is a bundler guard that throws when run in Node (vitest).
+      // Alias it to its own no-op entry so server modules can be unit-tested.
+      'server-only': path.resolve(__dirname, '../node_modules/server-only/empty.js'),
     },
   },
 });

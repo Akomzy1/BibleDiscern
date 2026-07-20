@@ -3,11 +3,8 @@ import { requireAdmin } from '@/lib/admin';
 import { adminClient } from '@/lib/supabase/admin';
 import { ok, handleError } from '@/lib/response';
 import { adminCreateScaleSchema, toAdminScale, ALL_STATUSES } from '@/lib/admin-scales';
+import { computeInventory } from '@/lib/admin-metrics';
 import type { ScaleRow } from '@/lib/daily-selector';
-
-function isoToday(): string {
-  return new Date().toISOString().split('T')[0];
-}
 
 /**
  * GET /api/admin/scales?status=draft
@@ -34,38 +31,10 @@ export async function GET(request: NextRequest) {
     if (error) throw error;
     const scales = ((rows ?? []) as (ScaleRow & { created_at?: string })[]).map(toAdminScale);
 
-    // Inventory: the unpublished runway (approved + scheduled) is what feeds the
-    // feed; territory distribution over that runway drives what to write next.
-    const runwayRows = scales.filter((s) => s.status === 'approved' || s.status === 'scheduled');
-    const byTerritory: Record<string, number> = {};
-    for (const s of runwayRows) {
-      const key = s.territory ?? 'untagged';
-      byTerritory[key] = (byTerritory[key] ?? 0) + 1;
-    }
-
-    const today = isoToday();
-    const upcoming = scales
-      .filter((s) => s.published_date && s.published_date >= today)
-      .filter((s) => s.status === 'published' || s.status === 'scheduled')
-      .sort((a, b) => (a.published_date! < b.published_date! ? -1 : 1))
-      .slice(0, 7)
-      .map((s) => ({
-        date: s.published_date,
-        status: s.status,
-        territory: s.territory,
-        question: s.question,
-      }));
-
-    const inventory = {
-      approved: scales.filter((s) => s.status === 'approved').length,
-      scheduled: scales.filter((s) => s.status === 'scheduled').length,
-      draft: scales.filter((s) => s.status === 'draft').length,
-      published: scales.filter((s) => s.status === 'published').length,
-      retired: scales.filter((s) => s.status === 'retired').length,
-      runway: runwayRows.length,
-      byTerritory,
-      upcoming,
-    };
+    // Inventory computed by the shared definition (same one the /admin overview
+    // uses) so the two surfaces can never drift. When the list is status-filtered
+    // the counts reflect that filter — the overview always reads unfiltered.
+    const inventory = computeInventory(scales);
 
     return ok({ scales, inventory });
   } catch (e) {
