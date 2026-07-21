@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
 
     // 5. Tier gate — the Deep Discernment journey is Premium-only (the gate
     //    lives in @librato/shared TIER_CONFIG, the same source the UI reads).
-    //    Enforced server-side, BEFORE any Claude call. Trial counts as premium.
+    //    Enforced server-side, BEFORE any Claude call.
     const { data: sub, error: subError } = await adminClient
       .from('subscriptions')
       .select('tier, sessions_used_this_month, sessions_limit, status')
@@ -114,9 +114,11 @@ export async function POST(request: NextRequest) {
       return err('server_error', 'Could not verify subscription status.', 500);
     }
 
-    const isTrial = sub.status === 'trialing';
-    const hasJourneyAccess =
-      isTrial || (TIER_CONFIG[sub.tier]?.has_discernment_journey ?? false);
+    // Access is purely tier-based. A Stripe trial grants access ONLY when it is a
+    // real Premium trial — the signup trigger seeds every free user as status
+    // 'trialing', so a status === 'trialing' check alone would let free users in.
+    const isPremiumTrial = sub.tier === 'premium' && sub.status === 'trialing';
+    const hasJourneyAccess = TIER_CONFIG[sub.tier]?.has_discernment_journey ?? false;
 
     if (!hasJourneyAccess) {
       return err(
@@ -129,7 +131,7 @@ export async function POST(request: NextRequest) {
     // Premium tiers may still carry a monthly cap (currently effectively
     // unlimited); trial is uncapped.
     const monthlyLimit = TIER_CONFIG[sub.tier]?.sessions_limit ?? 0;
-    if (!isTrial && sub.sessions_used_this_month >= monthlyLimit) {
+    if (!isPremiumTrial && sub.sessions_used_this_month >= monthlyLimit) {
       return err(
         'limit_reached',
         'You have reached your discernment limit for this month.',
@@ -226,8 +228,8 @@ export async function POST(request: NextRequest) {
       return err('server_error', 'Failed to save your session. Please try again.', 500);
     }
 
-    // 9. Increment sessions_used_this_month (skip during trial)
-    if (!isTrial) {
+    // 9. Increment sessions_used_this_month (skip during a Premium trial)
+    if (!isPremiumTrial) {
       await adminClient
         .from('subscriptions')
         .update({ sessions_used_this_month: sub.sessions_used_this_month + 1 })

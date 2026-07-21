@@ -39,7 +39,9 @@ export function TrialEndingBanner() {
 
   if (dismissed || sub.status !== 'ready') return null;
   const s = sub.subscription;
-  if (!s || s.status !== 'trialing') return null;
+  // Only a real Premium trial shows the ending banner — not the free-signup
+  // default ('trialing' with tier 'free').
+  if (!s || s.tier !== 'premium' || s.status !== 'trialing') return null;
   const days = daysUntil(s.current_period_end);
   if (days === null || days > 2 || days < 0) return null;
 

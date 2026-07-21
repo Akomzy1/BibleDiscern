@@ -34,8 +34,11 @@ export function useSubscription() {
     void load();
   }, [load]);
 
-  const isPremium =
-    !!subscription && (subscription.tier === 'premium' || subscription.status === 'trialing');
+  // Premium access is tier-based (matches the /api/discern server gate). A status
+  // of 'trialing' alone is NOT premium — the signup trigger seeds every free user
+  // as 'trialing'. Only tier 'premium' (a real subscriber or a Premium Stripe
+  // trial, both set by the webhook) unlocks Premium features.
+  const isPremium = !!subscription && subscription.tier === 'premium';
 
   /** Create a Stripe Checkout session and return its URL WITHOUT redirecting —
    *  lets callers run other work (e.g. marking onboarding complete) in parallel

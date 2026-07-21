@@ -28,7 +28,8 @@ export async function GET(request: NextRequest) {
       .eq('user_id', user.id)
       .single();
 
-    const isPremium = sub && (sub.tier === 'premium' || sub.status === 'trialing');
+    // Tier-based — 'trialing' alone is the free-signup default, not a Premium trial.
+    const isPremium = sub && sub.tier === 'premium';
 
     if (!isPremium) {
       return err('upgrade_required', 'Scale history requires BibleDiscern Premium.', 403);

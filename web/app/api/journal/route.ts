@@ -15,8 +15,9 @@ export async function GET(request: NextRequest) {
       .eq('user_id', user.id)
       .single();
 
-    const isFreeAndNotTrial =
-      !sub || (sub.tier === 'free' && sub.status !== 'trialing');
+    // Free = anything but a real Premium tier ('trialing' is the free-signup
+    // default, not a Premium trial). Free tier sees only the last 3 entries.
+    const isFreeAndNotTrial = !sub || sub.tier !== 'premium';
 
     // Get total count first
     const { count: totalCount } = await adminClient

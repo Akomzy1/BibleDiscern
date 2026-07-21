@@ -61,9 +61,11 @@ describe('/api/discern contract', () => {
         return makeBuilder({
           data: {
             tier: 'free',
-            sessions_used_this_month: 0, // even the first journey is Premium-only now
+            sessions_used_this_month: 0,
             sessions_limit: 0,
-            status: 'active',
+            // The signup trigger seeds every free user as 'trialing' — the gate
+            // must NOT treat that as a Premium trial (regression guard).
+            status: 'trialing',
           },
           error: null,
         });

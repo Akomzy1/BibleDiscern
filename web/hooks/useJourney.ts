@@ -209,7 +209,7 @@ export function useJourney(sessionId?: string) {
   const journeysRemaining = useMemo(() => {
     const s = sub.subscription;
     if (!s) return null;
-    if (s.tier === 'premium' || s.status === 'trialing') return Infinity;
+    if (s.tier === 'premium') return Infinity; // tier-based (trialing alone ≠ premium)
     return Math.max(0, s.sessions_limit - s.sessions_used_this_month);
   }, [sub.subscription]);
 
