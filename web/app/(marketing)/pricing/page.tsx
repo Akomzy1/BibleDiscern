@@ -4,7 +4,7 @@
 
 import type { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
-import { TRIAL_LINE } from '@librato/shared';
+import { TRIAL_LINE, isLaunchFreePeriod } from '@librato/shared';
 import { Eyebrow } from '@/components/selah';
 import { Sec, SiteH2, CtaBand, PageHead } from '@/components/site/Site';
 import { SiteAccordion } from '@/components/site/SiteAccordion';
@@ -36,6 +36,17 @@ export default function PricingPage() {
       <PageHead eyebrow="Pricing" title="One price. Every journey." sub={TRIAL_LINE} />
       <Sec pad="px-5 py-16 md:px-[5%]">
         <div className="grid justify-items-center gap-9">
+          {isLaunchFreePeriod() && (
+            <div className="w-full max-w-[560px] rounded-panel border border-gilt-500/30 bg-nave-800 px-5 py-3.5 text-center">
+              <p className="font-body text-[14.5px] font-semibold text-vellum-100">
+                Free launch month — full access, no card needed.
+              </p>
+              <p className="mt-1 font-body text-[13px] text-vellum-200/70">
+                For a limited time, everything below is included free. These plans begin when the
+                launch month ends.
+              </p>
+            </div>
+          )}
           <PlanCardsRow />
           <div className="w-full rounded-panel border border-ink-900/10 bg-vellum-200 px-6 py-[26px] md:px-7">
             <Eyebrow on="vellum" className="mb-2">

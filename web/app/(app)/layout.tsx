@@ -1,4 +1,5 @@
 import { TabBar } from '@/components/selah';
+import { LaunchBanner } from '@/components/common/LaunchBanner';
 
 // Authenticated app chrome: nave900 ground, single centered column (max 640px),
 // bottom TabBar with safe-area insets. Journey + onboarding render their own
@@ -6,7 +7,10 @@ import { TabBar } from '@/components/selah';
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-nave-900 text-vellum-100">
-      <div className="mx-auto w-full max-w-[640px] px-4 pb-28 pt-safe">{children}</div>
+      <div className="mx-auto w-full max-w-[640px] px-4 pb-28 pt-safe">
+        <LaunchBanner />
+        {children}
+      </div>
       <TabBar />
     </div>
   );

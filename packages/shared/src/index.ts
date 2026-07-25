@@ -23,6 +23,9 @@ export type {
   ValidateReceiptRequest,
   CheckoutRequest,
   PushSubscribeRequest,
+  FeedbackRequest,
+  FeedbackSource,
+  Feedback,
 } from './types';
 
 // Constants
@@ -43,6 +46,9 @@ export {
   SCALE_STATUSES,
   SCALE_INVENTORY,
   ONBOARDING_SEASONS,
+  LAUNCH_FREE_UNTIL,
+  LAUNCH_BANNER_LINE,
+  isLaunchFreePeriod,
   CACHE_TTL,
   API_TIMEOUT,
   STILLNESS,
@@ -50,6 +56,10 @@ export {
 } from './constants';
 
 export type { ToneId, JourneyStepId, Territory, ScaleStatus, OnboardingSeason } from './constants';
+
+// Entitlements — the single tier/access resolver (UI + API read this)
+export { effectiveTier, hasPremiumAccess } from './entitlements';
+export type { EffectiveTier, EntitlementInput } from './entitlements';
 
 // Validation schemas
 export {
@@ -65,6 +75,7 @@ export {
   ValidateReceiptRequestSchema,
   CheckoutRequestSchema,
   PushSubscribeRequestSchema,
+  FeedbackRequestSchema,
   containsCrisisKeywords,
 } from './validation';
 
@@ -77,6 +88,7 @@ export type {
   DiscernmentResponseOutput,
   CheckoutRequestInput,
   PushSubscribeRequestInput,
+  FeedbackRequestInput,
 } from './validation';
 
 // API Client

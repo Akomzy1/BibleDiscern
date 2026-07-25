@@ -209,9 +209,10 @@ export function useJourney(sessionId?: string) {
   const journeysRemaining = useMemo(() => {
     const s = sub.subscription;
     if (!s) return null;
-    if (s.tier === 'premium') return Infinity; // tier-based (trialing alone ≠ premium)
+    // Premium (incl. the launch window) is uncapped; otherwise free's limit.
+    if (sub.isPremium) return Infinity;
     return Math.max(0, s.sessions_limit - s.sessions_used_this_month);
-  }, [sub.subscription]);
+  }, [sub.subscription, sub.isPremium]);
 
   return {
     status,

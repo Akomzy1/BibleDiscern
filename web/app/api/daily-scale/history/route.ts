@@ -3,7 +3,7 @@ import { requireAuth } from '@/lib/auth';
 import { adminClient } from '@/lib/supabase/admin';
 import { ok, err, handleError } from '@/lib/response';
 import { toClientScale, type ScaleRow } from '@/lib/daily-selector';
-import type { DailyScaleResults } from '@librato/shared';
+import { hasPremiumAccess, type DailyScaleResults } from '@librato/shared';
 
 function computeResults(votes_a: number, votes_b: number): DailyScaleResults {
   const total = votes_a + votes_b;
@@ -28,8 +28,9 @@ export async function GET(request: NextRequest) {
       .eq('user_id', user.id)
       .single();
 
-    // Tier-based — 'trialing' alone is the free-signup default, not a Premium trial.
-    const isPremium = sub && sub.tier === 'premium';
+    // Entitlement via the shared resolver — premium during the launch window,
+    // otherwise tier-based ('trialing' alone is the free default, not premium).
+    const isPremium = hasPremiumAccess(sub);
 
     if (!isPremium) {
       return err('upgrade_required', 'Scale history requires BibleDiscern Premium.', 403);

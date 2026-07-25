@@ -133,6 +133,16 @@ export const PushSubscribeRequestSchema = z.object({
   }),
 });
 
+export const FeedbackRequestSchema = z
+  .object({
+    source: z.enum(['post_journey', 'settings', 'prompt']),
+    rating: z.number().int().min(1).max(5).optional(),
+    message: z.string().trim().max(2000).optional(),
+  })
+  .refine((v) => v.rating !== undefined || (v.message && v.message.length > 0), {
+    message: 'Add a rating or a message.',
+  });
+
 // ─────────────────────────────────────────────
 // Inferred types from schemas
 // ─────────────────────────────────────────────
@@ -145,6 +155,7 @@ export type ValidateReceiptRequestInput = z.infer<typeof ValidateReceiptRequestS
 export type DiscernmentResponseOutput = z.infer<typeof DiscernmentResponseSchema>;
 export type CheckoutRequestInput = z.infer<typeof CheckoutRequestSchema>;
 export type PushSubscribeRequestInput = z.infer<typeof PushSubscribeRequestSchema>;
+export type FeedbackRequestInput = z.infer<typeof FeedbackRequestSchema>;
 
 // ─────────────────────────────────────────────
 // Crisis detection helper

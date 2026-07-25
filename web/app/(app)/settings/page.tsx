@@ -6,8 +6,11 @@
 // installed, Privacy, Terms), Account (Sign out, Delete account = ember).
 // Footer "v2.0 · Weigh it with wisdom".
 
+import { useState } from 'react';
 import Link from 'next/link';
+import { isLaunchFreePeriod } from '@librato/shared';
 import { StatusChip, TimePills, Toggle, VellumGrain } from '@/components/selah';
+import { FeedbackSheet } from '@/components/feedback/FeedbackSheet';
 import { useSettings } from '@/hooks/useSettings';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useInstallPrompt } from '@/hooks/useInstallPrompt';
@@ -103,6 +106,7 @@ export default function SettingsPage() {
   const s = useSettings();
   const sub = useSubscription();
   const install = useInstallPrompt();
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   if (s.status === 'loading') {
     return <main className="min-h-[60vh] animate-pulse" aria-busy />;
@@ -115,13 +119,17 @@ export default function SettingsPage() {
     .slice(0, 2)
     .map((w) => w[0]?.toUpperCase())
     .join('');
-  const planChip = sub.isPremium
+  // A real subscription has tier 'premium'; launch-window access does not.
+  const realPremium = sub.subscription?.tier === 'premium';
+  const planChip = realPremium
     ? sub.subscription?.billing_interval === 'year'
       ? 'Premium Annual'
       : sub.subscription?.status === 'trialing'
         ? 'Premium Trial'
         : 'Premium Monthly'
-    : 'Free';
+    : isLaunchFreePeriod()
+      ? 'Launch access'
+      : 'Free';
   const timeLabel = TO_LABEL[s.profile?.daily_scale_time ?? '08:00'] ?? '8:00 AM';
 
   return (
@@ -180,7 +188,7 @@ export default function SettingsPage() {
       <RowPanel>
         <div className="flex min-h-6 items-center justify-between gap-3">
           <span className="font-body text-[15px] text-ink-900">Plan</span>
-          <StatusChip tone={sub.isPremium ? 'success' : 'outline'} className={sub.isPremium ? '' : 'border-ink-900/20 !text-ink-500'}>
+          <StatusChip tone={realPremium ? 'success' : 'outline'} className={realPremium ? '' : 'border-ink-900/20 !text-ink-500'}>
             {planChip}
           </StatusChip>
         </div>
@@ -188,17 +196,21 @@ export default function SettingsPage() {
           type="button"
           disabled={sub.busy}
           onClick={() => {
-            if (sub.isPremium) void sub.openPortal();
+            // Only a real subscriber opens the Stripe portal; launch-access and
+            // free users go to /upgrade (which shows the right state).
+            if (realPremium) void sub.openPortal();
             else window.location.assign('/upgrade');
           }}
           className="mt-3 flex w-full items-center justify-between border-t border-ink-900/10 pt-[11px] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gilt-500 disabled:opacity-60"
         >
           <span className="font-body text-[14.5px] font-semibold text-ink-900">
-            {sub.isPremium
+            {realPremium
               ? sub.busy
                 ? 'Opening billing…'
                 : 'Manage billing'
-              : 'Start my 7-day free trial'}
+              : isLaunchFreePeriod()
+                ? 'View your access'
+                : 'Start my 7-day free trial'}
           </span>
           <span className="inline-flex text-ink-500" aria-hidden>
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -225,6 +237,7 @@ export default function SettingsPage() {
           }}
         />
       )}
+      <NavRow label="Share feedback" note="A rating or a word — it shapes what we build." chevron={false} onClick={() => setFeedbackOpen(true)} />
       <NavRow label="Privacy Policy" href="/privacy" />
       <NavRow label="Terms of Service" href="/terms" />
 
@@ -236,6 +249,8 @@ export default function SettingsPage() {
       <p className="pb-1 pt-3.5 text-center font-body text-xs text-vellum-200/60">
         v2.0 · Weigh it with wisdom
       </p>
+
+      <FeedbackSheet open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
     </main>
   );
 }

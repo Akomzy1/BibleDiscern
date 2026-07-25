@@ -3,7 +3,7 @@
 // Subscription state + Stripe actions. Tier gating reads from here.
 
 import { useCallback, useEffect, useState } from 'react';
-import { LibratoApiError } from '@librato/shared';
+import { LibratoApiError, hasPremiumAccess } from '@librato/shared';
 import type { Subscription } from '@librato/shared';
 import { getAuthedClient } from '@/lib/api';
 
@@ -34,11 +34,10 @@ export function useSubscription() {
     void load();
   }, [load]);
 
-  // Premium access is tier-based (matches the /api/discern server gate). A status
-  // of 'trialing' alone is NOT premium — the signup trigger seeds every free user
-  // as 'trialing'. Only tier 'premium' (a real subscriber or a Premium Stripe
-  // trial, both set by the webhook) unlocks Premium features.
-  const isPremium = !!subscription && subscription.tier === 'premium';
+  // Premium access via the ONE shared resolver — the same check the server gates
+  // read. During the launch free period everyone is premium; otherwise it is
+  // tier-based ('trialing' alone is the free-signup default, not premium).
+  const isPremium = hasPremiumAccess(subscription);
 
   /** Create a Stripe Checkout session and return its URL WITHOUT redirecting —
    *  lets callers run other work (e.g. marking onboarding complete) in parallel

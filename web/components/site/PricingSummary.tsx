@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Eyebrow } from '@/components/selah';
 import { Sec, SiteH2 } from '@/components/site/Site';
-import { TRIAL_LINE } from '@librato/shared';
+import { TRIAL_LINE, isLaunchFreePeriod } from '@librato/shared';
 
 export const PLAN_FEATURES = [
   'Every Deep Discernment journey',
@@ -108,7 +108,9 @@ export function PricingSummary({ eyebrow = 'Pricing' }: { eyebrow?: string }) {
           <SiteH2>One price. Every journey.</SiteH2>
         </div>
         <PlanCardsRow />
-        <p className="font-body text-sm text-vellum-200/60">{TRIAL_LINE}</p>
+        <p className="font-body text-sm text-vellum-200/60">
+          {isLaunchFreePeriod() ? 'Free launch month — full access, no card needed.' : TRIAL_LINE}
+        </p>
       </div>
     </Sec>
   );

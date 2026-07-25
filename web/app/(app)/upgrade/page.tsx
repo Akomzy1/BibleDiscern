@@ -5,6 +5,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { isLaunchFreePeriod, LAUNCH_BANNER_LINE } from '@librato/shared';
 import { CrossGlyph, Eyebrow, GiltButton, Panel, StatusChip } from '@/components/selah';
 import { PlanCards, ValueRow, CompareTable, TRIAL_LINE } from '@/components/paywall/PlanCards';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -129,10 +130,49 @@ function Subscriber() {
   );
 }
 
+// Launch-window state: the user has full access for free but no real
+// subscription, so we show a confirmation instead of the (broken) billing view.
+function LaunchAccess() {
+  const router = useRouter();
+  return (
+    <main className="flex min-h-[80vh] flex-col">
+      <div className="mt-[26px] text-center">
+        <CrossGlyph size={22} muted />
+        <h1 className="mt-3 font-display text-2xl font-medium leading-[1.3] text-vellum-100">
+          You have full access.
+        </h1>
+        <p className="mt-2 font-scripture text-[17px] font-medium italic leading-[1.45] text-gilt-300">
+          {LAUNCH_BANNER_LINE}
+        </p>
+      </div>
+
+      <div className="mx-1 mt-6 grid gap-[9px]">
+        <ValueRow>Every Deep Discernment journey</ValueRow>
+        <ValueRow>The Stillness Engine</ValueRow>
+        <ValueRow>Fruit of the Spirit diagnostic</ValueRow>
+        <ValueRow>Your full spiritual history</ValueRow>
+      </div>
+
+      <div className="mt-8">
+        <GiltButton fullWidth onClick={() => router.push('/today')}>
+          Continue
+        </GiltButton>
+      </div>
+      <p className="mt-3 text-center font-body text-xs leading-normal text-vellum-200/60">
+        Premium plans return when the launch month ends — you&apos;ll always keep your journal.
+      </p>
+    </main>
+  );
+}
+
 export default function UpgradePage() {
   const sub = useSubscription();
   if (sub.status === 'loading') {
     return <main className="min-h-[60vh] animate-pulse" aria-busy />;
   }
-  return sub.isPremium ? <Subscriber /> : <FreeUpgrade />;
+  // A real paying/trialing subscriber always sees billing. Otherwise: during the
+  // launch window, the free-access confirmation; normally, the upgrade pitch.
+  if (sub.subscription?.tier === 'premium') return <Subscriber />;
+  if (isLaunchFreePeriod()) return <LaunchAccess />;
+  return <FreeUpgrade />;
 }

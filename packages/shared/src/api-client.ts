@@ -14,6 +14,7 @@ import type {
   ValidateReceiptRequest,
   CheckoutRequest,
   PushSubscribeRequest,
+  FeedbackRequest,
   ApiError,
 } from './types';
 
@@ -275,6 +276,13 @@ export class LibratoApiClient {
       method: 'POST',
       body: subscription,
     });
+  }
+
+  // ─── Feedback (v2 — launch insight capture) ──
+
+  /** Submit a piece of feedback (rating and/or message). Additive route. */
+  async submitFeedback(feedback: FeedbackRequest): Promise<void> {
+    await this.request<void>('/api/feedback', { method: 'POST', body: feedback });
   }
 
   // ─── Daily Moment ───────────────────────────

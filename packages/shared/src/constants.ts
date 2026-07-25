@@ -76,6 +76,23 @@ export const DISCLAIMER =
 
 export const TRIAL_LINE = 'Free for 7 days. Cancel anytime.';
 
+// ─────────────────────────────────────────────
+// Launch free period — the single knob
+// ─────────────────────────────────────────────
+//
+// While the current time is before LAUNCH_FREE_UNTIL, every authenticated user
+// is granted full Premium (see @librato/shared entitlements.effectiveTier) with
+// no payment. Editing THIS ISO date is the only change needed to extend or end
+// the window — Stripe, the paywall, and tier definitions stay intact and resume
+// automatically the moment the window closes. To end it early, set a past date.
+export const LAUNCH_FREE_UNTIL = '2026-08-24T00:00:00.000Z'; // 30-day launch month
+
+export function isLaunchFreePeriod(now: number = Date.now()): boolean {
+  return now < Date.parse(LAUNCH_FREE_UNTIL);
+}
+
+export const LAUNCH_BANNER_LINE = 'Full access, free — our launch month. No card needed.';
+
 export const IAP_PRODUCTS = {
   monthly: 'librato_premium_monthly',
   annual: 'librato_premium_annual',

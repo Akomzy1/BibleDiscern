@@ -58,6 +58,11 @@ var PRICING = {
 };
 var DISCLAIMER = "This tool supports reflection \u2014 it does not replace God, Scripture, or wise counsel.";
 var TRIAL_LINE = "Free for 7 days. Cancel anytime.";
+var LAUNCH_FREE_UNTIL = "2026-08-24T00:00:00.000Z";
+function isLaunchFreePeriod(now = Date.now()) {
+  return now < Date.parse(LAUNCH_FREE_UNTIL);
+}
+var LAUNCH_BANNER_LINE = "Full access, free \u2014 our launch month. No card needed.";
 var IAP_PRODUCTS = {
   monthly: "librato_premium_monthly",
   annual: "librato_premium_annual"
@@ -168,6 +173,15 @@ var LOADING_MESSAGES = [
   "Gathering ancient wisdom..."
 ];
 
+// src/entitlements.ts
+function effectiveTier(sub, now = Date.now()) {
+  if (isLaunchFreePeriod(now)) return "premium";
+  return sub?.tier === "premium" ? "premium" : "free";
+}
+function hasPremiumAccess(sub, now) {
+  return effectiveTier(sub, now) === "premium";
+}
+
 // src/validation.ts
 import { z } from "zod";
 var toneSchema = z.enum(["reflective", "urgent", "encouragement", "lament"]);
@@ -262,6 +276,13 @@ var PushSubscribeRequestSchema = z.object({
     p256dh: z.string().min(1).max(500),
     auth: z.string().min(1).max(500)
   })
+});
+var FeedbackRequestSchema = z.object({
+  source: z.enum(["post_journey", "settings", "prompt"]),
+  rating: z.number().int().min(1).max(5).optional(),
+  message: z.string().trim().max(2e3).optional()
+}).refine((v) => v.rating !== void 0 || v.message && v.message.length > 0, {
+  message: "Add a rating or a message."
 });
 function containsCrisisKeywords(text) {
   const lower = text.toLowerCase();
@@ -450,6 +471,11 @@ var LibratoApiClient = class {
       body: subscription
     });
   }
+  // ─── Feedback (v2 — launch insight capture) ──
+  /** Submit a piece of feedback (rating and/or message). Additive route. */
+  async submitFeedback(feedback) {
+    await this.request("/api/feedback", { method: "POST", body: feedback });
+  }
   // ─── Daily Moment ───────────────────────────
   async getDailyMoment() {
     const res = await this.request("/api/daily-moment");
@@ -490,9 +516,12 @@ export {
   DiscernSessionResponseSchema,
   DiscernmentResponseSchema,
   FRUIT_LABELS,
+  FeedbackRequestSchema,
   FruitDiagnosticSchema,
   IAP_PRODUCTS,
   JOURNEY_STEPS,
+  LAUNCH_BANNER_LINE,
+  LAUNCH_FREE_UNTIL,
   LOADING_MESSAGES,
   LibratoApiClient,
   LibratoApiError,
@@ -513,9 +542,12 @@ export {
   color,
   containsCrisisKeywords,
   createApiClient,
+  effectiveTier,
   font,
   giltBorderOnNavy,
   glowOnNavy,
+  hasPremiumAccess,
+  isLaunchFreePeriod,
   motion,
   radius
 };

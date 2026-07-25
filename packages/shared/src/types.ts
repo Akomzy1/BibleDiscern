@@ -239,3 +239,20 @@ export interface PushSubscribeRequest {
     auth: string;
   };
 }
+
+export type FeedbackSource = 'post_journey' | 'settings' | 'prompt';
+
+export interface FeedbackRequest {
+  source: FeedbackSource;
+  rating?: number;
+  message?: string;
+}
+
+export interface Feedback {
+  id: string;
+  user_id: string;
+  created_at: string;
+  source: FeedbackSource;
+  rating: number | null;
+  message: string | null;
+}

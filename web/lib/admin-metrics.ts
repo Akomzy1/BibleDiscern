@@ -6,7 +6,7 @@
 // columns.
 
 import 'server-only';
-import { PRICING } from '@librato/shared';
+import { PRICING, LAUNCH_FREE_UNTIL } from '@librato/shared';
 import { adminClient } from '@/lib/supabase/admin';
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -275,4 +275,54 @@ export async function getScaleInventorySummary(): Promise<Inventory> {
     .from('daily_scales')
     .select('status, territory, published_date, question');
   return computeInventory((data ?? []) as InventoryRow[]);
+}
+
+// ─── FEEDBACK ────────────────────────────────────────────────────────────────
+
+export interface FeedbackMetrics {
+  total: number;
+  countLaunchWindow: number;
+  averageRating: number | null;
+  ratedCount: number;
+  recent: {
+    created_at: string;
+    source: string;
+    rating: number | null;
+    message: string | null;
+  }[];
+}
+
+/**
+ * Feedback for the admin overview. This is the ONE place feedback message text
+ * is surfaced (admin-only, allowlist-gated) — and it reads ONLY the feedback
+ * table, never any discernment/journal/prayer content.
+ */
+export async function getFeedbackMetrics(): Promise<FeedbackMetrics> {
+  const { data } = await adminClient
+    .from('feedback')
+    .select('created_at, source, rating, message')
+    .order('created_at', { ascending: false });
+  const rows = data ?? [];
+
+  const rated = rows.filter((r) => typeof r.rating === 'number');
+  const averageRating =
+    rated.length > 0 ? rated.reduce((s, r) => s + (r.rating as number), 0) / rated.length : null;
+
+  const launchStart = Date.parse(LAUNCH_FREE_UNTIL) - 30 * DAY;
+  const countLaunchWindow = rows.filter(
+    (r) => new Date(r.created_at as string).getTime() >= launchStart,
+  ).length;
+
+  return {
+    total: rows.length,
+    countLaunchWindow,
+    averageRating,
+    ratedCount: rated.length,
+    recent: rows.slice(0, 20).map((r) => ({
+      created_at: r.created_at as string,
+      source: r.source as string,
+      rating: (r.rating as number | null) ?? null,
+      message: (r.message as string | null) ?? null,
+    })),
+  };
 }

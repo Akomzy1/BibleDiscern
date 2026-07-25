@@ -202,6 +202,20 @@ interface PushSubscribeRequest {
         auth: string;
     };
 }
+type FeedbackSource = 'post_journey' | 'settings' | 'prompt';
+interface FeedbackRequest {
+    source: FeedbackSource;
+    rating?: number;
+    message?: string;
+}
+interface Feedback {
+    id: string;
+    user_id: string;
+    created_at: string;
+    source: FeedbackSource;
+    rating: number | null;
+    message: string | null;
+}
 
 declare const BRAND: {
     readonly name: "BibleDiscern";
@@ -239,6 +253,9 @@ declare const PRICING: {
 };
 declare const DISCLAIMER = "This tool supports reflection \u2014 it does not replace God, Scripture, or wise counsel.";
 declare const TRIAL_LINE = "Free for 7 days. Cancel anytime.";
+declare const LAUNCH_FREE_UNTIL = "2026-08-24T00:00:00.000Z";
+declare function isLaunchFreePeriod(now?: number): boolean;
+declare const LAUNCH_BANNER_LINE = "Full access, free \u2014 our launch month. No card needed.";
 declare const IAP_PRODUCTS: {
     readonly monthly: "librato_premium_monthly";
     readonly annual: "librato_premium_annual";
@@ -342,6 +359,16 @@ declare const STILLNESS: {
     readonly phase2Prompt: "Listen. What is He saying to you now?";
 };
 declare const LOADING_MESSAGES: readonly ["Searching the Scriptures...", "Listening for wisdom...", "Walking with those who came before...", "Weighing what matters...", "Preparing your path...", "Gathering ancient wisdom..."];
+
+type EffectiveTier = 'free' | 'premium';
+interface EntitlementInput {
+    tier?: string | null;
+    status?: string | null;
+}
+/** Resolve the tier a user should be treated as, honouring the launch window. */
+declare function effectiveTier(sub: EntitlementInput | null | undefined, now?: number): EffectiveTier;
+/** Convenience: does this user have Premium access right now? */
+declare function hasPremiumAccess(sub: EntitlementInput | null | undefined, now?: number): boolean;
 
 declare const BiblicalNarrativeSchema: z.ZodObject<{
     character: z.ZodString;
@@ -1397,6 +1424,27 @@ declare const PushSubscribeRequestSchema: z.ZodObject<{
     };
     endpoint: string;
 }>;
+declare const FeedbackRequestSchema: z.ZodEffects<z.ZodObject<{
+    source: z.ZodEnum<["post_journey", "settings", "prompt"]>;
+    rating: z.ZodOptional<z.ZodNumber>;
+    message: z.ZodOptional<z.ZodString>;
+}, "strip", z.ZodTypeAny, {
+    source: "post_journey" | "settings" | "prompt";
+    message?: string | undefined;
+    rating?: number | undefined;
+}, {
+    source: "post_journey" | "settings" | "prompt";
+    message?: string | undefined;
+    rating?: number | undefined;
+}>, {
+    source: "post_journey" | "settings" | "prompt";
+    message?: string | undefined;
+    rating?: number | undefined;
+}, {
+    source: "post_journey" | "settings" | "prompt";
+    message?: string | undefined;
+    rating?: number | undefined;
+}>;
 type DiscernSessionRequestInput = z.infer<typeof DiscernSessionRequestSchema>;
 type UpdateSessionRequestInput = z.infer<typeof UpdateSessionRequestSchema>;
 type CreateJournalEntryRequestInput = z.infer<typeof CreateJournalEntryRequestSchema>;
@@ -1405,6 +1453,7 @@ type ValidateReceiptRequestInput = z.infer<typeof ValidateReceiptRequestSchema>;
 type DiscernmentResponseOutput = z.infer<typeof DiscernmentResponseSchema>;
 type CheckoutRequestInput = z.infer<typeof CheckoutRequestSchema>;
 type PushSubscribeRequestInput = z.infer<typeof PushSubscribeRequestSchema>;
+type FeedbackRequestInput = z.infer<typeof FeedbackRequestSchema>;
 declare function containsCrisisKeywords(text: string): boolean;
 
 declare class LibratoApiError extends Error {
@@ -1452,6 +1501,8 @@ declare class LibratoApiClient {
     }>;
     /** Store a Web Push subscription for daily-scale reminders. */
     subscribePush(subscription: PushSubscribeRequest): Promise<void>;
+    /** Submit a piece of feedback (rating and/or message). Additive route. */
+    submitFeedback(feedback: FeedbackRequest): Promise<void>;
     getDailyMoment(): Promise<DailyMoment>;
     getDailyScale(): Promise<DailyScaleResponse>;
     castScaleVote(scaleId: string, vote: 'a' | 'b'): Promise<DailyScaleResponse>;
@@ -1459,4 +1510,4 @@ declare class LibratoApiClient {
 }
 declare function createApiClient(baseUrl: string, authToken?: string): LibratoApiClient;
 
-export { API_TIMEOUT, type ApiError, type ApiResponse, type ApiSuccess, BRAND, BiblicalNarrativeSchema, CACHE_TTL, COLORS, CRISIS_KEYWORDS, CRISIS_RESOURCES, type CheckoutRequest, type CheckoutRequestInput, CheckoutRequestSchema, type CreateJournalEntryRequest, type CreateJournalEntryRequestInput, CreateJournalEntryRequestSchema, DISCLAIMER, type DailyMoment, type DailyScale, type DailyScaleHistoryEntry, type DailyScalePhase, type DailyScaleResponse, type DailyScaleResults, type DiscernSessionRequest, type DiscernSessionRequestInput, DiscernSessionRequestSchema, DiscernSessionResponseSchema, type DiscernmentResponse, type DiscernmentResponseOutput, DiscernmentResponseSchema, FRUIT_LABELS, FruitDiagnosticSchema, type FruitValue, IAP_PRODUCTS, JOURNEY_STEPS, type JournalEntry, type JourneyStepId, LOADING_MESSAGES, LibratoApiClient, LibratoApiError, ONBOARDING_SEASONS, type OnboardingSeason, PRICING, type Profile, type PushSubscribeRequest, type PushSubscribeRequestInput, PushSubscribeRequestSchema, SCALE_INVENTORY, SCALE_STATUSES, STILLNESS, type ScaleStatus, ScriptureSchema, type Session, type Subscription, TERRITORIES, TIER_CONFIG, TONES, TRIAL_LINE, type Territory, type TierConfig, type ToneId, type UpdateProfileRequest, type UpdateProfileRequestInput, UpdateProfileRequestSchema, type UpdateSessionRequest, type UpdateSessionRequestInput, UpdateSessionRequestSchema, type ValidateReceiptRequest, type ValidateReceiptRequestInput, ValidateReceiptRequestSchema, containsCrisisKeywords, createApiClient };
+export { API_TIMEOUT, type ApiError, type ApiResponse, type ApiSuccess, BRAND, BiblicalNarrativeSchema, CACHE_TTL, COLORS, CRISIS_KEYWORDS, CRISIS_RESOURCES, type CheckoutRequest, type CheckoutRequestInput, CheckoutRequestSchema, type CreateJournalEntryRequest, type CreateJournalEntryRequestInput, CreateJournalEntryRequestSchema, DISCLAIMER, type DailyMoment, type DailyScale, type DailyScaleHistoryEntry, type DailyScalePhase, type DailyScaleResponse, type DailyScaleResults, type DiscernSessionRequest, type DiscernSessionRequestInput, DiscernSessionRequestSchema, DiscernSessionResponseSchema, type DiscernmentResponse, type DiscernmentResponseOutput, DiscernmentResponseSchema, type EffectiveTier, type EntitlementInput, FRUIT_LABELS, type Feedback, type FeedbackRequest, type FeedbackRequestInput, FeedbackRequestSchema, type FeedbackSource, FruitDiagnosticSchema, type FruitValue, IAP_PRODUCTS, JOURNEY_STEPS, type JournalEntry, type JourneyStepId, LAUNCH_BANNER_LINE, LAUNCH_FREE_UNTIL, LOADING_MESSAGES, LibratoApiClient, LibratoApiError, ONBOARDING_SEASONS, type OnboardingSeason, PRICING, type Profile, type PushSubscribeRequest, type PushSubscribeRequestInput, PushSubscribeRequestSchema, SCALE_INVENTORY, SCALE_STATUSES, STILLNESS, type ScaleStatus, ScriptureSchema, type Session, type Subscription, TERRITORIES, TIER_CONFIG, TONES, TRIAL_LINE, type Territory, type TierConfig, type ToneId, type UpdateProfileRequest, type UpdateProfileRequestInput, UpdateProfileRequestSchema, type UpdateSessionRequest, type UpdateSessionRequestInput, UpdateSessionRequestSchema, type ValidateReceiptRequest, type ValidateReceiptRequestInput, ValidateReceiptRequestSchema, containsCrisisKeywords, createApiClient, effectiveTier, hasPremiumAccess, isLaunchFreePeriod };

@@ -5,12 +5,14 @@
 
 import Link from 'next/link';
 import { PRICING } from '@librato/shared';
+import { StatusChip } from '@/components/selah';
 import { requireAdminRSC } from '@/lib/supabase/rsc';
 import {
   getUserMetrics,
   getRevenueMetrics,
   getEngagementMetrics,
   getScaleInventorySummary,
+  getFeedbackMetrics,
 } from '@/lib/admin-metrics';
 
 export const dynamic = 'force-dynamic';
@@ -114,11 +116,12 @@ function BarList({
 export default async function AdminOverviewPage() {
   await requireAdminRSC(); // re-check the allowlist before any service-role read
 
-  const [users, revenue, engagement, inventory] = await Promise.all([
+  const [users, revenue, engagement, inventory, feedback] = await Promise.all([
     getUserMetrics(),
     getRevenueMetrics(),
     getEngagementMetrics(),
     getScaleInventorySummary(),
+    getFeedbackMetrics(),
   ]);
 
   const maxVotes = Math.max(1, ...engagement.votesPerDay.map((d) => d.count));
@@ -295,6 +298,60 @@ export default async function AdminOverviewPage() {
             rows={engagement.votesPerDay.map((d) => ({ label: d.day.slice(5), count: d.count }))}
             max={maxVotes}
           />
+        </Card>
+      </Section>
+
+      {/* ── FEEDBACK ── */}
+      <Section
+        title="Feedback"
+        caption="The only place feedback text is shown — admin-only. Never any discernment, journal, or prayer content."
+      >
+        <div className="grid grid-cols-3 gap-2.5">
+          <Stat
+            label="Average rating"
+            value={feedback.averageRating !== null ? `${feedback.averageRating.toFixed(1)} / 5` : '—'}
+            sub={`${num(feedback.ratedCount)} rated`}
+          />
+          <Stat label="This launch month" value={num(feedback.countLaunchWindow)} />
+          <Stat label="Total" value={num(feedback.total)} />
+        </div>
+
+        <Card className="mt-2.5">
+          <div className="mb-2.5 font-body text-[12px] font-semibold uppercase tracking-[0.14em] text-vellum-200/60">
+            Recent feedback
+          </div>
+          {feedback.recent.length === 0 ? (
+            <p className="font-body text-[13px] text-vellum-200/50">No feedback yet.</p>
+          ) : (
+            <ul className="grid gap-2.5">
+              {feedback.recent.map((f, i) => (
+                <li
+                  key={i}
+                  className={`grid gap-1.5 ${i < feedback.recent.length - 1 ? 'border-b border-vellum-100/[0.06] pb-2.5' : ''}`}
+                >
+                  <div className="flex flex-wrap items-center gap-2 font-body text-[12px] text-vellum-200/60">
+                    <span>{f.created_at.slice(0, 10)}</span>
+                    <StatusChip tone="outline">{f.source.replace('_', ' ')}</StatusChip>
+                    {f.rating !== null && (
+                      <span className="inline-flex items-center gap-1" aria-label={`${f.rating} of 5`}>
+                        {[1, 2, 3, 4, 5].map((n) => (
+                          <span
+                            key={n}
+                            className={`h-2 w-2 rounded-pill ${n <= f.rating! ? 'bg-gilt-500' : 'bg-vellum-100/15'}`}
+                          />
+                        ))}
+                      </span>
+                    )}
+                  </div>
+                  {f.message && (
+                    <p className="font-body text-[13.5px] leading-snug text-vellum-100">
+                      &ldquo;{f.message}&rdquo;
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
         </Card>
       </Section>
 

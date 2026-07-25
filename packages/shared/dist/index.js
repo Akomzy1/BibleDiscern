@@ -34,9 +34,12 @@ __export(index_exports, {
   DiscernSessionResponseSchema: () => DiscernSessionResponseSchema,
   DiscernmentResponseSchema: () => DiscernmentResponseSchema,
   FRUIT_LABELS: () => FRUIT_LABELS,
+  FeedbackRequestSchema: () => FeedbackRequestSchema,
   FruitDiagnosticSchema: () => FruitDiagnosticSchema,
   IAP_PRODUCTS: () => IAP_PRODUCTS,
   JOURNEY_STEPS: () => JOURNEY_STEPS,
+  LAUNCH_BANNER_LINE: () => LAUNCH_BANNER_LINE,
+  LAUNCH_FREE_UNTIL: () => LAUNCH_FREE_UNTIL,
   LOADING_MESSAGES: () => LOADING_MESSAGES,
   LibratoApiClient: () => LibratoApiClient,
   LibratoApiError: () => LibratoApiError,
@@ -57,9 +60,12 @@ __export(index_exports, {
   color: () => color,
   containsCrisisKeywords: () => containsCrisisKeywords,
   createApiClient: () => createApiClient,
+  effectiveTier: () => effectiveTier,
   font: () => font,
   giltBorderOnNavy: () => giltBorderOnNavy,
   glowOnNavy: () => glowOnNavy,
+  hasPremiumAccess: () => hasPremiumAccess,
+  isLaunchFreePeriod: () => isLaunchFreePeriod,
   motion: () => motion,
   radius: () => radius
 });
@@ -116,6 +122,11 @@ var PRICING = {
 };
 var DISCLAIMER = "This tool supports reflection \u2014 it does not replace God, Scripture, or wise counsel.";
 var TRIAL_LINE = "Free for 7 days. Cancel anytime.";
+var LAUNCH_FREE_UNTIL = "2026-08-24T00:00:00.000Z";
+function isLaunchFreePeriod(now = Date.now()) {
+  return now < Date.parse(LAUNCH_FREE_UNTIL);
+}
+var LAUNCH_BANNER_LINE = "Full access, free \u2014 our launch month. No card needed.";
 var IAP_PRODUCTS = {
   monthly: "librato_premium_monthly",
   annual: "librato_premium_annual"
@@ -226,6 +237,15 @@ var LOADING_MESSAGES = [
   "Gathering ancient wisdom..."
 ];
 
+// src/entitlements.ts
+function effectiveTier(sub, now = Date.now()) {
+  if (isLaunchFreePeriod(now)) return "premium";
+  return sub?.tier === "premium" ? "premium" : "free";
+}
+function hasPremiumAccess(sub, now) {
+  return effectiveTier(sub, now) === "premium";
+}
+
 // src/validation.ts
 var import_zod = require("zod");
 var toneSchema = import_zod.z.enum(["reflective", "urgent", "encouragement", "lament"]);
@@ -320,6 +340,13 @@ var PushSubscribeRequestSchema = import_zod.z.object({
     p256dh: import_zod.z.string().min(1).max(500),
     auth: import_zod.z.string().min(1).max(500)
   })
+});
+var FeedbackRequestSchema = import_zod.z.object({
+  source: import_zod.z.enum(["post_journey", "settings", "prompt"]),
+  rating: import_zod.z.number().int().min(1).max(5).optional(),
+  message: import_zod.z.string().trim().max(2e3).optional()
+}).refine((v) => v.rating !== void 0 || v.message && v.message.length > 0, {
+  message: "Add a rating or a message."
 });
 function containsCrisisKeywords(text) {
   const lower = text.toLowerCase();
@@ -508,6 +535,11 @@ var LibratoApiClient = class {
       body: subscription
     });
   }
+  // ─── Feedback (v2 — launch insight capture) ──
+  /** Submit a piece of feedback (rating and/or message). Additive route. */
+  async submitFeedback(feedback) {
+    await this.request("/api/feedback", { method: "POST", body: feedback });
+  }
   // ─── Daily Moment ───────────────────────────
   async getDailyMoment() {
     const res = await this.request("/api/daily-moment");
@@ -601,9 +633,12 @@ var glowOnNavy = "rgba(200,164,94,0.06)";
   DiscernSessionResponseSchema,
   DiscernmentResponseSchema,
   FRUIT_LABELS,
+  FeedbackRequestSchema,
   FruitDiagnosticSchema,
   IAP_PRODUCTS,
   JOURNEY_STEPS,
+  LAUNCH_BANNER_LINE,
+  LAUNCH_FREE_UNTIL,
   LOADING_MESSAGES,
   LibratoApiClient,
   LibratoApiError,
@@ -624,9 +659,12 @@ var glowOnNavy = "rgba(200,164,94,0.06)";
   color,
   containsCrisisKeywords,
   createApiClient,
+  effectiveTier,
   font,
   giltBorderOnNavy,
   glowOnNavy,
+  hasPremiumAccess,
+  isLaunchFreePeriod,
   motion,
   radius
 });

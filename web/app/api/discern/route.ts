@@ -7,6 +7,7 @@ import {
   CRISIS_RESOURCES,
   DISCLAIMER,
   TIER_CONFIG,
+  effectiveTier,
 } from '@librato/shared';
 import { requireAuth } from '@/lib/auth';
 import { adminClient } from '@/lib/supabase/admin';
@@ -114,11 +115,13 @@ export async function POST(request: NextRequest) {
       return err('server_error', 'Could not verify subscription status.', 500);
     }
 
-    // Access is purely tier-based. A Stripe trial grants access ONLY when it is a
-    // real Premium trial — the signup trigger seeds every free user as status
-    // 'trialing', so a status === 'trialing' check alone would let free users in.
+    // Resolve access through the ONE entitlement resolver — during the launch
+    // free period effectiveTier() returns 'premium' for everyone; otherwise it is
+    // the real subscription tier (a bare 'trialing' status is the free default and
+    // is NOT premium). A genuine Premium Stripe trial stays uncapped.
+    const tier = effectiveTier(sub);
     const isPremiumTrial = sub.tier === 'premium' && sub.status === 'trialing';
-    const hasJourneyAccess = TIER_CONFIG[sub.tier]?.has_discernment_journey ?? false;
+    const hasJourneyAccess = TIER_CONFIG[tier]?.has_discernment_journey ?? false;
 
     if (!hasJourneyAccess) {
       return err(
@@ -129,8 +132,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Premium tiers may still carry a monthly cap (currently effectively
-    // unlimited); trial is uncapped.
-    const monthlyLimit = TIER_CONFIG[sub.tier]?.sessions_limit ?? 0;
+    // unlimited); trial and the launch window are uncapped.
+    const monthlyLimit = TIER_CONFIG[tier]?.sessions_limit ?? 0;
     if (!isPremiumTrial && sub.sessions_used_this_month >= monthlyLimit) {
       return err(
         'limit_reached',
@@ -139,9 +142,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 6. Call Claude — model strings via env (Sonnet free / Opus premium)
+    // 6. Call Claude — model strings via env (Sonnet free / Opus premium).
+    //    Uses the effective tier, so launch-window users get the Premium model.
     const model =
-      sub.tier === 'premium'
+      tier === 'premium'
         ? (process.env.ANTHROPIC_MODEL_PREMIUM ?? 'claude-opus-4-8')
         : (process.env.ANTHROPIC_MODEL_FREE ?? 'claude-sonnet-5');
 

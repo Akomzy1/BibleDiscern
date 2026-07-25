@@ -7,6 +7,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { isLaunchFreePeriod } from '@librato/shared';
 import type { OnboardingSeason } from '@librato/shared';
 import {
   Beam,
@@ -433,13 +434,57 @@ function PaywallScreen({
   onStartTrial,
   onSkip,
   busy,
+  isLaunch,
 }: {
   onStartTrial: (plan: 'monthly' | 'annual') => void;
   onSkip: () => void;
   busy: boolean;
+  isLaunch: boolean;
 }) {
   const [plan, setPlan] = useState<'monthly' | 'annual'>('annual');
   const d = (ms: number) => ({ animationDelay: `${ms}ms` });
+
+  // During the launch free period the paywall becomes a confirmation: no price,
+  // no card — a single button into the app. onboarding_completed still gets set
+  // on the same path (onSkip). The normal paywall returns when the window closes.
+  if (isLaunch) {
+    return (
+      <Shell step={5}>
+        <div className="text-center">
+          <div className="stage" style={d(0)}>
+            <CrossGlyph size={22} muted />
+          </div>
+          <h1 className="stage mt-3 font-display text-2xl font-medium leading-[1.3] text-vellum-100" style={d(200)}>
+            You&apos;re in — full access, free this month.
+          </h1>
+          <p
+            className="stage mt-2 font-scripture text-[17px] font-medium italic leading-[1.45] text-gilt-300"
+            style={d(200)}
+          >
+            Our launch month. No card needed.
+          </p>
+        </div>
+
+        <div className="mx-1 mt-[18px] grid gap-[9px]">
+          <ValueRow delay={500}>Every Deep Discernment journey</ValueRow>
+          <ValueRow delay={560}>The Stillness Engine</ValueRow>
+          <ValueRow delay={620}>Fruit of the Spirit diagnostic</ValueRow>
+          <ValueRow delay={680}>Your full spiritual history</ValueRow>
+        </div>
+
+        <div className="flex-1" />
+
+        <div className="stage" style={d(900)}>
+          <GiltButton fullWidth onClick={onSkip} disabled={busy}>
+            {busy ? 'One moment…' : 'Enter BibleDiscern'}
+          </GiltButton>
+        </div>
+        <p className="mt-2.5 text-center font-body text-xs text-vellum-200/60">
+          Premium plans return after the launch month — you&apos;ll always keep your journal.
+        </p>
+      </Shell>
+    );
+  }
 
   return (
     <Shell step={5}>
@@ -560,6 +605,7 @@ export function OnboardingFlow() {
       return (
         <PaywallScreen
           busy={busy}
+          isLaunch={isLaunchFreePeriod()}
           onStartTrial={(plan) => {
             setBusy(true);
             void (async () => {

@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { CreateJournalEntryRequestSchema } from '@librato/shared';
+import { CreateJournalEntryRequestSchema, hasPremiumAccess } from '@librato/shared';
 import { requireAuth } from '@/lib/auth';
 import { adminClient } from '@/lib/supabase/admin';
 import { ok, err, handleError } from '@/lib/response';
@@ -15,9 +15,9 @@ export async function GET(request: NextRequest) {
       .eq('user_id', user.id)
       .single();
 
-    // Free = anything but a real Premium tier ('trialing' is the free-signup
-    // default, not a Premium trial). Free tier sees only the last 3 entries.
-    const isFreeAndNotTrial = !sub || sub.tier !== 'premium';
+    // Entitlement via the shared resolver — premium during the launch window,
+    // otherwise tier-based. Free tier sees only the last 3 entries.
+    const isFreeAndNotTrial = !hasPremiumAccess(sub);
 
     // Get total count first
     const { count: totalCount } = await adminClient

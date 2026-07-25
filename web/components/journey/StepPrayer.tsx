@@ -8,11 +8,28 @@ import { useState } from 'react';
 import { DISCLAIMER } from '@librato/shared';
 import type { DiscernmentResponse } from '@librato/shared';
 import { Beam, GiltButton, Panel, PrayerCard } from '@/components/selah';
+import { PostJourneyFeedback } from '@/components/feedback/PostJourneyFeedback';
+import { getAuthedClient } from '@/lib/api';
 import type { UseJourney } from '@/hooks/useJourney';
+
+// Show the feedback prompt on every 3rd completed journey (reverent, not naggy).
+// Counts server-side completed sessions; any failure defaults to NOT prompting.
+async function shouldPromptFeedback(): Promise<boolean> {
+  try {
+    const client = await getAuthedClient();
+    if (!client) return false;
+    const sessions = await client.getSessions();
+    const completed = sessions.filter((s) => s.status === 'completed').length;
+    return completed > 0 && completed % 3 === 0;
+  } catch {
+    return false;
+  }
+}
 
 export function StepPrayer({ ai, j }: { ai: DiscernmentResponse; j: UseJourney }) {
   const [setting, setSetting] = useState(false);
   const [stone, setStone] = useState(false);
+  const [feedback, setFeedback] = useState(false);
 
   const setEbenezer = async () => {
     if (setting) return;
@@ -22,12 +39,18 @@ export function StepPrayer({ ai, j }: { ai: DiscernmentResponse; j: UseJourney }
     await new Promise((r) => setTimeout(r, reduced ? 0 : 700));
     const ok = await j.complete();
     if (ok) {
-      window.location.assign('/journal');
+      // The journal entry is already saved; the prompt never blocks it.
+      if (await shouldPromptFeedback()) setFeedback(true);
+      else window.location.assign('/journal');
     } else {
       setSetting(false);
       setStone(false);
     }
   };
+
+  if (feedback) {
+    return <PostJourneyFeedback onDone={() => window.location.assign('/journal')} />;
+  }
 
   return (
     <>
