@@ -10,11 +10,16 @@ import { Sec, SiteH2, CtaBand, PageHead } from '@/components/site/Site';
 import { SiteAccordion } from '@/components/site/SiteAccordion';
 import { PlanCardsRow } from '@/components/site/PricingSummary';
 
-export const metadata: Metadata = {
-  title: 'Pricing',
-  description: `BibleDiscern Premium is $7.99/month or $49.99/year (save 48%). ${TRIAL_LINE} The free tier is generous, forever.`,
-  alternates: { canonical: `${BASE_URL}/pricing` },
-};
+export function generateMetadata(): Metadata {
+  const sub = isLaunchFreePeriod()
+    ? 'Free launch month — full access, no card needed.'
+    : TRIAL_LINE;
+  return {
+    title: 'Pricing',
+    description: `BibleDiscern Premium is $7.99/month or $49.99/year (save 48%). ${sub} The free tier is generous, forever.`,
+    alternates: { canonical: `${BASE_URL}/pricing` },
+  };
+}
 
 const FREE_TIER = [
   'The Daily Scale — weigh, see, and learn, every morning',
@@ -22,18 +27,35 @@ const FREE_TIER = [
   'Your three most recent journal entries',
 ];
 
-const BILLING_FAQ: [string, string][] = [
-  ['How does the trial work?', '7 days of Premium, free. We remind you 2 days before it ends. Cancel anytime.'],
-  ['What happens when the trial ends?', 'You move to the free tier automatically. No surprise charge — the reminder comes first.'],
-  ['Can I cancel anytime?', 'Yes. Two taps in Settings. Your journal remains yours, and you can export it.'],
-  ['Do you offer refunds?', 'Annual plans: a full refund within 30 days. Just write to us — no forms.'],
-  ['Is there a church or family plan?', "Not yet. If your congregation wants one, we'd like to hear from you."],
-];
+// The trial FAQ is hidden during the launch free period (there is no 7-day
+// trial while everything is free); it returns automatically when the window ends.
+function billingFaq(): [string, string][] {
+  const rest: [string, string][] = [
+    ['Can I cancel anytime?', 'Yes. Two taps in Settings. Your journal remains yours, and you can export it.'],
+    ['Do you offer refunds?', 'Annual plans: a full refund within 30 days. Just write to us — no forms.'],
+    ['Is there a church or family plan?', "Not yet. If your congregation wants one, we'd like to hear from you."],
+  ];
+  if (isLaunchFreePeriod()) {
+    return [
+      ['Is it really free right now?', 'Yes — for our launch month, everything is free with no card needed. Premium plans (with a 7-day free trial) begin when the launch month ends.'],
+      ...rest,
+    ];
+  }
+  return [
+    ['How does the trial work?', '7 days of Premium, free. We remind you 2 days before it ends. Cancel anytime.'],
+    ['What happens when the trial ends?', 'You move to the free tier automatically. No surprise charge — the reminder comes first.'],
+    ...rest,
+  ];
+}
 
 export default function PricingPage() {
   return (
     <>
-      <PageHead eyebrow="Pricing" title="One price. Every journey." sub={TRIAL_LINE} />
+      <PageHead
+        eyebrow="Pricing"
+        title="One price. Every journey."
+        sub={isLaunchFreePeriod() ? 'Free launch month — full access, no card needed.' : TRIAL_LINE}
+      />
       <Sec pad="px-5 py-16 md:px-[5%]">
         <div className="grid justify-items-center gap-9">
           {isLaunchFreePeriod() && (
@@ -70,14 +92,16 @@ export default function PricingPage() {
             </p>
           </div>
           <p className="font-body text-sm text-vellum-200/60">
-            {TRIAL_LINE} We remind you 2 days before the trial ends.
+            {isLaunchFreePeriod()
+              ? 'Free launch month — full access, no card needed.'
+              : `${TRIAL_LINE} We remind you 2 days before the trial ends.`}
           </p>
         </div>
       </Sec>
       <Sec pad="px-5 pb-[88px] pt-6 md:px-[5%]">
         <div className="grid gap-6">
           <SiteH2 className="text-center !text-[32px]">Billing, answered plainly.</SiteH2>
-          <SiteAccordion items={BILLING_FAQ} />
+          <SiteAccordion items={billingFaq()} />
         </div>
       </Sec>
       <CtaBand />

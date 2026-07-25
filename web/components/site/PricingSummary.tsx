@@ -69,7 +69,7 @@ export function SitePlanCard({
               : 'border border-ink-900/20 text-ink-900 hover:bg-ink-900/5'
           }`}
         >
-          Start my 7-day free trial
+          {isLaunchFreePeriod() ? 'Start free — no card needed' : 'Start my 7-day free trial'}
         </Link>
       </div>
     </div>

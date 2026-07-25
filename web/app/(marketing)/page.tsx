@@ -12,7 +12,7 @@ import { Eyebrow, Panel, ScriptureBlock, StatusChip } from '@/components/selah';
 import { Sec, SiteH2, CtaBand } from '@/components/site/Site';
 import { SiteAccordion } from '@/components/site/SiteAccordion';
 import { PricingSummary } from '@/components/site/PricingSummary';
-import { TRIAL_LINE } from '@librato/shared';
+import { TRIAL_LINE, isLaunchFreePeriod, LAUNCH_BANNER_LINE } from '@librato/shared';
 import { getTodayTeaser, getProofStats, computePercents, scaleDate } from '@/lib/scales';
 
 export const dynamic = 'force-dynamic';
@@ -107,7 +107,9 @@ function Hero() {
             See today&apos;s question
           </a>
         </div>
-        <span className="font-body text-[13px] text-vellum-200/60">{TRIAL_LINE}</span>
+        <span className="font-body text-[13px] text-vellum-200/60">
+          {isLaunchFreePeriod() ? LAUNCH_BANNER_LINE : TRIAL_LINE}
+        </span>
       </div>
     </section>
   );
@@ -394,7 +396,9 @@ function HomeFaq() {
     ['What denominations is this for?', 'Any believer who takes Scripture seriously. We stay on the broad, historic center of the faith.'],
     ['Is my data private?', 'Your journal is a confession — held in confidence. No trackers, no ad networks, no selling data.'],
     ["What's free vs Premium?", 'Free: the Daily Scale every morning — weigh, see, and learn — plus your last three journal entries. Premium: every Deep Discernment journey, the Stillness, the Fruit of the Spirit diagnostic, unlimited journal, follow-ups, and sharing.'],
-    ['How does the trial work?', '7 days of Premium, free. We remind you 2 days before it ends. Cancel anytime.'],
+    isLaunchFreePeriod()
+      ? ['Is it really free right now?', 'Yes — for our launch month, everything is free with no card needed. Premium plans begin when the launch month ends.']
+      : ['How does the trial work?', '7 days of Premium, free. We remind you 2 days before it ends. Cancel anytime.'],
   ];
   return (
     <Sec>
