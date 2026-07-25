@@ -420,7 +420,9 @@ export default function LandingPage() {
       <StillnessBand />
       <JournalFeature />
       <CommunityProof />
-      <PricingSummary />
+      {/* Pricing is hidden during the launch free period (everything is free);
+          it returns automatically when the window closes. */}
+      {!isLaunchFreePeriod() && <PricingSummary />}
       <HomeFaq />
       <CtaBand />
     </>

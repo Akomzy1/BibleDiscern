@@ -11,12 +11,13 @@ import { SiteAccordion } from '@/components/site/SiteAccordion';
 import { PlanCardsRow } from '@/components/site/PricingSummary';
 
 export function generateMetadata(): Metadata {
-  const sub = isLaunchFreePeriod()
-    ? 'Free launch month — full access, no card needed.'
-    : TRIAL_LINE;
+  // During the launch free period, keep prices out of the description too.
+  const description = isLaunchFreePeriod()
+    ? 'BibleDiscern is free this launch month — full access, no card needed. The free tier is generous, forever.'
+    : `BibleDiscern Premium is $7.99/month or $49.99/year (save 48%). ${TRIAL_LINE} The free tier is generous, forever.`;
   return {
     title: 'Pricing',
-    description: `BibleDiscern Premium is $7.99/month or $49.99/year (save 48%). ${sub} The free tier is generous, forever.`,
+    description,
     alternates: { canonical: `${BASE_URL}/pricing` },
   };
 }
@@ -69,7 +70,9 @@ export default function PricingPage() {
               </p>
             </div>
           )}
-          <PlanCardsRow />
+          {/* Plan cards are hidden during the launch free period; they return
+              automatically when the window closes. */}
+          {!isLaunchFreePeriod() && <PlanCardsRow />}
           <div className="w-full rounded-panel border border-ink-900/10 bg-vellum-200 px-6 py-[26px] md:px-7">
             <Eyebrow on="vellum" className="mb-2">
               The free tier
